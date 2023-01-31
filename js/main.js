@@ -13,6 +13,7 @@ $(document).ready(function(){
     var receiptProceeding = false;
     var cafeItemsPicked = false;
     var playgroundItemsPicked = false;
+    var currentUser = "JM";
     $.ajax({
         type: 'get',
         url: 'fetchAvailableProducts.php',
@@ -199,9 +200,17 @@ $(document).ready(function(){
                         </div>
                     </div>
                 <div>`)
-
+                
                 $(".proceed-receipt button").on("click", function(){
                     if ($(this).attr("id") !== undefined) {
+                        let section = '';
+                        //verify items..
+                        if (cafeItemsPicked) {
+                            section = 'cafe';
+                        }
+                        if (playgroundItemsPicked){
+                            section = 'play';
+                        }
                         $(".proceed-receipt").remove();
                         $(".pop-up-wrapper").css("display", "none");
                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
@@ -233,6 +242,10 @@ $(document).ready(function(){
                             </tr>`)
                             //print
                             window.print();
+
+                            
+                            //inserting into database..
+                            dataToInsert(section, currentUser, pickedItems, price);
 
                             receiptProceeding = true;
 
@@ -271,6 +284,13 @@ $(document).ready(function(){
                         proceedButtonClicked = false;
                     }
                 })
+
+                let notifs = document.querySelectorAll(".check-out-notif");
+                setTimeout(function(){
+                    for (let i = 0; i < notifs.length; i++){
+                        notifs[i].remove();
+                    }
+                }, 5000);
             }
         }
     })
@@ -320,7 +340,7 @@ $(document).ready(function(){
                     <span>No limit</span>
                     <span>250</span>
                 </div>`);
-                itemPrice = 200;
+                itemPrice = 250;
                 pickedItems.push("Unlimited");
             }
             price.push(itemPrice);
@@ -329,4 +349,8 @@ $(document).ready(function(){
         }
     })
 })
+
+function dataToInsert(section, currentUser, items, amounts){
+    section == 'cafe' ? 
+}
 
