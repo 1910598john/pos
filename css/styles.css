@@ -1,0 +1,446 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: sans-serif;
+    outline: none;
+}
+body{
+    background: rgb(241, 241, 241);
+}
+body > div{
+    width: 100%;
+    position: relative;
+}
+button{
+    cursor: pointer;
+}
+.side-bar{
+    width: 18%;
+    height: 100vh;
+    position: fixed;
+    left: -19%;
+    top: 0;
+    background: #fff;
+    z-index: 5;
+    box-shadow: 0 0 5px gray;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+.side-bar-content{
+    width: 100%;
+}
+.side-bar .time-wrapper{
+    margin-top: 10px;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+}
+.main{
+    position: relative;
+    height: 100%;
+}
+.main .header{
+    width: 100%;
+    height: 10%;
+    background: #fff;
+}
+.main .main-content{
+    height: 70vh;
+    width: 50%;
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+    border-radius: 4px;
+}
+.main .main-content > div{
+    border-radius: 4px;
+}
+.main .items-container{
+    background: #fff;
+    width: 100%;
+    height: 75%;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+.main .items-container-playground{
+    width: 100%;
+    height: calc(35% - 10px);
+    background: #fff;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.main .items-container-playground > div{
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px gray;
+    background: rgb(241, 241, 241);
+    cursor: pointer;
+    margin: 10px;
+    position: relative;
+}
+.main .items-container-playground > div span{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #666;
+}
+.main .items-container-playground > div .price{
+    position: absolute;
+    left: -1px;
+    top: 0;
+    padding: 5px 10px;
+    background: red;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    font-weight: bold;
+}
+
+.main .items-container > div{
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 0 5px gray;
+    background: rgb(241, 241, 241);
+    border-radius: 4px;
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+}
+.items-container .item .item-price{
+    position: absolute;
+    left: -1px;
+    top: 0;
+    padding: 5px 10px;
+    background: red;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    font-weight: bold;
+}
+.items-container .item .item-name-container{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    height: 30%;
+}
+.items-container .item .item-name-container span{
+    font-size: 12px;
+    text-align: center;
+    padding: 3px 0;
+}
+.items-container .item .item-name-container span:nth-child(1){
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* .. */
+.check-out-modal{
+    width: 35%;
+    height: 100vh;
+    position: fixed;
+    right: -36%;
+    bottom: 0;
+    background: #fff;
+    box-shadow: 0 0 5px gray;
+    border-radius: 4px 4px 0 0;
+    padding: 100px 30px 0;
+}
+.check-out-modal #cancel{
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    padding: 5px 10px;
+    font-weight: bold;
+    background: red;
+    color: #fff;
+    border: 1px solid transparent;
+    font-size: 20px;
+    border-radius: 4px;
+}
+.check-out-modal-animate{
+    animation-name: show-check-out-modal;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+}
+.check-out-modal-animate2{
+    animation-name: hide-check-out-modal;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+}
+.check-out-modal .modal-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+.check-out-modal .modal-header span{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+@keyframes show-check-out-modal{
+    from {right: -36%;}
+    to{right: 0;}
+}
+@keyframes hide-check-out-modal{
+    from {right: 0;}
+    to {right: -36%;}
+}
+.item-to-check-out-container{
+    width: 100%;
+    height: 30%;
+    overflow-y: scroll;
+    background: rgb(241, 241, 241);
+    padding-top: 10px;
+    border-radius: 4px;
+}
+.item-to-check-out{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.item-to-check-out span{
+    width: 33.33%;
+    text-align: center;
+    position: relative;
+    padding: 10px 0;
+}
+.item-to-check-out span:nth-child(4){
+    font-weight: bold;
+    padding-left: 15px;
+}
+.item-to-check-out span:nth-child(3){
+    padding-left: 15px;
+    font-weight: bold;
+}
+.item-to-check-out button{
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    position: absolute;
+}
+.item-to-check-out .increase-quantity{
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.item-to-check-out .decrease-quantity{
+    left: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.modal-buttons{
+    width: 80%;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+}
+.modal-buttons button{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0;
+    margin: 5px 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.modal-buttons button:nth-child(1){
+    background: red;
+    color: #fff;
+}
+.modal-buttons button:nth-child(2){
+    background: rgb(36, 180, 36);
+    color: #fff;
+}
+.proceed-receipt{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+}
+.proceed-receipt .wrapper{
+    width: 300px;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 0 0 ;
+    border-radius: 10px;
+    box-shadow: 0 0 5px gray;
+}
+.proceed-receipt .wrapper span{
+    color: rgb(53, 51, 51);
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.proceed-receipt .wrapper button{
+    padding: 20px 45px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: red;
+    color: #fff;
+}
+.proceed-receipt .wrapper .proceed-buttons{
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+.proceed-receipt .wrapper .proceed-buttons button:nth-child(1){
+    background: rgb(36, 180, 36);
+    color: #fff;
+}
+.total-wrapper{
+    margin: 30px 0 30px 10%;
+    display: flex;
+    flex-direction: column;
+}
+.total-wrapper span{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+.total-wrapper span:nth-child(2){
+    font-size: 30px;
+    margin-left: 50px;
+}
+.pop-up-wrapper{
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 50;
+}
+.pop-up-wrapper #back{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 100px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    background: red;
+}
+.pop-up{
+    padding: 50px;
+    border-radius: 10px;
+    width: 50%;
+    height: 70vh;
+    background: rgb(241, 241, 241);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.pop-up .buttons-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 50px 0;
+}
+.pop-up span{
+    font-size: 50px;
+    font-weight: bold;
+    padding-left: 30px;
+}
+.pop-up  button{
+    width: 200px;
+    height: 80px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #32a852;
+    border: 1px solid transparent;
+    color: #fff;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+.pop-up .buttons-container > div{
+    width: 150px;
+    height: 150px;
+    background: red;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background: gray;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.document-to-print{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15%;
+}
+
+.document-to-print table{
+    width: 100%;
+    margin: 20px 0;
+}
+.document-to-print table td{
+    font-size: 15px;
+}
+@media print{
+    body > div:nth-child(1){
+        display: none;
+    }
+}
+
+#notification-container{
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    z-index: 1000;
+    width: 300px;
+    padding: 10px;
+}
+.check-out-notif{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: bold;
+    animation-name: notif;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    color: #fff;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
