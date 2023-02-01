@@ -15,7 +15,11 @@ $(document).ready(function(){
     var playgroundItemsPicked = false;
     var currentUser = "JM";
     var section = '';
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
+
+    
     $.ajax({
         type: 'get',
         url: 'fetchAvailableProducts.php',
@@ -264,9 +268,23 @@ $(document).ready(function(){
 
                             $(".receipt-printed-modal .proceed-buttons > button").on("click", function(){
                                 if ($(this).attr("id") !== undefined) {
-
+                                    //current time and date
+                                    let mon = months[time.getMonth()];
+                                    let date = time.getDate();
+                                    let day = days[time.getDay()];
+                                    let hr = time.getHours();
+                                    let isMorning = true;
+                                    if (hr > 12) {
+                                        hr = hr - 12;
+                                        isMorning = false;
+                                    } 
+                                    let min = time.getMinutes();
+                                    let txt = 'AM';
+                                    isMorning ? txt = txt : txt = 'PM';
+                                    let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
+                                    
                                     //inserting into database..
-                                    insertIntoDatabase(section, pickedItems, price, currentUser);
+                                    insertIntoDatabase(section, pickedItems, price, currentUser, currentTimeAndDate);
                                     //
                                     receiptProceeding = true;
 
@@ -283,7 +301,7 @@ $(document).ready(function(){
                                     }, 2000)
                             
                                     setTimeout(function(){
-                                        location.reload();
+                                        //location.reload();
                                     }, 10000)
                                     
                                     
@@ -373,8 +391,23 @@ $(document).ready(function(){
         }
     })
 })
-/*
-function dataToInsert(section, currentUser, items, amounts){
-    section == 'cafe' ? 
+
+function insertIntoDatabase(section, items, pricelist, user, time){
+    //console.log(section, items, pricelist, user, time);
+    if (section == 'play'){
+        $.ajax({
+            type: 'POST',
+            url: 'playgroundReport.php',
+            data: {
+                items: items,
+                pricelist: pricelist,
+                user: user,
+                time: time,
+            },
+            success: function(res){
+                alert(res)
+            }
+        })
+    }
 }
-*/
+
