@@ -29,9 +29,7 @@ button{
     display: flex;
     justify-content: center;
 }
-.side-bar-content{
-    width: 100%;
-}
+
 .side-bar .time-wrapper{
     margin-top: 10px;
     width: 100%;
@@ -62,16 +60,16 @@ button{
 .main .items-container{
     background: #fff;
     width: 100%;
-    height: 75%;
+    height: 70%;
     overflow-y: scroll;
     display: flex;
     flex-wrap: wrap;
     padding: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .main .items-container-playground{
     width: 100%;
-    height: calc(35% - 10px);
+    height: calc(45% - 20px);
     background: #fff;
     overflow-y: scroll;
     display: flex;
@@ -87,6 +85,12 @@ button{
     cursor: pointer;
     margin: 10px;
     position: relative;
+}
+@media screen and (max-width: 1028) {
+    .main .items-container-playground > div{
+        width: 50px;
+        height: 50px;
+    }
 }
 .main .items-container-playground > div span{
     height: 100%;
@@ -224,6 +228,7 @@ button{
     text-align: center;
     position: relative;
     padding: 10px 0;
+    font-size: 13px;
 }
 .item-to-check-out span:nth-child(4){
     font-weight: bold;
@@ -290,7 +295,7 @@ button{
     flex-direction: column;
     padding: 20px 0 0 0 ;
     border-radius: 10px;
-    box-shadow: 0 0 5px gray;
+    box-shadow: 0 0 10px gray;
 }
 .proceed-receipt .wrapper span{
     color: rgb(53, 51, 51);
@@ -301,13 +306,13 @@ button{
     align-items: center;
 }
 .proceed-receipt .wrapper button{
-    padding: 20px 45px;
+    width: 40%;
+    padding: 15px 0;
     font-size: 15px;
     font-weight: bold;
-    border: 1px solid transparent;
+    border: 1px solid #666;
     border-radius: 4px;
-    background: red;
-    color: #fff;
+    color: #666;
 }
 .proceed-receipt .wrapper .proceed-buttons{
     margin: 20px 0;
@@ -315,11 +320,11 @@ button{
     justify-content: space-evenly;
 }
 .proceed-receipt .wrapper .proceed-buttons button:nth-child(1){
-    background: rgb(36, 180, 36);
+    background: #666;
     color: #fff;
 }
 .total-wrapper{
-    margin: 30px 0 30px 10%;
+    margin: 20px 0 20px 10%;
     display: flex;
     flex-direction: column;
 }
@@ -355,7 +360,6 @@ button{
     padding: 50px;
     border-radius: 10px;
     width: 50%;
-    height: 70vh;
     background: rgb(241, 241, 241);
     position: absolute;
     top: 50%;
@@ -374,7 +378,7 @@ button{
     padding-left: 30px;
 }
 .pop-up  button{
-    width: 200px;
+    width: 150px;
     height: 80px;
     font-size: 20px;
     font-weight: bold;
@@ -385,15 +389,13 @@ button{
     margin-left: 10px;
 }
 .pop-up .buttons-container > div{
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 70px;
     background: red;
     margin: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    font-weight: bold;
     color: #fff;
     background: gray;
     border-radius: 4px;
@@ -425,8 +427,8 @@ button{
     left: 10px;
     bottom: 10px;
     z-index: 1000;
-    width: 300px;
-    padding: 10px;
+    width: 250px;
+    padding: 5px;
 }
 .check-out-notif{
     width: 100%;

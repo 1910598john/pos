@@ -14,6 +14,8 @@ $(document).ready(function(){
     var cafeItemsPicked = false;
     var playgroundItemsPicked = false;
     var currentUser = "JM";
+    var section = '';
+    const time = new Date();
     $.ajax({
         type: 'get',
         url: 'fetchAvailableProducts.php',
@@ -203,7 +205,7 @@ $(document).ready(function(){
                 
                 $(".proceed-receipt button").on("click", function(){
                     if ($(this).attr("id") !== undefined) {
-                        let section = '';
+                        
                         //verify items..
                         if (cafeItemsPicked) {
                             section = 'cafe';
@@ -243,40 +245,62 @@ $(document).ready(function(){
                             //print
                             window.print();
 
-                            
-                            //inserting into database..
-                            dataToInsert(section, currentUser, pickedItems, price);
-
-                            receiptProceeding = true;
-
-                            //notif
-                            setTimeout(function(){
-                                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                <div class="check-out-notif" style="background:#32a852;padding:20px;">Transaction success!</div>`);
-
-                            }, 1000)
-                    
-                            setTimeout(function(){
-                                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                <div class="check-out-notif" style="background:orange;padding:20px;">Reloading the page..</div>`);
-                            }, 2000)
-                    
-                            setTimeout(function(){
-                                location.reload();
-                            }, 10000)
-                            
                             //clear elements
                             let container = document.getElementById("print-wrapper");
                             while (container.lastElementChild) {
                                 container.removeChild(container.lastElementChild);
                             }
 
-                            let notifs = document.querySelectorAll(".check-out-notif");
-                            setTimeout(function(){
-                                for (let i = 0; i < notifs.length; i++){
-                                    notifs[i].remove();
+                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                            <div class="proceed-receipt receipt-printed-modal">
+                                <div class="wrapper">
+                                    <span>Receipt printed</span>
+                                    <div class="proceed-buttons">
+                                        <button id="proceed-print">Confirm</button>
+                                        <button>No</button>
+                                    </div>
+                                </div>
+                            <div>`)
+
+                            $(".receipt-printed-modal .proceed-buttons > button").on("click", function(){
+                                if ($(this).attr("id") !== undefined) {
+
+                                    //inserting into database..
+                                    insertIntoDatabase(section, pickedItems, price, currentUser);
+                                    //
+                                    receiptProceeding = true;
+
+                                    //notif
+                                    setTimeout(function(){
+                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                        <div class="check-out-notif" style="background:#32a852;padding:20px;">Transaction success!</div>`);
+
+                                    }, 1000)
+                            
+                                    setTimeout(function(){
+                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                        <div class="check-out-notif" style="background:orange;padding:20px;">Reloading the page..</div>`);
+                                    }, 2000)
+                            
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 10000)
+                                    
+                                    
+
+                                    let notifs = document.querySelectorAll(".check-out-notif");
+                                    setTimeout(function(){
+                                        for (let i = 0; i < notifs.length; i++){
+                                            notifs[i].remove();
+                                        }
+                                    }, 5000);
+                                } else {
+                                    
                                 }
-                            }, 5000);
+                                $(".receipt-printed-modal").remove();
+                            })
+
+                            
                         }, 3000);
 
                     } else {
@@ -349,8 +373,8 @@ $(document).ready(function(){
         }
     })
 })
-
+/*
 function dataToInsert(section, currentUser, items, amounts){
     section == 'cafe' ? 
 }
-
+*/

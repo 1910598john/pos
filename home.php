@@ -8,15 +8,15 @@
     <div id="notification-container"></div>
     <div class="side-bar">
         <div class="side-bar-content">
-            <h1 style="text-align:center;">Playground</h1>
+            <h2 style="text-align:center;">Playground</h2>
             <div class="time-wrapper"></div>
         </div>
     </div>
     <div class="main">
         <div class="header"></div>
         <div class="main-content">
-            <div class="items-container" id="items-container"></div>
-            <div class="items-container-playground" id="items-container-playground">
+            <div class="items-container" id="items-container" style="border:1px solid red;"></div>
+            <div class="items-container-playground" id="items-container-playground" style="border:1px solid red;">
                 <div id="one-hour">
                     <div class="price">₱150</div>
                     <span>1 hour</span>
@@ -54,7 +54,7 @@
     <div class="pop-up-wrapper" style="display:none;">
         <div class="pop-up">
         <button id="back">Back</button>
-            <span id="amount">0</span>
+            <span id="amount" style="color:#666;">0</span>
             <div class="buttons-container">
                 <div id="one">1</div>
                 <div id="five">5</div>
