@@ -16,9 +16,43 @@ $(document).ready(function(){
     var playgroundItemsPicked = false;
     var currentUser = "JM";
     var section = '';
+    var items_remaining_time = [];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
+
+    //start playground time
+    function start_time(map){
+        for (let i = 0; i < items_remaining_time.length; i++) {
+            if (items_remaining_time[i] == 'No limit'){
+                items_remaining_time[i] = 0;
+            } else {
+                items_remaining_time[i] = parseInt(items_remaining_time[i]);
+            }
+        }
+        //start count down
+        let firstId = map.get('firstId');
+        let size = firstId - (firstId - map.size) - 1;
+        let x = 0;
+        setInterval(function(){
+            for(let i = firstId; i < (firstId + size); i++){
+                if (map.get(`id${i}`) <= 0) {
+                    $(`#item${i}`).html('No limit');
+                } else {
+                    let rem = map.get(`id${i}`) / 60;
+                    rem = Math.round(rem);
+                    $(`#item${i}`).html(rem + " min(s)");
+                    map.set(`id${i}`, map.get(`id${i}`) - 1);
+                }
+            }
+            x += 1
+        }, 100);
+        //update playground time every 10 seconds
+        if (x == 10) {
+            x = 0;
+        }
+    }
+
 
     //render playground time section
     $.ajax({
@@ -28,23 +62,37 @@ $(document).ready(function(){
             console.log(res);
             res = JSON.parse(res);
             let len = res.length;
-            console.log(len);
+            let map = new Map();
+            map.set('firstId', parseInt(res[0][0]));
             for (let i = 0; i < len; i++){
-                console.log(res[i][1]);
+                items_remaining_time.push(res[i][2]);
+                let txt = '';
+                let rem;
+                if (res[i][2] == 'No limit'){
+                    rem = 0;
+                } else {
+                    rem = parseInt(res[i][2]);
+                }
+                
+                map.set(`id${res[i][0]}`, rem);
                 if (res[i][1] == '1 hour'){
                     res[i][1] = '1hr';
+                    txt = '60 mins';
                 } else if (res[i][1] == '2 hours'){
                     res[i][1] = '2hrs';
+                    txt = '120 mins';
                 } else if (res[i][1] == 'Unlimited'){
                     res[i][1] = 'Unli';
+                    txt = 'No limit';
                 }
                 time_table.insertAdjacentHTML("beforeend", `
                 <tr>
                     <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
                     <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
-                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;padding:0 20px;">${res[i][2]}</td>
+                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
                 </tr>`)
             }
+            start_time(map);
         }
     })
     

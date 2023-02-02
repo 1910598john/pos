@@ -22,7 +22,7 @@ if ($items_length > 1) {
     } elseif ($items[0] == '2 hours'){
         $remaining_time = 120 * 60; //convert into seconds
     } elseif ($items[0] == 'Unlimited') {
-        $remaining_time = 'No time';
+        $remaining_time = 'No limit';
     }
     $sql = "INSERT INTO playground_time(item, remaining_time, status) VALUES('$items[0]', '$remaining_time','$status');";
     for ($i = 1; $i < $items_length; $i++){
@@ -31,7 +31,7 @@ if ($items_length > 1) {
         } elseif ($items[$i] == '2 hours'){
             $remaining_time = 120 * 60; //convert into seconds
         } elseif ($items[$i] == 'Unlimited') {
-            $remaining_time = 'No time';
+            $remaining_time = 'No limit';
         }
         $sql .= "INSERT INTO playground_time(item, remaining_time, status) VALUES('$items[$i]', '$remaining_time','$status');";
     }
@@ -47,7 +47,7 @@ if ($items_length > 1) {
     } elseif ($items[0] == '2 hours'){
         $remaining_time = 120 * 60; //convert into seconds
     } elseif ($items[0] == 'Unlimited') {
-        $remaining_time = 'No time';
+        $remaining_time = 'No limit';
     }
     $sql = "INSERT INTO playground_time(item, remaining_time, status) VALUES('$items[0]', '$remaining_time','$status')";
 
