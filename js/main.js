@@ -40,8 +40,9 @@ $(document).ready(function(){
                 }
                 time_table.insertAdjacentHTML("beforeend", `
                 <tr>
-                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">${res[i][1]}</td>
-                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${res[i][2]}</td>
+                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
+                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
+                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;padding:0 20px;">${res[i][2]}</td>
                 </tr>`)
             }
         }
@@ -67,7 +68,7 @@ $(document).ready(function(){
             $(".item").on("click", function(){
                 if (playgroundItemsPicked) {
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Picking items in this section is disabled.</div>`);
+                    <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
 
                 } else {
                     cafeItemsPicked = true;
@@ -125,7 +126,7 @@ $(document).ready(function(){
     $("#clear-all").on("click", () => {
         if (pickedItems.length == 0) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">You have not picked an item.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">You have not picked an item.</div>`);
         } else {
             //clear elements
             let container = document.getElementById("modal-main-content");
@@ -171,7 +172,7 @@ $(document).ready(function(){
         } else {
             if (receiptProceeding){
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Check out button disabled.</div>`);
+                <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Check out button disabled.</div>`);
 
                 let notifs = document.querySelectorAll(".check-out-notif");
                 setTimeout(function(){
@@ -236,7 +237,7 @@ $(document).ready(function(){
                 
                 $(".proceed-receipt button").on("click", function(){
                     if ($(this).attr("id") !== undefined) {
-                        
+                        receiptProceeding = true;
                         //verify items..
                         if (cafeItemsPicked) {
                             section = 'cafe';
@@ -272,6 +273,11 @@ $(document).ready(function(){
                             <tr>
                                 <td colspan="2" style="padding: 3px 0 3px 40px; font-size: 12px;">Total: ${totalPrice}</td>
                             </tr>`)
+                            
+                            //notif
+                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                            <div class="check-out-notif" style="background:orange;padding:15px 10px;">Printing receipt..</div>`);
+
                             //print
                             window.print();
 
@@ -310,14 +316,11 @@ $(document).ready(function(){
                                     isMorning ? txt = txt : txt = 'PM';
                                     let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
                                     
+                                    
+
                                     //inserting into database..
                                     insertIntoDatabase(section, pickedItems, price, currentUser, currentTimeAndDate);
                                     //
-                                    receiptProceeding = true;
-
-                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                    <div class="check-out-notif" style="background:orange;padding:15px 10px;">Printing receipt..</div>`);
-                                        
 
                                     let notifs = document.querySelectorAll(".check-out-notif");
                                     setTimeout(function(){
@@ -355,7 +358,7 @@ $(document).ready(function(){
     $(".items-container-playground > div").on("click", function(){
         if (cafeItemsPicked) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Picking items in this section is disabled.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
 
             let notifs = document.querySelectorAll(".check-out-notif");
             setTimeout(function(){

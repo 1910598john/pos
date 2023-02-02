@@ -12,8 +12,9 @@
             <div class="time-wrapper">
                 <table id="time-table">
                     <tr>
-                        <td style="font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">Item</td>
-                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;">Remaining</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">ID</td>
+                        <td style="border-left:1px solid gray;font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">Item</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;padding: 0 20px;">Remaining</td>
                     </tr>
                 </table>
             </div>
