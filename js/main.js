@@ -34,6 +34,7 @@ $(document).ready(function(){
         let firstId = map.get('firstId');
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
+        
         setInterval(function(){
             for(let i = firstId; i < (firstId + size); i++){
                 if (map.get(`id${i}`) <= 0) {
@@ -44,7 +45,14 @@ $(document).ready(function(){
                     //time ended
                     if (map.get(`id${i}`) == 1){
                         //alert cashier
-                        $(`#item${i}`).html("<span style='font-size:15px;color:red;'>ENDED</span>");
+                        $(`#item${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
+                        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                        <div class="time-ended-alert">
+                            <div>
+                                <span>#${i} time ended</span>
+                                <button>OK</button>
+                            </div>
+                        </div>`)
                     } else {
                         $(`#item${i}`).html(rem + " min(s)");
                         map.set(`id${i}`, map.get(`id${i}`) - 1);
