@@ -23,10 +23,18 @@ if ($items_length > 1) {
     for ($i = 1; $i < $items_length; $i++){
         $sql .= "INSERT INTO cafe_report(item, amount, user, time) VALUES('$items[$i]', $pricelist[$i], '$current_user', '$time');";
     }
-}
-
-if ($conn->multi_query($sql) === TRUE){
-    echo 'SUCCESS';
+    if ($conn->multi_query($sql) === TRUE){
+        echo 'success';
+    } else {
+        echo 'not success';
+    }
+} elseif ($items_length == 1) {
+    $sql = "INSERT INTO cafe_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$current_user', '$time')";
+    if ($conn->query($sql) === TRUE){
+        echo 'success';
+    } else{
+        echo 'not success';
+    }
 }
 
 $conn->close();

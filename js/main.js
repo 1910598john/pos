@@ -18,7 +18,7 @@ $(document).ready(function(){
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
-
+    
     
     $.ajax({
         type: 'get',
@@ -40,7 +40,7 @@ $(document).ready(function(){
             $(".item").on("click", function(){
                 if (playgroundItemsPicked) {
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">Picking items in this section is disabled.</div>`);
+                    <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Picking items in this section is disabled.</div>`);
 
                 } else {
                     cafeItemsPicked = true;
@@ -98,7 +98,7 @@ $(document).ready(function(){
     $("#clear-all").on("click", () => {
         if (pickedItems.length == 0) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">You have not picked an item.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">You have not picked an item.</div>`);
         } else {
             //clear elements
             let container = document.getElementById("modal-main-content");
@@ -107,7 +107,7 @@ $(document).ready(function(){
             }
             //notif
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:orange;padding:20px;">Item(s) cleared.</div>`);
+            <div class="check-out-notif" style="background:orange;padding:15px 10px;">Item(s) cleared.</div>`);
 
             //empty remove elements
             while (pickedItems.length > 0) {
@@ -134,7 +134,7 @@ $(document).ready(function(){
     $("#check-out").on("click", () => {
         if (pickedItems.length == 0) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">There is nothing to check out.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">There is nothing to check out.</div>`);
             let notifs = document.querySelectorAll(".check-out-notif");
             setTimeout(function(){
                 for (let i = 0; i < notifs.length; i++){
@@ -144,7 +144,7 @@ $(document).ready(function(){
         } else {
             if (receiptProceeding){
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">Check out button disabled.</div>`);
+                <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Check out button disabled.</div>`);
 
                 let notifs = document.querySelectorAll(".check-out-notif");
                 setTimeout(function(){
@@ -180,7 +180,7 @@ $(document).ready(function(){
     $("#proceed").on("click", () => {
         if (amount < totalPrice) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">Not enough amount.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Not enough amount.</div>`);
             let notifs = document.querySelectorAll(".check-out-notif");
             setTimeout(function(){
                 for (let i = 0; i < notifs.length; i++){
@@ -194,7 +194,7 @@ $(document).ready(function(){
                 change = amount - totalPrice;
                 //change notif
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:orange;font-size:25px;padding:20px;">Change: ${change}</div>`);
+                <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change:${change}</div>`);
                 
                 document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                 <div class="proceed-receipt">
@@ -219,8 +219,7 @@ $(document).ready(function(){
                         }
                         $(".proceed-receipt").remove();
                         $(".pop-up-wrapper").css("display", "none");
-                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                        <div class="check-out-notif" style="background:orange;padding:20px;">Receipt printing..</div>`);
+                        
                         setTimeout(function(){
                             let wrapper = document.getElementById("print-wrapper");
                             wrapper.insertAdjacentHTML("beforeend", `
@@ -289,23 +288,9 @@ $(document).ready(function(){
                                     //
                                     receiptProceeding = true;
 
-                                    //notif
-                                    setTimeout(function(){
-                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                        <div class="check-out-notif" style="background:#32a852;padding:20px;">Transaction success!</div>`);
-
-                                    }, 1000)
-                            
-                                    setTimeout(function(){
-                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                        <div class="check-out-notif" style="background:orange;padding:20px;">Reloading the page..</div>`);
-                                    }, 2000)
-                            
-                                    setTimeout(function(){
-                                        //location.reload();
-                                    }, 10000)
-                                    
-                                    
+                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                    <div class="check-out-notif" style="background:orange;padding:15px 10px;">Printing receipt..</div>`);
+                                        
 
                                     let notifs = document.querySelectorAll(".check-out-notif");
                                     setTimeout(function(){
@@ -314,7 +299,8 @@ $(document).ready(function(){
                                         }
                                     }, 5000);
                                 } else {
-                                    
+                                    amount = 0;
+                                    $("#amount").html(amount);
                                 }
                                 $(".receipt-printed-modal").remove();
                             })
@@ -342,7 +328,7 @@ $(document).ready(function(){
     $(".items-container-playground > div").on("click", function(){
         if (cafeItemsPicked) {
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:#ed3a2d;padding:20px;">Picking items in this section is disabled.</div>`);
+            <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Picking items in this section is disabled.</div>`);
 
             let notifs = document.querySelectorAll(".check-out-notif");
             setTimeout(function(){
@@ -407,7 +393,27 @@ function insertIntoDatabase(section, items, pricelist, user, time){
             time: time,
         },
         success: function(res){
-            alert(res)
+            res == 'success' ? success_notif() : error_notif();
+            //notif
+            function success_notif(){
+                setTimeout(function(){
+                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                    <div class="check-out-notif" style="background:#32a852;padding:20px 10px;font-weight:bold;">Transaction success!</div>`);
+                }, 1000)
+            }
+            function error_notif(){
+                setTimeout(function(){
+                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                    <div class="check-out-notif" style="background:#ed3a2d;padding:20px 10px;">An error occured!</div>`);
+                }, 1000)
+            }
+            setTimeout(function(){
+                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
+            }, 5000)
+            setTimeout(function(){
+                location.reload();
+            }, 10000);
         }
     })
 }
