@@ -9,7 +9,14 @@
     <div class="side-bar">
         <div class="side-bar-content">
             <h2 style="text-align:center;">Playground</h2>
-            <div class="time-wrapper"></div>
+            <div class="time-wrapper">
+                <table id="time-table">
+                    <tr>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">Item</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;">Remaining</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
     <div class="main">

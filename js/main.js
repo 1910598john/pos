@@ -7,6 +7,7 @@ $(document).ready(function(){
     const price = [];
     var totalPrice = 0;
     var totalPriceElement = document.getElementById("total-price");
+    var time_table = document.getElementById("time-table");
     var amount = 0;
     var change = 0;
     var proceedButtonClicked = false;
@@ -18,7 +19,33 @@ $(document).ready(function(){
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
-    
+
+    //render playground time section
+    $.ajax({
+        type: 'get',
+        url: 'fetch_playground_time.php',
+        success: function(res){
+            console.log(res);
+            res = JSON.parse(res);
+            let len = res.length;
+            console.log(len);
+            for (let i = 0; i < len; i++){
+                console.log(res[i][1]);
+                if (res[i][1] == '1 hour'){
+                    res[i][1] = '1hr';
+                } else if (res[i][1] == '2 hours'){
+                    res[i][1] = '2hrs';
+                } else if (res[i][1] == 'Unlimited'){
+                    res[i][1] = 'Unli';
+                }
+                time_table.insertAdjacentHTML("beforeend", `
+                <tr>
+                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">${res[i][1]}</td>
+                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${res[i][2]}</td>
+                </tr>`)
+            }
+        }
+    })
     
     $.ajax({
         type: 'get',
@@ -400,6 +427,29 @@ function insertIntoDatabase(section, items, pricelist, user, time){
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                     <div class="check-out-notif" style="background:#32a852;padding:20px 10px;font-weight:bold;">Transaction success!</div>`);
                 }, 1000)
+                setTimeout(function(){
+                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                    <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
+                }, 3000)
+                setTimeout(function(){
+                    location.reload();
+                }, 10000);
+                //add row in playground_time table
+                if (section == 'play') {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'playground_time.php',
+                        data: {
+                            items: items,
+                        },
+                        success: function(res){
+                            console.log(`${res} adding row in playground_time table.`)
+                        },
+                        error: function(res){
+                            console.log(`${res} adding row in playground_time table.`);
+                        }
+                    })
+                }
             }
             function error_notif(){
                 setTimeout(function(){
@@ -407,13 +457,7 @@ function insertIntoDatabase(section, items, pricelist, user, time){
                     <div class="check-out-notif" style="background:#ed3a2d;padding:20px 10px;">An error occured!</div>`);
                 }, 1000)
             }
-            setTimeout(function(){
-                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
-            }, 5000)
-            setTimeout(function(){
-                location.reload();
-            }, 10000);
+            
         }
     })
 }
