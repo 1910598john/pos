@@ -119,7 +119,7 @@ $(document).ready(function(){
                 x = 0;
             }
             x += 1
-        }, 10);
+        }, 1000);
         
     }
 
