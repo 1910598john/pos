@@ -12,7 +12,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, item, remaining_time FROM playground_time";
+$sql = "SELECT id, item, remaining_time FROM playground_time WHERE status='running'";
 $result = $conn->query($sql);
 $items = array();
 if ($result->num_rows > 0) {

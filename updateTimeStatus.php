@@ -13,14 +13,13 @@ if ($conn->connect_error) {
 }
 
 $id = $_POST['id'];
-$remaining_time = $_POST['rem'];
-
-$sql = "UPDATE playground_time SET remaining_time='$remaining_time' WHERE id='$id'";
+$status = 'ended';
+$sql = "UPDATE playground_time SET status='$status' WHERE id='$id'";
 
 if ($conn->query($sql) === TRUE){
-    echo 'Updated';
+    echo 'Status updated successfully!';
 } else {
-    echo 'Error updating time.';
+    echo 'Error updating status.';
 }
 $conn->close();
 ?>

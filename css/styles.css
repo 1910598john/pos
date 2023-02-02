@@ -16,6 +16,19 @@ body > div{
 button{
     cursor: pointer;
 }
+.time-ended-alert button{
+    padding: 20px;
+    margin: 30px 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    background-color: red;
+    font-size: 30px;
+}
+.time-ended-alert span{
+    color: red;
+    font-size: 30px;
+}
 .side-bar{
     width: 18%;
     height: 100vh;
@@ -36,6 +49,9 @@ button{
     display: grid;
     place-items: center;
     height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
 }
 .side-bar .time-wrapper{
     position: absolute;

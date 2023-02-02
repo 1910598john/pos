@@ -34,7 +34,7 @@ $(document).ready(function(){
         let firstId = map.get('firstId');
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
-        
+        let ended_alert_created = false;
         setInterval(function(){
             for(let i = firstId; i < (firstId + size); i++){
                 if (map.get(`id${i}`) <= 0) {
@@ -44,15 +44,51 @@ $(document).ready(function(){
                     rem = Math.round(rem);
                     //time ended
                     if (map.get(`id${i}`) == 1){
-                        //alert cashier
                         $(`#item${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
-                        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
-                        <div class="time-ended-alert">
-                            <div>
-                                <span>#${i} time ended</span>
-                                <button>OK</button>
-                            </div>
-                        </div>`)
+                        if(!ended_alert_created){
+                            //alert cashier
+                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                            <div class="time-ended-alert">
+                                <div>
+                                    <span style="text-align:center;">#${i} time ended</span>
+                                    <button>OK</button>
+                                </div>
+                            </div>`)
+                            $(".time-ended-alert > div").css({
+                                "display" : "flex",
+                                "flex-direction": "column",
+                                "width" : "30vw",
+                                "height" : "40vh",
+                                "background" : "#fff",
+                                "border-radius": "10px",
+                                "box-shadow": "0 0 10px red",
+                                "padding" : "5%"
+                                
+                            })
+                            $(".time-ended-alert button").on("click", function(){
+                                $(".time-ended-alert").remove();
+                                setTimeout(function(){
+                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                    <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
+                                }, 1000)
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 5000);
+                            })
+                            ended_alert_created = true;
+                            //update status
+                            $.ajax({
+                                type: 'POST',
+                                url: 'updateTimeStatus.php',
+                                data:{
+                                    id: i,
+                                }, 
+                                success: function(res){
+                                    console.log(res);
+                                }
+                            })
+                        }
+                        
                     } else {
                         $(`#item${i}`).html(rem + " min(s)");
                         map.set(`id${i}`, map.get(`id${i}`) - 1);
@@ -93,40 +129,46 @@ $(document).ready(function(){
         type: 'get',
         url: 'fetch_playground_time.php',
         success: function(res){
-            console.log(res);
-            res = JSON.parse(res);
-            let len = res.length;
-            let map = new Map();
-            map.set('firstId', parseInt(res[0][0]));
-            for (let i = 0; i < len; i++){
-                items_remaining_time.push(res[i][2]);
-                let txt = '';
-                let rem;
-                if (res[i][2] == 'No limit'){
-                    rem = 0;
-                } else {
-                    rem = parseInt(res[i][2]);
+            if (!res.length == 0) {
+                res = JSON.parse(res);
+                let len = res.length;
+                let map = new Map();
+                map.set('firstId', parseInt(res[0][0]));
+                for (let i = 0; i < len; i++){
+                    items_remaining_time.push(res[i][2]);
+                    let txt = '';
+                    let rem;
+                    if (res[i][2] == 'No limit'){
+                        rem = 0;
+                    } else {
+                        rem = parseInt(res[i][2]);
+                    }
+                    
+                    map.set(`id${res[i][0]}`, rem);
+                    if (res[i][1] == '1 hour'){
+                        res[i][1] = '1hr';
+                        txt = '60 mins';
+                    } else if (res[i][1] == '2 hours'){
+                        res[i][1] = '2hrs';
+                        txt = '120 mins';
+                    } else if (res[i][1] == 'Unlimited'){
+                        res[i][1] = 'Unli';
+                        txt = 'No limit';
+                    }
+                    time_table.insertAdjacentHTML("beforeend", `
+                    <tr>
+                        <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
+                        <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
+                        <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
+                    </tr>`)
                 }
-                
-                map.set(`id${res[i][0]}`, rem);
-                if (res[i][1] == '1 hour'){
-                    res[i][1] = '1hr';
-                    txt = '60 mins';
-                } else if (res[i][1] == '2 hours'){
-                    res[i][1] = '2hrs';
-                    txt = '120 mins';
-                } else if (res[i][1] == 'Unlimited'){
-                    res[i][1] = 'Unli';
-                    txt = 'No limit';
-                }
+                start_time(map);
+            } else {
                 time_table.insertAdjacentHTML("beforeend", `
-                <tr>
-                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
-                    <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
-                    <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
-                </tr>`)
+                    <tr>
+                        <td colspan="3" style="text-align:center;padding:20px 0;font-size:12px;">No item</td>
+                    </tr>`);
             }
-            start_time(map);
         }
     })
     
