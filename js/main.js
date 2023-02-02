@@ -41,16 +41,42 @@ $(document).ready(function(){
                 } else {
                     let rem = map.get(`id${i}`) / 60;
                     rem = Math.round(rem);
-                    $(`#item${i}`).html(rem + " min(s)");
-                    map.set(`id${i}`, map.get(`id${i}`) - 1);
+                    //time ended
+                    if (map.get(`id${i}`) == 1){
+                        //alert cashier
+                        $(`#item${i}`).html("<span style='font-size:15px;color:red;'>ENDED</span>");
+                    } else {
+                        $(`#item${i}`).html(rem + " min(s)");
+                        map.set(`id${i}`, map.get(`id${i}`) - 1);
+                    }
                 }
+
+                
+            }
+            
+            //update playground time every 10 seconds
+            if (x == 10) {
+                for(let i = firstId; i < (firstId + size); i++) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updatePlaygroundTime.php',
+                        data:{
+                            id: i,
+                            rem: map.get(`id${i}`)
+                        },
+                        success: function(res){
+                            console.log(res);
+                        },
+                        error: function(res){
+                            console.log(res);
+                        }
+                    })
+                }
+                x = 0;
             }
             x += 1
-        }, 100);
-        //update playground time every 10 seconds
-        if (x == 10) {
-            x = 0;
-        }
+        }, 10);
+        
     }
 
 
