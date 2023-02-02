@@ -19,11 +19,10 @@ $time = $_POST['time'];
 $items_length = count($items);
 
 if ($items_length > 1) {
-    $sql = "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$current_user', '$time');";
+    $sql = "INSERT INTO cafe_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$current_user', '$time');";
     for ($i = 1; $i < $items_length; $i++){
-        $sql .= "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[$i]', $pricelist[$i], '$current_user', '$time');";
+        $sql .= "INSERT INTO cafe_report(item, amount, user, time) VALUES('$items[$i]', $pricelist[$i], '$current_user', '$time');";
     }
-    
 }
 
 if ($conn->multi_query($sql) === TRUE){

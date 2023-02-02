@@ -279,6 +279,7 @@ $(document).ready(function(){
                                         isMorning = false;
                                     } 
                                     let min = time.getMinutes();
+                                    min < 10 ? min = `0${min}` : min = min;
                                     let txt = 'AM';
                                     isMorning ? txt = txt : txt = 'PM';
                                     let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
@@ -394,20 +395,20 @@ $(document).ready(function(){
 
 function insertIntoDatabase(section, items, pricelist, user, time){
     //console.log(section, items, pricelist, user, time);
-    if (section == 'play'){
-        $.ajax({
-            type: 'POST',
-            url: 'playgroundReport.php',
-            data: {
-                items: items,
-                pricelist: pricelist,
-                user: user,
-                time: time,
-            },
-            success: function(res){
-                alert(res)
-            }
-        })
-    }
+    let url = '';
+    section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            items: items,
+            pricelist: pricelist,
+            user: user,
+            time: time,
+        },
+        success: function(res){
+            alert(res)
+        }
+    })
 }
 
