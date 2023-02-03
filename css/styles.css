@@ -6,7 +6,7 @@
     font-family: sans-serif;
     outline: none;
 }
-.time-wrapper::-webkit-scrollbar{
+*::-webkit-scrollbar{
     display: none;
 }
 body{

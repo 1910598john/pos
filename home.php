@@ -30,8 +30,8 @@ if (!isset($_SESSION['cashier'])) {
     <div class="main">
         <div class="header"></div>
         <div class="main-content">
-            <div class="items-container" id="items-container" style="border:1px solid red;"></div>
-            <div class="items-container-playground" id="items-container-playground" style="border:1px solid red;">
+            <div class="items-container" id="items-container" style="box-shadow: 0 0 5px gray;"></div>
+            <div class="items-container-playground" id="items-container-playground" style="box-shadow: 0 0 5px gray;">
                 <div id="one-hour">
                     <div class="price">₱150</div>
                     <span>1 hour</span>

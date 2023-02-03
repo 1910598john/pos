@@ -11,7 +11,6 @@ $conn = new mysqli($servername, $username, $password, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 $sql = "SELECT id, item, remaining_time FROM playground_time WHERE status='running'";
 $result = $conn->query($sql);
 $items = array();

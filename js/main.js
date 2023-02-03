@@ -43,58 +43,54 @@ $(document).ready(function(){
                     rem = Math.round(rem);
                     //time ended
                     if (map.get(`id${i}`) == 1){
-                        $(`#time${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
-                        if(!ended_alert_created){
-                            //alert cashier
-                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
-                            <div class="time-ended-alert">
-                                <div>
-                                    <span style="text-align:center;">#${i} time ended</span>
-                                    <button>OK</button>
-                                </div>
-                            </div>`)
-                            $(".time-ended-alert > div").css({
-                                "display" : "flex",
-                                "flex-direction": "column",
-                                "width" : "30vw",
-                                "height" : "40vh",
-                                "background" : "#fff",
-                                "border-radius": "10px",
-                                "box-shadow": "0 0 10px red",
-                                "padding" : "5%"
-                                
-                            })
-                            $(".time-ended-alert button").on("click", function(){
-                                $(".time-ended-alert").remove();
-                                setTimeout(function(){
-                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                    <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
-                                }, 1000)
-                                setTimeout(function(){
-                                    location.reload();
-                                }, 5000);
-                            })
-                            ended_alert_created = true;
-                            //update status
-                            $.ajax({
-                                type: 'POST',
-                                url: 'updateTimeStatus.php',
-                                data:{
-                                    id: i,
-                                }, 
-                                success: function(res){
-                                    console.log(res);
+                        //update status
+                        $.ajax({
+                            type: 'POST',
+                            url: 'updateTimeStatus.php',
+                            data:{
+                                id: i,
+                            }, 
+                            success: function(res){
+                                console.log(res);
+                                $(`#time${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
+                                if(!ended_alert_created){
+                                    //alert cashier
+                                    document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                                    <div class="time-ended-alert">
+                                        <div>
+                                            <span style="text-align:center;">#${i} time ended</span>
+                                            <button>OK</button>
+                                        </div>
+                                    </div>`)
+                                    $(".time-ended-alert > div").css({
+                                        "display" : "flex",
+                                        "flex-direction": "column",
+                                        "width" : "30vw",
+                                        "height" : "40vh",
+                                        "background" : "#fff",
+                                        "border-radius": "10px",
+                                        "box-shadow": "0 0 10px red",
+                                        "padding" : "5%"
+                                        
+                                    })
+                                    $(".time-ended-alert button").on("click", function(){
+                                        $(".time-ended-alert").remove();
+                                        setTimeout(function(){
+                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                            <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
+                                        }, 1000)
+                                    })
+                                    ended_alert_created = true;
                                 }
-                            })
-                        }
+                            }
+                        })
+                        
                         
                     } else {
                         $(`#time${i}`).html(rem + " min(s)");
                         map.set(`id${i}`, map.get(`id${i}`) - 1);
                     }
                 }
-
-                
             }
             
             //update playground time every 10 seconds
@@ -118,8 +114,7 @@ $(document).ready(function(){
                 x = 0;
             }
             x += 1
-        }, 1000);
-        
+        }, 10);
     }
 
 
@@ -170,7 +165,7 @@ $(document).ready(function(){
             }
         }
     })
-    
+    //fetch products
     $.ajax({
         type: 'get',
         url: 'fetchAvailableProducts.php',
