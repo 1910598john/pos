@@ -1,12 +1,12 @@
 <?php
 session_start();
-
 if (!isset($_SESSION['cashier'])) {
     header('Location: http://localhost/pos/');
 }
 ?>
 <html>
 <head>
+    <title>Cashier Interface (<?php echo $_SESSION['cashier']; ?>)</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>

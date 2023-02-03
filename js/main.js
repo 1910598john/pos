@@ -118,7 +118,7 @@ $(document).ready(function(){
                 x = 0;
             }
             x += 1
-        }, 10);
+        }, 1000);
         
     }
 
@@ -548,7 +548,6 @@ function insertIntoDatabase(section, items, pricelist, time){
             time: time,
         },
         success: function(res){
-            alert(res);
             res == 'success' ? success_notif() : error_notif();
             //notif
             function success_notif(){

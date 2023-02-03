@@ -6,6 +6,9 @@
     font-family: sans-serif;
     outline: none;
 }
+.time-wrapper::-webkit-scrollbar{
+    display: none;
+}
 body{
     background: rgb(241, 241, 241);
 }
