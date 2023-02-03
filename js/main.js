@@ -16,6 +16,7 @@ $(document).ready(function(){
     var playgroundItemsPicked = false;
     var section = '';
     var items_remaining_time = [];
+    const ticketNumbers = [];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
@@ -54,6 +55,7 @@ $(document).ready(function(){
                                 console.log(res);
                                 $(`#time${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
                                 if(!ended_alert_created){
+                                    ended_alert_created = true;
                                     //alert cashier
                                     document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                                     <div class="time-ended-alert">
@@ -71,21 +73,31 @@ $(document).ready(function(){
                                         "border-radius": "10px",
                                         "box-shadow": "0 0 10px red",
                                         "padding" : "5%"
-                                        
                                     })
+                                    /*
+                                    let sph = new SpeechSynthesisUtterance();
+                                    sph.text = `Customer ID number ${i}'s time has ended.`;
+                                    speechSynthesis.speak(sph);
+                                    */
+                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                    <div class="check-out-notif" style="background:red;padding:20px 10px;font-weight:bold;">#${i} time has ended.</div>`);
+
                                     $(".time-ended-alert button").on("click", function(){
                                         $(".time-ended-alert").remove();
-                                        setTimeout(function(){
-                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                            <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
-                                        }, 1000)
                                     })
-                                    ended_alert_created = true;
+                                    
                                 }
                             }
                         })
                         
+                        let notifs = document.querySelectorAll(".check-out-notif");
+                        setTimeout(function(){
+                            for (let i = 0; i < notifs.length; i++){
+                                notifs[i].remove();
+                            }
+                        }, 10000);
                         
+                    
                     } else {
                         $(`#time${i}`).html(rem + " min(s)");
                         map.set(`id${i}`, map.get(`id${i}`) - 1);
@@ -114,7 +126,7 @@ $(document).ready(function(){
                 x = 0;
             }
             x += 1
-        }, 10);
+        }, 1);
     }
 
 
@@ -368,6 +380,25 @@ $(document).ready(function(){
                         }
                         $(".proceed-receipt").remove();
                         $(".pop-up-wrapper").css("display", "none");
+
+                        
+                        //generate tickets
+                        for (let x = 0; x < pickedItems.length; x++) {
+                            generateTicketNumber();
+                        }
+                        
+                        function generateTicketNumber(){
+                            let txt = '';
+                            for (let i = 0; i < 4; i++) {
+                                let number = Math.round(Math.random() * 10);
+                                txt += number;
+                            }
+                            if (txt.length == 4){
+                                ticketNumbers.push(parseInt(txt));
+                            } else {
+                                generateTicketNumber();
+                            }
+                        }
                         
                         setTimeout(function(){
                             let wrapper = document.getElementById("print-wrapper");
@@ -437,10 +468,8 @@ $(document).ready(function(){
                                     isMorning ? txt = txt : txt = 'PM';
                                     let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
                                     
-                                    
-
                                     //inserting into database..
-                                    insertIntoDatabase(section, pickedItems, price, currentTimeAndDate);
+                                    insertIntoDatabase(section, ticketNumbers, pickedItems, price, currentTimeAndDate);
                                     //
 
                                     let notifs = document.querySelectorAll(".check-out-notif");
@@ -530,7 +559,7 @@ $(document).ready(function(){
     })
 })
 
-function insertIntoDatabase(section, items, pricelist, time){
+function insertIntoDatabase(section, tickets, items, pricelist, time){
     //console.log(section, items, pricelist, user, time);
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
@@ -538,6 +567,7 @@ function insertIntoDatabase(section, items, pricelist, time){
         type: 'POST',
         url: url,
         data: {
+            tickets: tickets,
             items: items,
             pricelist: pricelist,
             time: time,
@@ -580,7 +610,6 @@ function insertIntoDatabase(section, items, pricelist, time){
                     <div class="check-out-notif" style="background:#ed3a2d;padding:20px 10px;">An error occured!</div>`);
                 }, 1000)
             }
-            
         }
     })
 }
