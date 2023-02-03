@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -12,7 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT username, password FROM cashier_auth";
+$sql = "SELECT name, username, password FROM cashier_auth";
 $result = $conn->query($sql);
 
 if (isset($_POST['username'])){
@@ -24,18 +25,19 @@ if (isset($_POST['username'])){
         while($row = $result->fetch_assoc()) {
             if ($row["username"] == $uname && $row["password"] == $pwd) {
                 $verifiedCashier = true;
+                $cashier_user = $row['name'];
             } else {
                 $verifiedCashier= false;
             }
-        } 
+        }
         if ($verifiedCashier) {
-            header('Location: http://localhost/cashier/home.php');
+            $_SESSION["cashier"] = $cashier_user;
+            header('Location: http://localhost/pos/home.php');
         } else {
-            header('Location: http://localhost/cashier/');
+            header('Location: http://localhost/pos/');
         }
     }
 }
-
 $conn->close();
 ?>
 <!DOCTYPE html>

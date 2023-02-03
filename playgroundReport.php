@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,14 +15,14 @@ if ($conn->connect_error) {
 
 $items = $_POST['items'];
 $pricelist = $_POST['pricelist'];
-$current_user = $_POST['user'];
 $time = $_POST['time'];
 $items_length = count($items);
+$currentUser = $_SESSION['cashier'];
 
 if ($items_length > 1) {
-    $sql = "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$current_user', '$time');";
+    $sql = "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$currentUser', '$time');";
     for ($i = 1; $i < $items_length; $i++){
-        $sql .= "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[$i]', $pricelist[$i], '$current_user', '$time');";
+        $sql .= "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[$i]', $pricelist[$i], '$currentUser', '$time');";
     }
     if ($conn->multi_query($sql) === TRUE){
         echo 'success';
@@ -30,7 +31,7 @@ if ($items_length > 1) {
     }
     
 } elseif ($items_length == 1){
-    $sql = "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$current_user', '$time')";
+    $sql = "INSERT INTO playground_report(item, amount, user, time) VALUES('$items[0]', $pricelist[0], '$currentUser', '$time')";
     if ($conn->query($sql) === TRUE){
         echo 'success';
     } else {

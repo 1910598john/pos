@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +15,7 @@ if ($conn->connect_error) {
 
 $items = $_POST['items'];
 $pricelist = $_POST['pricelist'];
-$current_user = $_POST['user'];
+$current_user = $_SESSION['cashier'];
 $time = $_POST['time'];
 $items_length = count($items);
 

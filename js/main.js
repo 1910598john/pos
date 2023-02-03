@@ -14,7 +14,6 @@ $(document).ready(function(){
     var receiptProceeding = false;
     var cafeItemsPicked = false;
     var playgroundItemsPicked = false;
-    var currentUser = "JM";
     var section = '';
     var items_remaining_time = [];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -38,13 +37,13 @@ $(document).ready(function(){
         setInterval(function(){
             for(let i = firstId; i < (firstId + size); i++){
                 if (map.get(`id${i}`) <= 0) {
-                    $(`#item${i}`).html('No limit');
+                    $(`#time${i}`).html('No limit');
                 } else {
                     let rem = map.get(`id${i}`) / 60;
                     rem = Math.round(rem);
                     //time ended
                     if (map.get(`id${i}`) == 1){
-                        $(`#item${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
+                        $(`#time${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
                         if(!ended_alert_created){
                             //alert cashier
                             document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
@@ -90,7 +89,7 @@ $(document).ready(function(){
                         }
                         
                     } else {
-                        $(`#item${i}`).html(rem + " min(s)");
+                        $(`#time${i}`).html(rem + " min(s)");
                         map.set(`id${i}`, map.get(`id${i}`) - 1);
                     }
                 }
@@ -119,7 +118,7 @@ $(document).ready(function(){
                 x = 0;
             }
             x += 1
-        }, 1000);
+        }, 10);
         
     }
 
@@ -159,7 +158,7 @@ $(document).ready(function(){
                     <tr>
                         <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
                         <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
-                        <td id="item${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
+                        <td id="time${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
                     </tr>`)
                 }
                 start_time(map);
@@ -179,7 +178,7 @@ $(document).ready(function(){
             items = JSON.parse(items);
             for (let i = 0; i < items.length; i++) {
                 itemsContainer.insertAdjacentHTML("beforeend", `
-                <div class="item" id="item${i + 1}">
+                <div class="item" id="fetch-item${i + 1}">
                     <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
                     <div class="item-name-container">
                         <span data-item="${items[i][0]}">${items[i][0]}</span>
@@ -200,6 +199,8 @@ $(document).ready(function(){
                     $(".check-out-modal").removeClass("check-out-modal-animate2");
                     let itemId = $(this).attr("id");
                     let item = document.getElementById(`${itemId}`);
+                    console.log(item);
+                    
                     //get item price
                     let itemPrice = item.children[0].children[0].dataset.price;
                     let itemName = item.children[1].children[0].dataset.item;
@@ -215,6 +216,7 @@ $(document).ready(function(){
                     </div>`);
                     totalPrice += parseInt(itemPrice);
                     totalPriceElement.innerHTML = `₱${totalPrice}`;
+                    
                 }
                 let notifs = document.querySelectorAll(".check-out-notif");
                 setTimeout(function(){
@@ -443,7 +445,7 @@ $(document).ready(function(){
                                     
 
                                     //inserting into database..
-                                    insertIntoDatabase(section, pickedItems, price, currentUser, currentTimeAndDate);
+                                    insertIntoDatabase(section, pickedItems, price, currentTimeAndDate);
                                     //
 
                                     let notifs = document.querySelectorAll(".check-out-notif");
@@ -533,7 +535,7 @@ $(document).ready(function(){
     })
 })
 
-function insertIntoDatabase(section, items, pricelist, user, time){
+function insertIntoDatabase(section, items, pricelist, time){
     //console.log(section, items, pricelist, user, time);
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
@@ -543,10 +545,10 @@ function insertIntoDatabase(section, items, pricelist, user, time){
         data: {
             items: items,
             pricelist: pricelist,
-            user: user,
             time: time,
         },
         success: function(res){
+            alert(res);
             res == 'success' ? success_notif() : error_notif();
             //notif
             function success_notif(){

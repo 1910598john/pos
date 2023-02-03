@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['cashier'])) {
+    header('Location: http://localhost/pos/');
+}
+?>
 <html>
 <head>
     <link rel="stylesheet" href="./css/styles.css">
