@@ -6,8 +6,45 @@
     font-family: sans-serif;
     outline: none;
 }
-*::-webkit-scrollbar{
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    margin-right: -3px;
+}
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #fff; 
+}
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.items-container::-webkit-scrollbar, .items-container-playground::-webkit-scrollbar{
     display: none;
+}
+#one-hour{
+    background-image: url(../images/clock.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#two-hours{
+    background-image: url(../images/clock.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#unlimited{
+    background-image: url(../images/clock.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 body{
     background: rgb(241, 241, 241);
@@ -138,7 +175,9 @@ button{
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    color: #666;
+    color: orange;
+    text-shadow: 0 0 3px orange;
+    font-size: 20px;
 }
 .main .items-container-playground > div .price{
     position: absolute;

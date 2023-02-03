@@ -20,6 +20,7 @@ $(document).ready(function(){
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
+    
 
     //start playground time
     function start_time(map){
@@ -35,7 +36,11 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        setInterval(function(){
+        let interval = setInterval(startCountdown, 10); 
+        function startCountdown(){
+            if (map.size == 1) {
+                clearInterval(interval);
+            }
             for(let i = firstId; i < (firstId + size); i++){
                 if (map.get(`id${i}`) <= 0) {
                     $(`#time${i}`).html('No limit');
@@ -52,9 +57,10 @@ $(document).ready(function(){
                                 id: i,
                             }, 
                             success: function(res){
-                                console.log(res);
                                 $(`#time${i}`).html("<span style='font-size:13px;color:red;'>ENDED</span>");
                                 if(!ended_alert_created){
+                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                    <div class="check-out-notif" id="ended-notif" style="background:red;padding:20px 10px;font-weight:bold;">#${i} time has ended.</div>`);
                                     ended_alert_created = true;
                                     //alert cashier
                                     document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
@@ -64,6 +70,7 @@ $(document).ready(function(){
                                             <button>OK</button>
                                         </div>
                                     </div>`)
+
                                     $(".time-ended-alert > div").css({
                                         "display" : "flex",
                                         "flex-direction": "column",
@@ -74,19 +81,17 @@ $(document).ready(function(){
                                         "box-shadow": "0 0 10px red",
                                         "padding" : "5%"
                                     })
-                                    /*
-                                    let sph = new SpeechSynthesisUtterance();
-                                    sph.text = `Customer ID number ${i}'s time has ended.`;
-                                    speechSynthesis.speak(sph);
-                                    */
-                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                    <div class="check-out-notif" style="background:red;padding:20px 10px;font-weight:bold;">#${i} time has ended.</div>`);
 
                                     $(".time-ended-alert button").on("click", function(){
                                         $(".time-ended-alert").remove();
                                     })
-                                    
                                 }
+                                let notifs = document.querySelectorAll(".check-out-notif");
+                                setTimeout(function(){
+                                    for (let i = 0; i < notifs.length; i++){
+                                        notifs[i].remove();
+                                    }
+                                }, 10000);
                             }
                         })
                         
@@ -114,19 +119,13 @@ $(document).ready(function(){
                         data:{
                             id: i,
                             rem: map.get(`id${i}`)
-                        },
-                        success: function(res){
-                            console.log(res);
-                        },
-                        error: function(res){
-                            console.log(res);
                         }
                     })
                 }
                 x = 0;
             }
             x += 1
-        }, 1);
+        };
     }
 
 
@@ -171,9 +170,9 @@ $(document).ready(function(){
                 start_time(map);
             } else {
                 time_table.insertAdjacentHTML("beforeend", `
-                    <tr>
-                        <td colspan="3" style="text-align:center;padding:20px 0;font-size:12px;">No item</td>
-                    </tr>`);
+                <tr>
+                    <td colspan="3" style="text-align:center;padding:20px 0;font-size:12px;">No item</td>
+                </tr>`);
             }
         }
     })
@@ -185,13 +184,21 @@ $(document).ready(function(){
             items = JSON.parse(items);
             for (let i = 0; i < items.length; i++) {
                 itemsContainer.insertAdjacentHTML("beforeend", `
-                <div class="item" id="fetch-item${i + 1}">
+                <div class="item" id="fetched-item${i + 1}">
                     <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
                     <div class="item-name-container">
                         <span data-item="${items[i][0]}">${items[i][0]}</span>
                         <span data-description="${items[i][1]}">${items[i][1]}</span>
                     </div>
-                </div>`)
+                </div>`);
+                let image;
+                image = `url(./images/product${i + 1}.jpg)`;
+                $(`#fetched-item${i + 1}`).css({
+                    'background-image': image,
+                    'background-position' : 'center',
+                    'background-repeat' :'no-repeat',
+                    'background-size' : 'cover'
+                });
             }
             
             //cafe item pick function..
@@ -206,7 +213,6 @@ $(document).ready(function(){
                     $(".check-out-modal").removeClass("check-out-modal-animate2");
                     let itemId = $(this).attr("id");
                     let item = document.getElementById(`${itemId}`);
-                    console.log(item);
                     
                     //get item price
                     let itemPrice = item.children[0].children[0].dataset.price;
@@ -223,7 +229,6 @@ $(document).ready(function(){
                     </div>`);
                     totalPrice += parseInt(itemPrice);
                     totalPriceElement.innerHTML = `₱${totalPrice}`;
-                    
                 }
                 let notifs = document.querySelectorAll(".check-out-notif");
                 setTimeout(function(){
@@ -355,7 +360,7 @@ $(document).ready(function(){
                 change = amount - totalPrice;
                 //change notif
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change:${change}</div>`);
+                <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change: <span style="padding-left:3px;">${change}</span></div>`);
                 
                 document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                 <div class="proceed-receipt">
@@ -383,22 +388,20 @@ $(document).ready(function(){
 
                         
                         //generate tickets
-                        for (let x = 0; x < pickedItems.length; x++) {
-                            generateTicketNumber();
+                        for (let i = 0; i < pickedItems.length; i++){
+                            let txt = '';
+                            for (let j = 0; j < 4; j++) {
+                                let num = Math.round(Math.random() * 9);
+                                txt += num;
+                            }
+                            if (txt.length < 4){
+                                for (let i = txt.length; i < 4; i++) {
+                                    txt += Math.round(Math.random() * 9);
+                                }
+                            }
+                            ticketNumbers.push(parseInt(txt));
                         }
                         
-                        function generateTicketNumber(){
-                            let txt = '';
-                            for (let i = 0; i < 4; i++) {
-                                let number = Math.round(Math.random() * 10);
-                                txt += number;
-                            }
-                            if (txt.length == 4){
-                                ticketNumbers.push(parseInt(txt));
-                            } else {
-                                generateTicketNumber();
-                            }
-                        }
                         
                         setTimeout(function(){
                             let wrapper = document.getElementById("print-wrapper");
@@ -560,7 +563,6 @@ $(document).ready(function(){
 })
 
 function insertIntoDatabase(section, tickets, items, pricelist, time){
-    //console.log(section, items, pricelist, user, time);
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
     $.ajax({
@@ -594,12 +596,6 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
                         url: 'playground_time.php',
                         data: {
                             items: items,
-                        },
-                        success: function(res){
-                            console.log(`${res} adding row in playground_time table.`)
-                        },
-                        error: function(res){
-                            console.log(`${res} adding row in playground_time table.`);
                         }
                     })
                 }
