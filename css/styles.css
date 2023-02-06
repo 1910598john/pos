@@ -489,11 +489,9 @@ button{
 
 .document-to-print table{
     width: 100%;
-    margin: 20px 0;
+    margin: 10px 0;
 }
-.document-to-print table td{
-    font-size: 15px;
-}
+
 @media print{
     body > div:nth-child(1){
         display: none;

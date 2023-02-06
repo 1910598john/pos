@@ -16,7 +16,7 @@ $(document).ready(function(){
     var playgroundItemsPicked = false;
     var section = '';
     var items_remaining_time = [];
-    const ticketNumbers = [];
+    var ticketNumbers = [];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const time = new Date();
@@ -36,7 +36,7 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        let interval = setInterval(startCountdown, 10); 
+        let interval = setInterval(startCountdown, 200); 
         function startCountdown(){
             if (map.size == 1) {
                 clearInterval(interval);
@@ -162,7 +162,7 @@ $(document).ready(function(){
                     }
                     time_table.insertAdjacentHTML("beforeend", `
                     <tr>
-                        <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][0]}</td>
+                        <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][3]}</td>
                         <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${res[i][1]}</td>
                         <td id="time${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
                     </tr>`)
@@ -387,32 +387,77 @@ $(document).ready(function(){
                         $(".pop-up-wrapper").css("display", "none");
 
                         
-                        //generate tickets
-                        for (let i = 0; i < pickedItems.length; i++){
-                            let txt = '';
-                            for (let j = 0; j < 4; j++) {
-                                let num = Math.round(Math.random() * 9);
-                                txt += num;
-                            }
-                            if (txt.length < 4){
-                                for (let i = txt.length; i < 4; i++) {
-                                    txt += Math.round(Math.random() * 9);
+                        if (section == 'play') {
+                            generateTickets();
+                            //generate tickets
+                            function generateTickets(){
+                                for (let i = 0; i < pickedItems.length; i++){
+                                    let txt = '';
+                                    for (let j = 0; j < 4; j++) {
+                                        let num = Math.round(Math.random() * 9);
+                                        txt += num;
+                                    }
+                                    ticketNumbers.push(txt);
+    
+                                    verifyTickets(ticketNumbers);
                                 }
                             }
-                            ticketNumbers.push(parseInt(txt));
-                        }
-                        
-                        
-                        setTimeout(function(){
+                            
+                            function verifyTickets(tickets){
+                                let len = 0;
+                                for (let x = 0; x < tickets.length; x++){
+                                    if (tickets[x].length == 4) {
+                                        len += 1;
+                                    }
+                                }
+                                if (!(len == tickets.length)) {
+                                    generateTickets();
+                                }
+                            }
+
+                            for (let x = 0; x < pickedItems.length; x++) {
+                                let wrapper = document.getElementById("print-wrapper");
+                                wrapper.insertAdjacentHTML("beforeend", `
+                                <div class="document-to-print">
+                                    <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
+                                    <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                    <table id="table">
+                                        <tr>
+                                            <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${ticketNumbers[x]}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style=" font-size: 12px;">Item:</td>
+                                            <td style=" font-size: 12px;">Price:</td>
+                                        </tr>
+                                    </table>
+                                </div>`)
+
+                                let table = document.getElementById("table");
+                                table.insertAdjacentHTML("beforeend", `
+                                <tr>
+                                    <td style="padding:3px 0 3px 0; font-size: 12px;">${pickedItems[x]}</td>
+                                    <td style="padding:3px 0 3px 0; font-size: 12px;font-weight:bold;">${price[x]}</td>
+                                </tr>`);
+
+                                window.print();
+
+                                //clear elements
+                                let container = document.getElementById("print-wrapper");
+                                while (container.lastElementChild) {
+                                    container.removeChild(container.lastElementChild);
+                                }
+                            }
+
+                        } else {
                             let wrapper = document.getElementById("print-wrapper");
                             wrapper.insertAdjacentHTML("beforeend", `
                             <div class="document-to-print">
-                                <span>ANSON'S PLAYGROUND AND CAFE</span>
-                                <span>Osmeña st., Masbate City</span>
+                                <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
+                                <span style="font-size:12px;">Osmeña st., Masbate City</span>
                                 <table id="table">
                                     <tr>
-                                        <td style=" font-size: 12px;">Product:</td>
-                                        <td style=" font-size: 12px;">Price:</td>
+                                        <td style=" font-size: 12px;font-weight:bold;margin-bottom:5px;">Item:</td>
+                                        <td style=" font-size: 12px;font-weight:bold;margin-bottom:5px;">Price:</td>
                                     </tr>
                                 </table>
                             </div>`)
@@ -420,76 +465,76 @@ $(document).ready(function(){
                             for (let i = 0; i < pickedItems.length; i++) {
                                 table.insertAdjacentHTML("beforeend", `
                                 <tr>
-                                    <td style="padding:3px 0 3px 40px; font-size: 12px;">${pickedItems[i]}</td>
-                                    <td style="padding:3px 0 3px 40px; font-size: 12px;">${price[i]}</td>
+                                    <td style="padding:3px 0 3px 10px; font-size: 12px;">${pickedItems[i]}</td>
+                                    <td style="padding:3px 0 3px 10px; font-size: 12px;font-weight:bold;">${price[i]}</td>
                                 </tr>`)
                             }
                             table.insertAdjacentHTML("beforeend", `
                             <tr>
-                                <td colspan="2" style="padding: 3px 0 3px 40px; font-size: 12px;">Total: ${totalPrice}</td>
+                                <td style="padding: 3px 0 3px 10px; font-size: 12px;">Total: <span style="font-weight:bold">${totalPrice}</span></td>
                             </tr>`)
-                            
-                            //notif
-                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                            <div class="check-out-notif" style="background:orange;padding:15px 10px;">Printing receipt..</div>`);
 
                             //print
                             window.print();
+                        }
+                        
+                        
+                        //notif
+                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                        <div class="check-out-notif" style="background:orange;padding:15px 10px;">Printing receipt..</div>`);
 
-                            //clear elements
-                            let container = document.getElementById("print-wrapper");
-                            while (container.lastElementChild) {
-                                container.removeChild(container.lastElementChild);
-                            }
 
-                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
-                            <div class="proceed-receipt receipt-printed-modal">
-                                <div class="wrapper">
-                                    <span>Receipt printed</span>
-                                    <div class="proceed-buttons">
-                                        <button id="proceed-print">Confirm</button>
-                                        <button>No</button>
-                                    </div>
+                        //clear elements
+                        let container = document.getElementById("print-wrapper");
+                        while (container.lastElementChild) {
+                            container.removeChild(container.lastElementChild);
+                        }
+
+                        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                        <div class="proceed-receipt receipt-printed-modal">
+                            <div class="wrapper">
+                                <span>Receipt printed</span>
+                                <div class="proceed-buttons">
+                                    <button id="proceed-print">Confirm</button>
+                                    <button>No</button>
                                 </div>
-                            <div>`)
+                            </div>
+                        <div>`)
 
-                            $(".receipt-printed-modal .proceed-buttons > button").on("click", function(){
-                                if ($(this).attr("id") !== undefined) {
-                                    //current time and date
-                                    let mon = months[time.getMonth()];
-                                    let date = time.getDate();
-                                    let day = days[time.getDay()];
-                                    let hr = time.getHours();
-                                    let isMorning = true;
-                                    if (hr > 12) {
-                                        hr = hr - 12;
-                                        isMorning = false;
-                                    } 
-                                    let min = time.getMinutes();
-                                    min < 10 ? min = `0${min}` : min = min;
-                                    let txt = 'AM';
-                                    isMorning ? txt = txt : txt = 'PM';
-                                    let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
-                                    
-                                    //inserting into database..
-                                    insertIntoDatabase(section, ticketNumbers, pickedItems, price, currentTimeAndDate);
-                                    //
+                        $(".receipt-printed-modal .proceed-buttons > button").on("click", function(){
+                            if ($(this).attr("id") !== undefined) {
+                                //current time and date
+                                let mon = months[time.getMonth()];
+                                let date = time.getDate();
+                                let day = days[time.getDay()];
+                                let hr = time.getHours();
+                                let isMorning = true;
+                                if (hr > 12) {
+                                    hr = hr - 12;
+                                    isMorning = false;
+                                } 
+                                let min = time.getMinutes();
+                                min < 10 ? min = `0${min}` : min = min;
+                                let txt = 'AM';
+                                isMorning ? txt = txt : txt = 'PM';
+                                let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
+                                
+                                //inserting into database..
+                                insertIntoDatabase(section, ticketNumbers, pickedItems, price, currentTimeAndDate);
+                                //
 
-                                    let notifs = document.querySelectorAll(".check-out-notif");
-                                    setTimeout(function(){
-                                        for (let i = 0; i < notifs.length; i++){
-                                            notifs[i].remove();
-                                        }
-                                    }, 5000);
-                                } else {
-                                    amount = 0;
-                                    $("#amount").html(amount);
-                                }
-                                $(".receipt-printed-modal").remove();
-                            })
+                                let notifs = document.querySelectorAll(".check-out-notif");
+                                setTimeout(function(){
+                                    for (let i = 0; i < notifs.length; i++){
+                                        notifs[i].remove();
+                                    }
+                                }, 5000);
+                            } else {                                
+                                location.reload();
+                            }
+                            $(".receipt-printed-modal").remove();
+                        })
 
-                            
-                        }, 3000);
 
                     } else {
                         $(".proceed-receipt").remove();
@@ -595,6 +640,7 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
                         type: 'POST',
                         url: 'playground_time.php',
                         data: {
+                            tickets: tickets,
                             items: items,
                         }
                     })
