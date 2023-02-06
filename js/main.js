@@ -38,7 +38,7 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        let interval = setInterval(startCountdown, 10);
+        let interval = setInterval(startCountdown, 1000);
         
         function startCountdown(){
             if (map.size == 1) {
