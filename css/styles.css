@@ -9,7 +9,7 @@
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
-    margin-right: -3px;
+    margin-right: -5px;
 }
     /* Track */
     ::-webkit-scrollbar-track {
@@ -53,8 +53,18 @@ body > div{
     width: 100%;
     position: relative;
 }
+
 button{
     cursor: pointer;
+}
+#amount-to-pay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    height: 100vh;
+    width: 100vw;
+    z-index: 2500;
 }
 .time-ended-alert button{
     padding: 20px;
@@ -81,6 +91,130 @@ button{
     padding-top: 20px;
     display: flex;
     justify-content: center;
+}
+.tickets-list-wrapper{
+    width: 100vw;
+    height: 100vh;
+    z-index: 2100;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+}
+.tickets-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tickets-container .confirm-button button{
+    padding: 15px 30px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 4px;
+    background: #666;
+    border: 1px solid transparent;
+    margin: 20px 0 0;
+}
+.amount-to-pay-wrapper{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 17%;
+    background: #fff;
+    padding: 30px;
+    z-index: 2500;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #666;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.amount-to-pay-wrapper button{
+    background: #666;
+    color: #fff;
+    font-weight: bold;
+    padding: 20px 30px;
+    border-radius: 4px;
+    margin: 5px;
+    border: 1px solid transparent;
+}
+.amount-to-pay-wrapper > div{
+    background: green;
+    color: #fff;
+    font-weight: bold;
+    padding: 20px 30px;
+    border-radius: 4px;
+    margin: 5px;
+}
+.tickets{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+.tickets > div{
+    padding: 20px 25px;
+    margin: 10px;
+    background: orange;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.side-bar .bottom-panel{
+    position: absolute;
+    left: 0;
+    top: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 10%;
+}
+.side-bar .bottom-panel > div{
+    margin: 10px 0;
+}
+.side-bar .bottom-panel > div:nth-child(1){
+    display: flex;
+    width: 100%;
+}
+.side-bar .bottom-panel > div:nth-child(1) button{
+    width: 50%;
+    margin: 0 5px;
+    padding: 15px;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.side-bar .bottom-panel > div:nth-child(1) button:nth-child(1){
+    background: green;
+}
+.side-bar .bottom-panel > div:nth-child(1) button:nth-child(2){
+    background: red;
+}
+.side-bar .bottom-panel > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    color: #666;
+}
+
+.side-bar .bottom-panel > div:nth-child(2) button{
+    padding: 5px;
+    margin: 5px 0;
+    background: red;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-weight: bold;
+    padding: 10px 0;
 }
 .time-ended-alert{
     width: 100vw;
@@ -360,7 +494,7 @@ button{
     height: 100vh;
     top: 0;
     left: 0;
-    z-index: 1100;
+    z-index: 3000;
 }
 .proceed-receipt .wrapper{
     width: 300px;
@@ -422,7 +556,7 @@ button{
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 50;
+    z-index: 2500;
 }
 .pop-up-wrapper #back{
     position: absolute;

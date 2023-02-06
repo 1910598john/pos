@@ -25,6 +25,16 @@ if (!isset($_SESSION['cashier'])) {
                     </tr>
                 </table>
             </div>
+            <div class="bottom-panel">
+                <div class="buttons">
+                    <button id="extend">EXTEND</button>
+                    <button id="delete">DELETE</button>
+                </div>
+                <div class="current-user">
+                    <span>User: <?php echo $_SESSION['cashier'];?></span>
+                    <button id="log-out">Logout</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="main">
