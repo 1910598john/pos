@@ -426,8 +426,8 @@ $(document).ready(function(){
                                             <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${ticketNumbers[x]}</span></td>
                                         </tr>
                                         <tr>
-                                            <td style=" font-size: 12px;">Item:</td>
-                                            <td style=" font-size: 12px;">Price:</td>
+                                            <td style=" font-size: 13px;">Item:</td>
+                                            <td style=" font-size: 13px;">Price:</td>
                                         </tr>
                                     </table>
                                 </div>`)
@@ -435,7 +435,7 @@ $(document).ready(function(){
                                 let table = document.getElementById("table");
                                 table.insertAdjacentHTML("beforeend", `
                                 <tr>
-                                    <td style="padding:3px 0 3px 0; font-size: 12px;">${pickedItems[x]}</td>
+                                    <td style="padding:3px 0 3px 0; font-size: 11px;">${pickedItems[x]}</td>
                                     <td style="padding:3px 0 3px 0; font-size: 12px;font-weight:bold;">${price[x]}</td>
                                 </tr>`);
 
@@ -456,8 +456,8 @@ $(document).ready(function(){
                                 <span style="font-size:12px;">Osmeña st., Masbate City</span>
                                 <table id="table">
                                     <tr>
-                                        <td style=" font-size: 12px;font-weight:bold;margin-bottom:5px;">Item:</td>
-                                        <td style=" font-size: 12px;font-weight:bold;margin-bottom:5px;">Price:</td>
+                                        <td style="width:50%;font-size: 13px;font-weight:bold;margin-bottom:5px;">Item:</td>
+                                        <td style="width:50%;font-size: 13px;font-weight:bold;margin-bottom:5px;">Price:</td>
                                     </tr>
                                 </table>
                             </div>`)
@@ -465,13 +465,14 @@ $(document).ready(function(){
                             for (let i = 0; i < pickedItems.length; i++) {
                                 table.insertAdjacentHTML("beforeend", `
                                 <tr>
-                                    <td style="padding:3px 0 3px 10px; font-size: 12px;">${pickedItems[i]}</td>
-                                    <td style="padding:3px 0 3px 10px; font-size: 12px;font-weight:bold;">${price[i]}</td>
+                                    <td style="padding:3px 0 3px 0; font-size: 12px;">${pickedItems[i]}</td>
+                                    <td style="padding:3px 0 3px 0; font-size: 12px;font-weight:bold;">${price[i]}</td>
                                 </tr>`)
                             }
                             table.insertAdjacentHTML("beforeend", `
                             <tr>
-                                <td style="padding: 3px 0 3px 10px; font-size: 12px;">Total: <span style="font-weight:bold">${totalPrice}</span></td>
+                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: </td>
+                                <td style="padding: 3px 0 3px 0; font-size: 12px;"><span style="font-weight:bold">${totalPrice}</span></td>
                             </tr>`)
 
                             //print

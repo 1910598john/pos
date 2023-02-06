@@ -479,7 +479,9 @@ button{
     border-radius: 4px;
     cursor: pointer;
 }
-
+.document-to-print td{
+    text-align: center;
+}
 .document-to-print{
     display: flex;
     flex-direction: column;
