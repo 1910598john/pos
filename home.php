@@ -28,7 +28,7 @@ if (!isset($_SESSION['cashier'])) {
             <div class="bottom-panel">
                 <div class="buttons">
                     <button id="extend">EXTEND</button>
-                    <button id="delete">DELETE</button>
+                    <button id="remove">REMOVE</button>
                 </div>
                 <div class="current-user">
                     <span>User: <?php echo $_SESSION['cashier'];?></span>

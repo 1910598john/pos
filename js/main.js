@@ -18,12 +18,14 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const time = new Date();
 var amountToPay;
+var selectedTicket;
+var itemName;
 
 $(document).ready(function(){
     $(".side-bar").animate({
         left: "0"
     }, "slow");
-    
+    var interval;
     //start playground time
     function start_time(map){
         for (let i = 0; i < items_remaining_time.length; i++) {
@@ -38,7 +40,7 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        let interval = setInterval(startCountdown, 1000);
+        interval = setInterval(startCountdown, 500);
         
         function startCountdown(){
             if (map.size == 1) {
@@ -357,6 +359,7 @@ $(document).ready(function(){
     //proceed function..
     $("#proceed").on("click", () => {
         //
+        clearInterval(interval);
         if (!extendClicked){
             if (amount < totalPrice) {
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
@@ -566,8 +569,38 @@ $(document).ready(function(){
                 }
             }
         } else {
+            let change = amount - amountToPay;
             if (amount >= amountToPay) {
+                //
+                
+                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                    <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change: <span style="padding-left:3px;">${change}</span></div>`);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'extend.php',
+                    data: {
+                        selectedticket: selectedTicket,
+                        payment: amountToPay,
+                        itemName: itemName
+
+                    }, success: function(res){
+                        setTimeout(function(){
+                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                            <div class="check-out-notif" style="background:orange;padding:10px;">${selectedTicket} time extended.</div>`);
+                        }, 2000);
+                        setTimeout(function(){
+                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
+                            setTimeout(function(){
+                                location.reload();
+                            }, 5000);
+                        }, 3500);
+                    }
+                })
                 $(".pop-up-wrapper").css("display", "none");
+            } else {
+                alert('Not enough amount.');
             }
         }
     })
@@ -676,11 +709,25 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
     })
 }
 
+$("#remove").on("click", function(){
+    
+    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+    <div class="check-out-notif" style="background:green;padding:20px 10px;">Removing ended items..</div>`);
+    
+    setTimeout(function(){
+        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+        <div class="check-out-notif" style="background:orange;padding:20px 10px;">Reloading the page..</div>`);
+    }, 3000)
+    setTimeout(function(){
+        location.reload();
+    }, 5000);
+})
+
 $("#extend").on("click", function(){
-    var selectedTicket;
+    
     extendClicked = true;
     document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
-    <div class="tickets-list-wrapper">
+    <div class="tickets-list-wrapper" style="display:none;">
         <div class="tickets-container" id="tickets-list-wrapper">
             <div class="tickets" id="tickets-container">
             </div>
@@ -695,6 +742,11 @@ $("#extend").on("click", function(){
         url: 'fetchTicketsForExtension.php',
         success: function(res){
             res = JSON.parse(res);
+            if (res.length != 0){
+                $(".tickets-list-wrapper").css("display", "block");
+            } else {
+                alert('No available tickets');
+            }
             for (let i = 0; i < res.length; i++){
                 document.getElementById("tickets-container").insertAdjacentHTML("afterbegin", `
                 <div>${res[i]}</div>`)
@@ -704,40 +756,73 @@ $("#extend").on("click", function(){
                 $(this).css("background", "red");
                 selectedTicket = $(this).html();
             })
+            
         }
     })
     $(".confirm-button button").on("click", function(){
-        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
-        <div id="amount-to-pay">
-            <div class="amount-to-pay-wrapper">
-                <div>50</div>
-                <div>100</div>
-                <button>Confirm</button>
-            </div>
-        </div>`);
-        $(".amount-to-pay-wrapper > div").on("click", function() {
-            $(".amount-to-pay-wrapper > div").css("background", "green");
-            $(this).css("background", "orange");
-            amountToPay = $(this).html();
-            amountToPay = parseInt(amountToPay);
-        })
-        $(".amount-to-pay-wrapper button").on("click", function(){
-            $(".tickets-list-wrapper").remove();
-            $("#amount-to-pay").remove();
-            $(".pop-up-wrapper").css("display", "block");
-            $(".pop-up-wrapper .buttons-container div").on("click", function(){
-                if (proceedButtonClicked) {
-                    proceedButtonClicked = false;
-                }
-                if ($(this).html() == "DELETE") {
-                    amount = 0;
-                    $("#amount").html(amount);
+        $.ajax({
+            type: 'POST',
+            url: 'getItemName.php',
+            data:{
+                selected: selectedTicket
+            },
+            success: function(res){
+                itemName = res;
+                if (selectedTicket != undefined) {
+                    if (itemName == '2 hours'){
+                        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                        <div id="amount-to-pay">
+                            <div class="amount-to-pay-wrapper">
+                                <div id="fifty">50</div>
+                                <button>Confirm</button>
+                            </div>
+                        </div>`);
+                    } else {
+                        document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                        <div id="amount-to-pay">
+                            <div class="amount-to-pay-wrapper">
+                                <div id="fifty">50</div>
+                                <div id="1hun">100</div>
+                                <button>Confirm</button>
+                            </div>
+                        </div>`);
+                    }
+                    
+                    $(".amount-to-pay-wrapper > div").on("click", function() {
+                        $(".amount-to-pay-wrapper > div").css("background", "green");
+                        $(this).css("background", "orange");
+                        amountToPay = $(this).html();
+                        amountToPay = parseInt(amountToPay);
+                    })
+                    $(".amount-to-pay-wrapper button").on("click", function(){
+                        if (amountToPay != undefined) {
+                            $(".tickets-list-wrapper").remove();
+                            $("#amount-to-pay").remove();
+                            $(".pop-up-wrapper").css("display", "block");
+                            $(".pop-up-wrapper .buttons-container div").on("click", function(){
+                                if (proceedButtonClicked) {
+                                    proceedButtonClicked = false;
+                                }
+                                if ($(this).html() == "DELETE") {
+                                    amount = 0;
+                                    $("#amount").html(amount);
+                                } else {
+                                    amount += parseInt($(this).html());
+                                    $("#amount").html(amount);
+                                }
+                            })
+                        } else {
+                            alert('Please pick an amount.');
+                        }
+                    })
                 } else {
-                    amount += parseInt($(this).html());
-                    $("#amount").html(amount);
+                    alert('Please select a ticket.');
                 }
-            })
-        })
-        
+            }
+        })  
     })
+})
+
+$("#log-out").on("click", function(){
+    
 })
