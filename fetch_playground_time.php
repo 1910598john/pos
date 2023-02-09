@@ -11,7 +11,8 @@ $conn = new mysqli($servername, $username, $password, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT id, ticketID, item, remaining_time FROM playground_time WHERE status='running'";
+$date = $_POST['date'];
+$sql = "SELECT id, ticketID, item, remaining_time FROM playground_time WHERE status='running' AND date='$date'";
 $result = $conn->query($sql);
 $items = array();
 if ($result->num_rows > 0) {

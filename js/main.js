@@ -145,8 +145,11 @@ $(document).ready(function(){
 
     //render playground time section
     $.ajax({
-        type: 'get',
+        type: 'POST',
         url: 'fetch_playground_time.php',
+        data: {
+            date: `${months[time.getMonth()]} ${time.getDate()}`
+        },
         success: function(res){
             if (!res.length == 0) {
                 res = JSON.parse(res);
@@ -661,6 +664,16 @@ $(document).ready(function(){
 })
 
 function insertIntoDatabase(section, tickets, items, pricelist, time){
+    //verify tickets
+    console.log(tickets);
+    for (let i = 0; i < tickets.length; i++) {
+        let temp = tickets[i];
+        if (temp.length != 4) {
+            temp += JSON.stringify(Math.round(Math.random() * 9));
+        }
+        tickets[i] = temp;
+    }
+    console.log(tickets);
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
     $.ajax({
@@ -689,13 +702,15 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
                 }, 10000);
                 //add row in playground_time table
                 if (section == 'play') {
+                    let time = new Date();
                     $.ajax({
                         type: 'POST',
                         url: 'playground_time.php',
                         data: {
                             tickets: tickets,
                             items: items,
-                        }
+                            date: `${months[time.getMonth()]} ${time.getDate()}`
+                        },
                     })
                 }
             }
@@ -710,7 +725,6 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
 }
 
 $("#remove").on("click", function(){
-    
     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
     <div class="check-out-notif" style="background:green;padding:20px 10px;">Removing ended items..</div>`);
     
@@ -740,6 +754,9 @@ $("#extend").on("click", function(){
     $.ajax({
         type: 'POST',
         url: 'fetchTicketsForExtension.php',
+        data: {
+            date: `${months[time.getMonth()]} ${time.getDate()}`
+        },
         success: function(res){
             res = JSON.parse(res);
             if (res.length != 0){
