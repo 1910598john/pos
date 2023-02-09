@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 $date = $_POST['date'];
 
-$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND status='running' AND date='$date'";
+$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND date='$date'";
 $result = $conn->query($sql);
 $tickets = array();
 if ($result->num_rows > 0) {

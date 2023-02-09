@@ -40,7 +40,7 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        interval = setInterval(startCountdown, 500);
+        interval = setInterval(startCountdown, 100);
         
         function startCountdown(){
             if (map.size == 1) {
@@ -669,7 +669,9 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
     for (let i = 0; i < tickets.length; i++) {
         let temp = tickets[i];
         if (temp.length != 4) {
-            temp += JSON.stringify(Math.round(Math.random() * 9));
+            for (let x = temp.length; x < 4; x++) {
+                temp += JSON.stringify(Math.round(Math.random() * 9));
+            }
         }
         tickets[i] = temp;
     }
