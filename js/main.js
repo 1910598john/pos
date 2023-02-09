@@ -40,7 +40,7 @@ $(document).ready(function(){
         let size = firstId - (firstId - map.size) - 1;
         let x = 0;
         let ended_alert_created = false;
-        interval = setInterval(startCountdown, 100);
+        interval = setInterval(startCountdown, 1000);
         
         function startCountdown(){
             if (map.size == 1) {
