@@ -302,6 +302,7 @@ $(document).ready(function(){
 
                     $("#discount-elem").remove();
                     price.pop();
+                    pickedItems.pop();
                     discount = 0;
                     totalPriceElement.innerHTML = `₱${totalPrice}`;
                 }
@@ -571,7 +572,7 @@ $(document).ready(function(){
                                         if (isEmployee){
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: ₱${totalPrice}</td>
+                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
                                                 <td style="padding: 3px 0 3px 0; font-size: 12px;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
                                             </tr>`)
                                         } else {
