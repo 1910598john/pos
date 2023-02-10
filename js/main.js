@@ -629,10 +629,16 @@ $(document).ready(function(){
                                                 let txt = 'AM';
                                                 isMorning ? txt = txt : txt = 'PM';
                                                 let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
+
+                                                
                                                 
                                                 //inserting into database..
                                                 insertIntoDatabase(section, ticketNumbers, pickedItems, price, currentTimeAndDate);
-                                                //
+
+                                                let d_time = `${hr}:${min} ${txt}, ${day}`;
+                                                let d_mon_and_date = `${mon} ${date}`;
+                                                //insert into detailed report
+                                                detailedReportDatabase(section, ticketNumbers, pickedItems, price, d_time, d_mon_and_date);
                 
                                                 let notifs = document.querySelectorAll(".check-out-notif");
                                                 setTimeout(function(){
@@ -783,6 +789,24 @@ $(document).ready(function(){
         
     })
 })
+
+function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time, date){
+    $.ajax({
+        type: 'POST',
+        url: 'detailed_report.php',
+        data: {
+            section: section,
+            tickets: ticketNumbers,
+            items: pickedItems,
+            price: price,
+            time: time,
+            mon: date
+        },
+        success: function(res){
+            console.log(res);
+        }
+    })
+}
 
 function insertIntoDatabase(section, tickets, items, pricelist, time){
     //verify tickets
