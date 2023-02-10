@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+if (isset($_SESSION['cashier'])) {
+    header('Location: http://localhost/pos/home.php');
+}
 $servername = "localhost";
 $username = "root";
 $password = "";

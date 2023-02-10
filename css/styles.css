@@ -536,9 +536,22 @@ button{
     color: #fff;
 }
 .total-wrapper{
-    margin: 20px 0 20px 10%;
+    margin: 20px 50px 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.total-wrapper > div{
     display: flex;
     flex-direction: column;
+}
+.total-wrapper button{
+    font-size: 18px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    background: rgb(36, 163, 206);
+    padding: 15px;
 }
 .total-wrapper span{
     font-size: 20px;

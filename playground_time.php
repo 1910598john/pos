@@ -20,22 +20,28 @@ $date = $_POST['date'];
 
 if ($items_length > 1) {
     if ($items[0] == '1 hour') {
+        $extended = 'false';
         $remaining_time = 60 * 60; //convert into seconds
     } elseif ($items[0] == '2 hours'){
         $remaining_time = 120 * 60; //convert into seconds
+        $extended = 'false';
     } elseif ($items[0] == 'Unlimited') {
         $remaining_time = 'No limit';
+        $extended = 'unli';
     }
-    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date) VALUES($tickets[0], '$items[0]', '$remaining_time','$status', '$date');";
+    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended) VALUES($tickets[0], '$items[0]', '$remaining_time','$status', '$date', '$extended');";
     for ($i = 1; $i < $items_length; $i++){
         if ($items[$i] == '1 hour') {
+            $extended = 'false';
             $remaining_time = 60 * 60; //convert into seconds
         } elseif ($items[$i] == '2 hours'){
+            $extended = 'false';
             $remaining_time = 120 * 60; //convert into seconds
         } elseif ($items[$i] == 'Unlimited') {
+            $extended = 'unli';
             $remaining_time = 'No limit';
         }
-        $sql .= "INSERT INTO playground_time(ticketID, item, remaining_time, status, date) VALUES($tickets[$i], '$items[$i]', '$remaining_time','$status', '$date');";
+        $sql .= "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended) VALUES($tickets[$i], '$items[$i]', '$remaining_time','$status', '$date', '$extended');";
     }
     if ($conn->multi_query($sql) === TRUE){
         echo 'Success';
@@ -45,13 +51,16 @@ if ($items_length > 1) {
     
 } elseif ($items_length == 1){
     if ($items[0] == '1 hour') {
+        $extended = 'false';
         $remaining_time = 60 * 60; //convert into seconds
     } elseif ($items[0] == '2 hours'){
+        $extended = 'false';
         $remaining_time = 120 * 60; //convert into seconds
     } elseif ($items[0] == 'Unlimited') {
+        $extended = 'unli';
         $remaining_time = 'No limit';
     }
-    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date) VALUES($tickets[0],'$items[0]', '$remaining_time','$status', '$date')";
+    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended) VALUES($tickets[0],'$items[0]', '$remaining_time','$status', '$date', '$extended')";
 
     if ($conn->query($sql) === TRUE){
         echo 'Success';

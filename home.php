@@ -67,8 +67,13 @@ if (!isset($_SESSION['cashier'])) {
             </div>
             <div class="item-to-check-out-container" id="modal-main-content"></div>
             <div class="total-wrapper">
-                <span>Total:</span>
-                <span id="total-price">₱0</span>
+                <div>
+                    <span>Total: <span id="is-employee" style="font-size:15px;opacity:0;"> (discounted)</span></span>
+                    <span id="total-price">₱0</span>
+                </div>
+                <div>
+                    <button id="employee">Employee</button>
+                </div>
             </div>
             <div class="modal-buttons">
                 <button id="clear-all">Clear all</button>
