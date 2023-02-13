@@ -22,8 +22,10 @@ var selectedTicket;
 var itemName;
 var pageReloading = false;
 var isEmployee = false;
-var discount = 0;
+var discount = [];
 var interval;
+var discounted = false;
+
 $(document).ready(function(){
     $(".side-bar").animate({
         left: "0"
@@ -101,7 +103,6 @@ $(document).ready(function(){
                                             })
                                         }
                                     })
-                                    
                                 }
                                 let notifs = document.querySelectorAll(".check-out-notif");
                                 setTimeout(function(){
@@ -200,6 +201,7 @@ $(document).ready(function(){
             }
         }
     })
+
     //fetch products
     $.ajax({
         type: 'get',
@@ -216,13 +218,42 @@ $(document).ready(function(){
                     </div>
                 </div>`);
                 let image;
-                image = `url(./images/product${i + 1}.jpg)`;
+                let itemname = `${items[i][0]}`;
+                if (i < 18) {
+                    image = `url(./images/coffee.jpg)`;
+                } else if (i > 18 && i < 29) {
+                    image = `url(./images/drinks.svg)`;
+                } 
+                else if (i > 28 && i < 37) {
+                    image = `url(./images/healthy.webp)`;
+                } 
+                else if (i > 37 &&  i < 43) {
+                    image = `url(./images/toys.png)`;
+                }
+                else if (i > 42 &&  i < 45) {
+                    image = `url(./images/softdrinks.png)`;
+                }
+                else if (i > 44 &&  i < 46) {
+                    image = `url(./images/beer.png)`;
+                }
+                else if (i > 45 &&  i < 47) {
+                    image = `url(./images/softdrinks.png)`;
+                }
+                else if (itemname.includes("ADD")) {
+                    image = `url(./images/add.jpg)`;
+                }
+                
+                else if (i == 37) {
+                    image = `url(./images/water.png)`;
+                }
+                
                 $(`#fetched-item${i + 1}`).css({
                     'background-image': image,
                     'background-position' : 'center',
                     'background-repeat' :'no-repeat',
-                    'background-size' : 'cover'
+                    'background-size' : 'contain'
                 });
+                
             }
             
             //cafe item pick function..
@@ -247,6 +278,21 @@ $(document).ready(function(){
                         let itemPrice = item.children[0].children[0].dataset.price;
                         let itemName = item.children[1].children[0].dataset.item;
                         let itemDescription = item.children[1].children[1].dataset.description;
+
+                        //fetch discount
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetchItemDiscount.php',
+                            data: {
+                                item: itemName
+                            },
+                            success: function(res){
+                                let disc;
+                                disc = parseInt(itemPrice) * parseFloat(`0.${res}`);
+                                discount.push(Math.round(disc));
+                            }
+                        })
+                        
                         //add items
                         price.push(parseInt(itemPrice));
                         pickedItems.push(itemName);
@@ -258,6 +304,7 @@ $(document).ready(function(){
                         </div>`);
                         totalPrice += parseInt(itemPrice);
                         totalPriceElement.innerHTML = `₱${totalPrice}`;
+
                     }
                     let notifs = document.querySelectorAll(".check-out-notif");
                     setTimeout(function(){
@@ -266,55 +313,60 @@ $(document).ready(function(){
                         }
                     }, 5000);
                 }
-                
             })
+            
             $("#employee").on("click", function(){
-                
-                if (!isEmployee){
-                    let dsc = 0;
-                    let temp_total = totalPrice;
-                    for (let i = 0; i < price.length; i++) {
-                        dsc += price[i] * 0.40;
+                if (!pageReloading){
+                    if (!isEmployee){
+                        let temp_total = totalPrice;
+
+                        for (let i = 0; i < discount.length; i++){
+                            temp_total -= discount[i];
+                        }
+
+                        for (let i = 0; i < discount.length; i++) {
+                            price[i] -= discount[i];
+                        }
+
+                        totalPriceElement.innerHTML = `₱${temp_total}`;
+                        isEmployee = true;
+
+                        discounted = true;
+                        
+                        $("#is-employee").css("opacity", "1");
+                        $(this).css("background", "orange");
+    
+                    } else {
+                        isEmployee = false;
+
+                        for (let i = 0; i < discount.length; i++) {
+                            price[i] += discount[i];
+                        }
+
+                        discounted = false;
+
+                        $("#is-employee").css("opacity", "0");
+                        $(this).css("background", "rgb(36, 163, 206)");
+    
+                        totalPriceElement.innerHTML = `₱${totalPrice}`;
                     }
-                    temp_total = temp_total - dsc;
-                    temp_total = Math.round(temp_total);
-                    discount = temp_total;
-                    totalPriceElement.innerHTML = `₱${temp_total}`;
-
-                    isEmployee = true;
-                    $("#is-employee").css("opacity", "1");
-                    $(this).css("background", "orange");
-
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out" id="discount-elem">
-                        <span>Discount</span>
-                        <span>Employee</span>
-                        <span>₱-${totalPrice - temp_total}</span>
-                    </div>`);
-
-                    price.push(parseInt(`-${totalPrice - temp_total}`));
-                    pickedItems.push('Discount');
-
-                } else {
-                    isEmployee = false;
-                    $("#is-employee").css("opacity", "0");
-                    $(this).css("background", "rgb(36, 163, 206)");
-
-                    $("#discount-elem").remove();
-                    price.pop();
-                    pickedItems.pop();
-                    discount = 0;
-                    totalPriceElement.innerHTML = `₱${totalPrice}`;
+                    console.log(price);
                 }
+                
             })
         }
     })
+
     //cancel function
     $("#cancel").on("click", () => {
         if (isEmployee){
             location.reload();
         }
         if (!pageReloading){
+            while (discount.length > 0) {
+                discount.pop();
+            }
+            
             $(".check-out-modal").removeClass("check-out-modal-animate");
             $(".check-out-modal").addClass("check-out-modal-animate2");
             //clear elements
@@ -328,6 +380,9 @@ $(document).ready(function(){
             }
             while (price.length > 0) {
                 price.pop();
+            }
+            while (discount.length > 0) {
+                discount.pop();
             }
             totalPrice = 0;
 
@@ -362,6 +417,9 @@ $(document).ready(function(){
                 while (price.length > 0) {
                     price.pop();
                 }
+                while (discount.length > 0) {
+                    discount.pop();
+                }
                 totalPrice = 0;
                 totalPriceElement.innerHTML = `₱${totalPrice}`;
     
@@ -381,9 +439,6 @@ $(document).ready(function(){
     //check out function..
     $("#check-out").on("click", () => {
         if (!pageReloading){
-            if (isEmployee){
-                totalPrice = discount;
-            }
             if (pickedItems.length == 0) {
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                 <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">There is nothing to check out.</div>`);
@@ -451,10 +506,13 @@ $(document).ready(function(){
                 } else {
                     if (!proceedButtonClicked){
                         proceedButtonClicked = true;
+                        var disc = 0;
                         if (isEmployee){
-                            amount = amount + (totalPrice - discount);
+                            for (let i = 0; i < discount.length; i++){
+                                disc += discount[i];
+                            }
                         }
-                        change = amount - totalPrice;
+                        change = amount - (totalPrice - disc);
 
                         //change notif
                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
@@ -572,7 +630,7 @@ $(document).ready(function(){
                                         if (isEmployee){
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
+                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
                                                 <td style="padding: 3px 0 3px 0; font-size: 12px;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
                                             </tr>`)
                                         } else {
@@ -729,17 +787,15 @@ $(document).ready(function(){
                 }
             }
         }
-        
     })
 
     //playground item pick function..
     $(".items-container-playground > div").on("click", function(){
         if (!pageReloading){
-            $("#employee").css("display", "none");
             if (cafeItemsPicked) {
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                 <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
-    
+                
                 let notifs = document.querySelectorAll(".check-out-notif");
                 setTimeout(function(){
                     for (let i = 0; i < notifs.length; i++){
@@ -748,6 +804,7 @@ $(document).ready(function(){
                 }, 5000);
     
             } else {
+                $("#employee").css("display", "none");
                 playgroundItemsPicked = true;
                 let itemId = $(this).attr("id");
                 $(".check-out-modal").addClass("check-out-modal-animate");
@@ -792,6 +849,7 @@ $(document).ready(function(){
 })
 
 function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time, date){
+    
     $.ajax({
         type: 'POST',
         url: 'detailed_report.php',
@@ -801,12 +859,14 @@ function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time
             items: pickedItems,
             price: price,
             time: time,
-            mon: date
+            mon: date,
+            discounted: discounted
         },
         success: function(res){
             console.log(res);
         }
     })
+
 }
 
 function insertIntoDatabase(section, tickets, items, pricelist, time){

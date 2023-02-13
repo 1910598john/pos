@@ -25,7 +25,7 @@
     ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
-.items-container::-webkit-scrollbar, .items-container-playground::-webkit-scrollbar{
+.items-container-playground::-webkit-scrollbar{
     display: none;
 }
 #one-hour{
@@ -360,13 +360,15 @@ button{
     height: 30%;
 }
 .items-container .item .item-name-container span{
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
-    padding: 3px 0;
+    color: #666;
+    padding: 0;
 }
 .items-container .item .item-name-container span:nth-child(1){
     font-size: 15px;
     font-weight: bold;
+    color: #000;
 }
 
 /* .. */
