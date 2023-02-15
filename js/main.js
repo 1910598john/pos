@@ -386,7 +386,9 @@ $(document).ready(function(){
             while (discount.length > 0) {
                 discount.pop();
             }
+
             totalPrice = 0;
+            
 
             cafeItemsPicked = false;
             playgroundItemsPicked = false;
@@ -422,6 +424,7 @@ $(document).ready(function(){
                 while (discount.length > 0) {
                     discount.pop();
                 }
+
                 totalPrice = 0;
                 totalPriceElement.innerHTML = `₱${totalPrice}`;
     
@@ -578,8 +581,10 @@ $(document).ready(function(){
                                             let wrapper = document.getElementById("print-wrapper");
                                             wrapper.insertAdjacentHTML("beforeend", `
                                             <div class="document-to-print">
-                                                <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                                <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                                <div class="print-header">
+                                                    <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
+                                                    <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                                </div>
                                                 <table id="table">
                                                     <tr>
                                                         <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${ticketNumbers[x]}</span></td>

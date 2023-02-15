@@ -629,8 +629,11 @@ button{
     border-radius: 4px;
     cursor: pointer;
 }
-.document-to-print td{
-    text-align: center;
+.document-to-print td:nth-child(1){
+    text-align: left;
+}
+.document-to-print td:nth-child(2){
+    text-align: right;
 }
 .document-to-print{
     display: flex;
@@ -638,13 +641,22 @@ button{
     align-items: center;
     padding: 20px 15%;
 }
-
+.print-header{
+    width: 100vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
 .document-to-print table{
-    width: 100%;
+    width: 100vw;
     margin: 10px 0;
 }
 
 @media print{
+    *{
+        margin: 0;
+        padding: 0;
+    }
     body > div:nth-child(1){
         display: none;
     }
