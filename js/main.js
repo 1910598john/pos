@@ -29,6 +29,9 @@ var discounted = false;
 setInterval(() => {
     //render time now
     let time = new Date();
+    let mon = months[time.getMonth()];
+    let date = time.getDate();
+    let day = days[time.getDay()];
     let hr = time.getHours();
     let isMorning = true;
     if (hr > 12) {
@@ -40,9 +43,18 @@ setInterval(() => {
     let txt = 'AM';
     isMorning ? txt = txt : txt = 'PM';
 
-    $("#time-now").html(`${hr}:${min} ${txt}`);
+    $("#time-now").html(`${hr}:${min} ${txt} <span style="font-size:25px;">(${mon} ${date}, ${day})</span>`);
     
 }, 1000);
+
+//
+$("#register").on("click", function(){
+    window.open("http://localhost/pos/register.php", "_self");
+})
+$("#login").on("click", function(){
+    window.open("http://localhost/pos/", "_self");
+})
+
 
 $(document).ready(function(){
     $(".side-bar").animate({
@@ -1143,7 +1155,7 @@ $("#log-out").on("click", function(){
     if (!pageReloading){
         $.ajax({
             type: 'POST',
-            url: 'sign_out_user.php',
+            url: 'logged_out.php',
             success: function(res){
                 location.reload();
             }
