@@ -364,9 +364,10 @@ button{
     text-align: center;
     color: #666;
     padding: 0;
+    line-height: 12px;
 }
 .items-container .item .item-name-container span:nth-child(1){
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     color: #000;
 }

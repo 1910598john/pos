@@ -20,11 +20,11 @@ $itemName = $_POST['itemName'];
 if ($payment == 100 && $itemName == '1 hour' || $itemName == '2 hours' && $payment == 50){
     $sql = "UPDATE playground_time SET remaining_time='0', item='Unlimited' WHERE ticketID='$selectedticket'";
 } elseif ($payment == 50 && $itemName == '1 hour'){
-    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, item='2 hours' WHERE ticketID='$selectedticket'";
+    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, item='2 hours', status='running' WHERE ticketID='$selectedticket'";
 } elseif ($payment == 0 && $itemName == '1 hour'){
-    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, extended='true' WHERE ticketID='$selectedticket'";
+    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, extended='true', status='running' WHERE ticketID='$selectedticket'";
 } elseif ($payment == 0 && $itemName == '2 hours'){
-    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, extended='true' WHERE ticketID='$selectedticket'";
+    $sql = "UPDATE playground_time SET remaining_time = remaining_time + 3600, extended='true', status='running' WHERE ticketID='$selectedticket'";
 }
 
 if ($conn->query($sql) === TRUE){
