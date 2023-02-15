@@ -26,6 +26,24 @@ var discount = [];
 var interval;
 var discounted = false;
 
+setInterval(() => {
+    //render time now
+    let time = new Date();
+    let hr = time.getHours();
+    let isMorning = true;
+    if (hr > 12) {
+        hr = hr - 12;
+        isMorning = false;
+    } 
+    let min = time.getMinutes();
+    min < 10 ? min = `0${min}` : min = min;
+    let txt = 'AM';
+    isMorning ? txt = txt : txt = 'PM';
+
+    $("#time-now").html(`${hr}:${min} ${txt}`);
+    
+}, 1000);
+
 $(document).ready(function(){
     $(".side-bar").animate({
         left: "0"
@@ -48,6 +66,7 @@ $(document).ready(function(){
         interval = setInterval(startCountdown, 1000);
         
         function startCountdown(){
+            
             if (map.size == 1) {
                 clearInterval(interval);
             }
@@ -599,8 +618,8 @@ $(document).ready(function(){
                                             let table = document.getElementById("table");
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding:1px 0 5px; font-size: 11px;text-align:center;">${pickedItems[x]}</td>
-                                                <td style="padding:1px 0 5px; font-size: 11px;font-weight:bold;text-align:center;">₱${price[x]}</td>
+                                                <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;text-align:center;">${pickedItems[x]}</td>
+                                                <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;font-weight:bold;text-align:center;">₱${price[x]}</td>
                                             </tr>`);
             
                                             window.print();
@@ -639,13 +658,13 @@ $(document).ready(function(){
                                         if (isEmployee){
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 1px 0 5px; font-size: 11px;text-align:left;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
-                                                <td style="padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
+                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
+                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
                                             </tr>`)
                                         } else {
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 1px 0 5px; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
+                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
                                             </tr>`)
                                         }
                                         
@@ -944,7 +963,7 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
 $("#remove").on("click", function(){
     if (!pageReloading){
         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-        <div class="check-out-notif" style="background:green;padding:20px 10px;">Removing ended items..</div>`);
+        <div class="check-out-notif" style="background:orange;padding:20px 10px 20px 10px;">Removing ended..</div>`);
         
         setTimeout(function(){
             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
