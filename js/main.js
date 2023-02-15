@@ -270,6 +270,18 @@ $(document).ready(function(){
                 else if (i > 45 &&  i < 47) {
                     image = `url(./images/softdrinks.png)`;
                 }
+                else if (i > 46 &&  i < 53) {
+                    image = `url(./images/waffle.webp)`;
+                }
+                else if (i > 52 &&  i < 57) {
+                    image = `url(./images/pizza_waffle.png)`;
+                }
+                else if (i > 56 &&  i < 63) {
+                    image = `url(./images/group_food.png)`;
+                }
+                else if (i > 62 &&  i < 65) {
+                    image = `url(./images/desserts.jpg)`;
+                }
                 else if (itemname.includes("ADD")) {
                     image = `url(./images/add.jpg)`;
                 }
@@ -530,6 +542,7 @@ $(document).ready(function(){
             clearInterval(interval);
             if (!extendClicked){
                 if (amount < totalPrice) {
+                    alert(totalPrice);
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                     <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Not enough amount.</div>`);
                     let notifs = document.querySelectorAll(".check-out-notif");
