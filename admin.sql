@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2023 at 03:43 AM
+-- Generation Time: Feb 15, 2023 at 09:24 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -61,18 +61,20 @@ CREATE TABLE `cafe_report` (
 --
 
 CREATE TABLE `cashier_auth` (
-  `id` int(10) NOT NULL,
+  `id` int(6) NOT NULL,
   `name` varchar(30) NOT NULL,
   `username` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL
+  `password` varchar(30) NOT NULL,
+  `logged_in` varchar(30) NOT NULL,
+  `logged_out` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cashier_auth`
 --
 
-INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`) VALUES
-(1, 'John Mark', 'cashier', 'cashier');
+INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`) VALUES
+(6, 'John Mark', 'jmcatamora', 'invoker123', '04:17 PM', '');
 
 -- --------------------------------------------------------
 
@@ -187,7 +189,25 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`) VALUES
 (56, 'Royal', 'Soft Drinks', '80', 40),
 (57, 'Sprite', 'Soft Drinks', '80', 40),
 (58, 'Beer', 'Drinks', '85', 40),
-(59, 'Coke', 'Soft Drinks', '80', 40);
+(59, 'Coke', 'Soft Drinks', '80', 40),
+(60, 'Original Waffle', 'Waffle', '100', 40),
+(61, 'Ice Cream Waffle', 'Waffle', '130', 40),
+(62, 'Banana Waffle', 'Waffle', '130', 40),
+(63, 'Choco Waffle', 'Choco Waffle', '120', 40),
+(64, 'Ice Cream choco waffle', 'Choco Waffle', '150', 40),
+(65, 'Banana choco waffle', 'Choco Waffle', '150', 40),
+(66, 'Pizza with tuna', 'Pizza Waffle', '190', 40),
+(67, 'Pizza with sausage', 'Pizza Waffle', '190', 40),
+(68, 'Pizza with cheese', 'Pizza Waffle', '150', 40),
+(69, 'Hawaiian Pizza', 'Pizza Waffle', '190', 40),
+(70, 'Fries', 'Group food', '100', 40),
+(71, 'Baked chicken with vege (half)', 'Group food', '280', 40),
+(72, 'Baked chicken with vege (whole', 'Group food', '550', 40),
+(73, 'Chinese style BBQ pork (10 sti', 'Group food', '280', 40),
+(74, 'Spaghetti', 'Group food', '400', 40),
+(75, 'Carbonara', 'Group food', '450', 40),
+(76, 'Banana split (3 ice cream)', 'Desserts', '180', 40),
+(77, 'Ice cream with toppings', 'Desserts', '80', 40);
 
 --
 -- Indexes for dumped tables
@@ -249,37 +269,37 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
