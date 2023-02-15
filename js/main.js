@@ -616,12 +616,14 @@ $(document).ready(function(){
                                         let wrapper = document.getElementById("print-wrapper");
                                         wrapper.insertAdjacentHTML("beforeend", `
                                         <div class="document-to-print">
-                                            <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                            <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                            <div class="print-header">
+                                                <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
+                                                <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                            </div>
                                             <table id="table">
                                                 <tr>
-                                                    <td style="width:50%;font-size: 13px;font-weight:bold;margin-bottom:5px;">Item:</td>
-                                                    <td style="width:50%;font-size: 13px;font-weight:bold;margin-bottom:5px;">Price:</td>
+                                                    <td style="width:50%;font-size: 13px;margin-bottom:5px;">Item:</td>
+                                                    <td style="width:50%;font-size: 13px;margin-bottom:5px;">Price:</td>
                                                 </tr>
                                             </table>
                                         </div>`)
