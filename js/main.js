@@ -260,14 +260,16 @@ $(document).ready(function(){
             $(".item").on("click", function(){
                 if (!pageReloading){
                     if (isEmployee){
+                        
                         location.reload();
                     }
-                    $("#employee").css("display", "block");
+                    
                     if (playgroundItemsPicked) {
                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                         <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
     
                     } else {
+                        $("#employee").css("display", "block");
                         cafeItemsPicked = true;
                         $(".check-out-modal").addClass("check-out-modal-animate");
                         $(".check-out-modal").removeClass("check-out-modal-animate2");
@@ -792,7 +794,9 @@ $(document).ready(function(){
     //playground item pick function..
     $(".items-container-playground > div").on("click", function(){
         if (!pageReloading){
+            $("#employee").css("display", "none");
             if (cafeItemsPicked) {
+                $("#employee").css("display", "block");
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                 <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
                 
@@ -804,7 +808,6 @@ $(document).ready(function(){
                 }, 5000);
     
             } else {
-                $("#employee").css("display", "none");
                 playgroundItemsPicked = true;
                 let itemId = $(this).attr("id");
                 $(".check-out-modal").addClass("check-out-modal-animate");
