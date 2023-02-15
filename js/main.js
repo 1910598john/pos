@@ -582,16 +582,16 @@ $(document).ready(function(){
                                             wrapper.insertAdjacentHTML("beforeend", `
                                             <div class="document-to-print">
                                                 <div class="print-header">
-                                                    <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                                    <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                                    <span style="font-size:12px;font-weight:bold;">ANSON'S PLAYGROUND AND CAFE</span>
+                                                    <span style="font-size:12px;font-weight:bold;">Osmeña st., Masbate City</span>
                                                 </div>
                                                 <table id="table">
                                                     <tr>
                                                         <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${ticketNumbers[x]}</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style=" font-size: 13px;">Item:</td>
-                                                        <td style=" font-size: 13px;">Price:</td>
+                                                        <td style=" font-size: 12px;margin-top:10px;margin-bottom:4px;">Item:</td>
+                                                        <td style=" font-size: 12px;margin-top:10px;margin-bottom:4px;">Price:</td>
                                                     </tr>
                                                 </table>
                                             </div>`)
@@ -599,8 +599,8 @@ $(document).ready(function(){
                                             let table = document.getElementById("table");
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding:3px 0 3px 0; font-size: 11px;">${pickedItems[x]}</td>
-                                                <td style="padding:3px 0 3px 0; font-size: 12px;font-weight:bold;">₱${price[x]}</td>
+                                                <td style="padding:1px 0; font-size: 11px;">${pickedItems[x]}</td>
+                                                <td style="padding:1px 0; font-size: 11px;font-weight:bold;">₱${price[x]}</td>
                                             </tr>`);
             
                                             window.print();
@@ -617,13 +617,13 @@ $(document).ready(function(){
                                         wrapper.insertAdjacentHTML("beforeend", `
                                         <div class="document-to-print">
                                             <div class="print-header">
-                                                <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                                <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                                <span style="font-size:12px;font-weight:bold;">ANSON'S PLAYGROUND AND CAFE</span>
+                                                <span style="font-size:12px;font-weight:bold;">Osmeña st., Masbate City</span>
                                             </div>
                                             <table id="table">
                                                 <tr>
-                                                    <td style="width:50%;font-size: 13px;margin-bottom:5px;">Item:</td>
-                                                    <td style="width:50%;font-size: 13px;margin-bottom:5px;">Price:</td>
+                                                    <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;">Item:</td>
+                                                    <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;">Price:</td>
                                                 </tr>
                                             </table>
                                         </div>`)
@@ -632,21 +632,21 @@ $(document).ready(function(){
                                         for (let i = 0; i < pickedItems.length; i++) {
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding:3px 0 3px 0; font-size: 12px;">${pickedItems[i]}</td>
-                                                <td style="padding:3px 0 3px 0; font-size: 12px;font-weight:bold;">₱${price[i]}</td>
+                                                <td style="padding:1px 0; font-size: 11px;">${pickedItems[i]}</td>
+                                                <td style="padding:1px 0; font-size: 11px;font-weight:bold;">₱${price[i]}</td>
                                             </tr>`)
                                         }
                                         if (isEmployee){
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
+                                                <td style="padding: 1px 0; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
+                                                <td style="padding: 1px 0; font-size: 11px;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
                                             </tr>`)
                                         } else {
                                             table.insertAdjacentHTML("beforeend", `
                                             <tr>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;">Total: </td>
-                                                <td style="padding: 3px 0 3px 0; font-size: 12px;"><span style="font-weight:bold">₱${totalPrice}</span></td>
+                                                <td style="padding: 1px 0; font-size: 11px;">Total: </td>
+                                                <td style="padding: 1px 0; font-size: 11px;"><span style="font-weight:bold">₱${totalPrice}</span></td>
                                             </tr>`)
                                         }
                                         

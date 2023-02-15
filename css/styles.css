@@ -639,7 +639,7 @@ button{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 15%;
+    padding: 10px 0;
 }
 .print-header{
     width: 100vw;
