@@ -25,6 +25,8 @@ var isEmployee = false;
 var discount = [];
 var interval;
 var discounted = false;
+var showAvailableTables = false;
+var chosenTable = 'None';
 
 setInterval(() => {
     //render time now
@@ -283,7 +285,7 @@ $(document).ready(function(){
                     image = `url(./images/desserts.jpg)`;
                 }
                 else if (itemname.includes("ADD")) {
-                    image = `url(./images/add.jpg)`;
+                    image = `url(./images/desserts.jpg)`;
                 }
                 
                 else if (i == 37) {
@@ -313,6 +315,29 @@ $(document).ready(function(){
     
                     } else {
                         $("#employee").css("display", "block");
+                        
+                        //show tables
+                        if (!showAvailableTables) {
+                            showAvailableTables = true;
+                            $(".available-tables").css("display", "block");
+                            $.ajax({
+                                type: 'POST',
+                                url: 'show_available_tables.php',
+                                success: function(res){
+                                    res = JSON.parse(res);
+                                    for (let i = res.length - 1; i >= 0; i--) {
+                                        document.getElementById("tables").insertAdjacentHTML("afterbegin", `
+                                        <div class="table-id">${res[i]}</div>`)
+                                    }
+                                    
+                                    $("#tables > div").on("click", function(){
+                                        $("#tables > div").css("background", "rgb(36, 163, 206)");
+                                        $(this).css("background", "orange");
+                                        chosenTable = $(this).html();
+                                    })
+                                }
+                            })
+                        }
                         cafeItemsPicked = true;
                         $(".check-out-modal").addClass("check-out-modal-animate");
                         $(".check-out-modal").removeClass("check-out-modal-animate2");
@@ -431,7 +456,7 @@ $(document).ready(function(){
             }
 
             totalPrice = 0;
-            
+            amount = 0;
 
             cafeItemsPicked = false;
             playgroundItemsPicked = false;
@@ -508,24 +533,49 @@ $(document).ready(function(){
                         }
                     }, 5000);
                 } else {
-                    $(".pop-up-wrapper").css("display", "block");
-                    $(".buttons-container div").on("click", function(){
-                        if (proceedButtonClicked) {
-                            proceedButtonClicked = false;
-                        }
-    
-                        if ($(this).html() == "DELETE") {
-                            amount = 0;
-                            $("#amount").html(amount);
-                        } else {
-                            amount += parseInt($(this).html());
-                            $("#amount").html(amount);
-                        }
-                    })
+                    if (chosenTable == 'None' && cafeItemsPicked){
+                        $(".confirm-check-out-modal").css("display", "block");
+                        $(".confirm-check-out-modal #back").on("click", function(){
+                            location.reload();
+                        })
+                        $("#continue-check-out").on("click", function(){
+                            $(".confirm-check-out-modal").css("display", "none");
+                            $(".pop-up-wrapper").css("display", "block");
+                            $(".buttons-container div").on("click", function(){
+                                if (proceedButtonClicked) {
+                                    proceedButtonClicked = false;
+                                }
+            
+                                if ($(this).html() == "DELETE") {
+                                    amount = 0;
+                                    $("#amount").html(amount);
+                                } else {
+                                    amount += parseInt($(this).html());
+                                    $("#amount").html(amount);
+                                }
+                            })
+                        })
+                        
+                    } else {
+                        $(".pop-up-wrapper").css("display", "block");
+                        $(".buttons-container div").on("click", function(){
+                            if (proceedButtonClicked) {
+                                proceedButtonClicked = false;
+                            }
+        
+                            if ($(this).html() == "DELETE") {
+                                amount = 0;
+                                $("#amount").html(amount);
+                            } else {
+                                amount += parseInt($(this).html());
+                                $("#amount").html(amount);
+                            }
+                        })
+                    }
+                    
                 }
             }
         }
-        
     })
 
     //back button
@@ -542,7 +592,6 @@ $(document).ready(function(){
             clearInterval(interval);
             if (!extendClicked){
                 if (amount < totalPrice) {
-                    alert(totalPrice);
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                     <div class="check-out-notif" style="background:#ed3a2d;padding:15px 10px;">Not enough amount.</div>`);
                     let notifs = document.querySelectorAll(".check-out-notif");
@@ -565,7 +614,7 @@ $(document).ready(function(){
 
                         //change notif
                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                        <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change: <span style="padding-left:3px;">${change}</span></div>`);
+                        <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change: <span style="padding-left:3px;">₱${change}</span></div>`);
                         
                         document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                         <div class="proceed-receipt">
@@ -739,12 +788,10 @@ $(document).ready(function(){
                                                 min < 10 ? min = `0${min}` : min = min;
                                                 let txt = 'AM';
                                                 isMorning ? txt = txt : txt = 'PM';
-                                                let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
+                                                //let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
 
-                                                
-                                                
                                                 //inserting into database..
-                                                insertIntoDatabase(section, ticketNumbers, pickedItems, price, currentTimeAndDate);
+                                                insertIntoDatabase(section, ticketNumbers, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
 
                                                 let d_time = `${hr}:${min} ${txt}, ${day}`;
                                                 let d_mon_and_date = `${mon} ${date}`;
@@ -858,6 +905,14 @@ $(document).ready(function(){
                 }, 5000);
     
             } else {
+                if (showAvailableTables) {
+                    showAvailableTables = false;
+                    $(".available-tables").css("display", "none");
+                    let container = document.getElementById("tables");
+                    while (container.lastElementChild) {
+                        container.removeChild(container.lastElementChild);
+                    }
+                }
                 playgroundItemsPicked = true;
                 let itemId = $(this).attr("id");
                 $(".check-out-modal").addClass("check-out-modal-animate");
@@ -922,7 +977,8 @@ function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time
 
 }
 
-function insertIntoDatabase(section, tickets, items, pricelist, time){
+function insertIntoDatabase(section, tickets, items, pricelist, time, date){
+    console.log(time + " " + date);
     //verify tickets
     console.log(tickets);
     for (let i = 0; i < tickets.length; i++) {
@@ -937,6 +993,7 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
     console.log(tickets);
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
+    
     $.ajax({
         type: 'POST',
         url: url,
@@ -945,6 +1002,8 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
             items: items,
             pricelist: pricelist,
             time: time,
+            date: date,
+            tablenumber: chosenTable
         },
         success: function(res){
             res == 'success' ? success_notif() : error_notif();
@@ -973,7 +1032,18 @@ function insertIntoDatabase(section, tickets, items, pricelist, time){
                             date: `${months[time.getMonth()]} ${time.getDate()}`
                         },
                     })
-                }
+                } /*else {
+                  
+                    $.ajax({
+                        type: 'POST',
+                        url: 'update_table_availability.php',
+                        data: {
+                            tablenumber: chosenTable
+                        }, success: function(res){
+                            console.log(res);
+                        }
+                    })
+                } */
             }
             function error_notif(){
                 setTimeout(function(){
@@ -1173,5 +1243,115 @@ $("#log-out").on("click", function(){
                 location.reload();
             }
         })
+    }
+})
+
+
+
+$("#show-pending-orders").on("click", function(){
+    let mon = months[time.getMonth()];
+    let date = time.getDate();
+    //fetch pending orders
+    $.ajax({
+        type: 'POST',
+        url: 'fetch_pending_orders.php',
+        data : {
+            date: `${mon} ${date}`
+        },
+        success: function(res){
+            if (res == 'No orders'){
+                alert(res);
+            } else {
+                res = JSON.parse(res);
+                let container = document.getElementById("tbody");
+                for (let i = 0; i < res.length; i++) {
+                    let entry_html = `
+                    <tr id="order${res[i][0]}">
+                        <td>${res[i][1]}</td>
+                        <td>${res[i][2]}</td>
+                        <td>${res[i][3]}</td>
+                        <td>${res[i][4]}</td>
+                    `;
+                    if (res[i][5] == 'Pending') {
+                        entry_html += `<td class="order-status" style="color:red;font-weight:bold;">${res[i][5]}</td>
+                        `;
+                    } else if (res[i][5] == 'Ready'){
+                        entry_html += `<td class="order-status" style="color:rgb(36, 163, 206);font-weight:bold;">${res[i][5]}</td>
+                        `;
+                    }
+                    else if (res[i][5] == 'Served'){
+                        entry_html += `<td class="order-status" style="color:#28a745;font-weight:bold;">${res[i][5]}</td>
+                        `;
+                    }
+                    entry_html += `
+                        <td class="table-action">
+                            <button id="ready" class="${res[i][0]}">Ready</button>
+                            <button id="serve" class="${res[i][0]}">Serve</button>
+                            <button id="delete-order-entry" class="${res[i][0]}">Delete</button>
+                        </td>
+                    </tr>`;
+                    container.insertAdjacentHTML("afterbegin", entry_html);
+                }
+                console.log(res);
+                $(".orders").css("display", "block");
+
+                //actions..
+                //ready
+                $(".table-action #ready").on("click", function(){
+                    let txt = $(this).attr("class");
+                    $.ajax({
+                        type: 'POST',
+                        url: 'update_order.php',
+                        data: {
+                            action: "Ready",
+                            id: $(this).attr("class")
+                        },
+                        success: function(res){
+                            $(`#order${txt} .order-status`).html("Ready");
+                            $(`#order${txt} .order-status`).css("color", "rgb(36, 163, 206)");
+                        }
+                    })
+                })
+                //to be served
+                $(".table-action #serve").on("click", function(){
+                    let txt = $(this).attr("class");
+                    $.ajax({
+                        type: 'POST',
+                        url: 'update_order.php',
+                        data: {
+                            action: "Served",
+                            id: $(this).attr("class")
+                        },
+                        success: function(res){
+                            $(`#order${txt} .order-status`).html("Served");
+                            $(`#order${txt} .order-status`).css("color", "#28a745");
+                        }
+                    })
+                })
+                //delete order entry
+                $(".table-action #delete-order-entry").on("click", function(){
+                    let txt = $(this).attr("class");
+                    $.ajax({
+                        type: 'POST',
+                        url: 'update_order.php',
+                        data: {
+                            action: "delete",
+                            id: $(this).attr("class")
+                        },
+                        success: function(res){
+                            $(`#order${txt}`).remove();
+                        }
+                    })
+                })
+            }
+        }
+    })
+})
+//exit
+$("#exit-orders-panel").on("click", function(){
+    $(".orders").css("display", "none");
+    let container = document.getElementById("tbody");
+    while (container.lastElementChild) {
+        container.removeChild(container.lastElementChild);
     }
 })

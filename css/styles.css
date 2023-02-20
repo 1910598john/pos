@@ -175,7 +175,20 @@ button{
     display: flex;
     flex-direction: column;
     text-align: center;
-    padding: 0 10%;
+    padding: 40px 10%;
+}
+.side-bar .bottom-panel #show-pending-orders{
+    padding: 15px;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20%);
+    position: absolute;
+    font-weight: bold;
+    color: #fff;
+    background:rgb(36, 163, 206);
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
 .side-bar .bottom-panel > div{
     margin: 10px 0;
@@ -380,6 +393,32 @@ button{
 }
 
 /* .. */
+.modal-content .available-tables{
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    width: 100%;
+    padding: 0 30px;
+}
+.modal-content .available-tables > div{
+    width: 100%;
+    height: 100px;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    background: rgb(233, 233, 233);
+    padding: 20px 10px;
+    border-radius: 4px;
+}
+.modal-content .available-tables > div > div{
+    padding: 10px 18px;
+    color: #fff;
+    background: rgb(36, 163, 206);
+    margin: 5px;
+    border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
+}
 .check-out-modal{
     width: 35%;
     height: 100vh;
@@ -390,6 +429,49 @@ button{
     box-shadow: 0 0 5px gray;
     border-radius: 4px 4px 0 0;
     padding: 100px 30px 0;
+}
+.confirm-check-out-modal{
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+}
+.confirm-check-out-modal > div{
+    width: 30%;
+    padding: 50px 10px;
+    background: #fff;
+    border-radius: 4px;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.confirm-check-out-modal > div span{
+    font-size: 25px;
+}
+.confirm-check-out-modal > div > div{
+    padding: 20px;
+}
+.confirm-check-out-modal > div > div button{
+    border-radius: 4px;
+    font-size: 20px;
+    margin: 0 5px;
+}
+.confirm-check-out-modal > div > div button:nth-child(1){
+    background: #666;
+    color: #fff;
+    border: 1px solid transparent;
+    padding: 20px;
+}
+.confirm-check-out-modal > div > div button:nth-child(2){
+    background: red;
+    color: #fff;
+    border: 1px solid transparent;
+    padding: 20px 40px;
 }
 .check-out-modal #cancel{
     position: absolute;
@@ -689,4 +771,87 @@ button{
     margin-bottom: 5px;
     border-radius: 4px;
     box-shadow: 0 0 5px #666;
+}
+/* show orders */
+.orders{
+    padding: 50px 200px;
+}
+.orders > div{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 10px;
+    text-align: center;
+    padding: 50px 30px;
+}
+.orders > div > div{
+    margin-top: 70px;
+    height: 80%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.orders table{
+    padding: 10px;
+    background: rgb(245, 245, 245);
+    border-radius: 4px;
+}
+.orders table td{
+    border: 1px solid rgb(184, 183, 183);
+    text-align: center;
+    padding: 3px;
+    font-size: 15px;
+}
+.orders table th{
+    padding: 5px;
+}
+.orders .table-action{
+    border: 1px solid transparent;
+}
+.orders .table-action button{
+    padding: 10px 15px;
+    color: #fff;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 15px;
+}
+.orders .table-action button:nth-child(1){
+    background: rgb(36, 163, 206);
+}
+.orders .table-action button:nth-child(2){
+    background: #28a745;
+}
+.orders .table-action button:nth-child(3){
+    background: red;
+}
+/* */
+.balance-wrapper{
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    background: #fff;
+    padding: 70px 20px 20px; 
+    text-align: center;
+}
+.balance-wrapper > span{
+    font-size: 30px;
+}
+.balance-wrapper .report{
+    width: 100%;
+    box-shadow: 0 0 2px #666;
+    margin: 10px 0;
+    height: 50vh;
+    overflow-y: scroll;
+    border-radius: 4px;
+    padding: 10px;
+}
+.balance-wrapper .report table{
+    width: 100%;
+}
+.balance-wrapper .report table th{
+    font-size: 15px;
 }

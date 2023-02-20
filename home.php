@@ -32,8 +32,9 @@ if (!isset($_SESSION['cashier'])) {
                 </div>
                 <div class="current-user">
                     <span>User: <?php echo $_SESSION['cashier'];?></span>
-                    <button id="log-out">Logout</button>
+                    <button id="check-balance">CHECK BALANCE</button>
                 </div>
+                <button id="show-pending-orders">SHOW ORDERS</button>
             </div>
         </div>
     </div>
@@ -81,6 +82,10 @@ if (!isset($_SESSION['cashier'])) {
                 <button id="clear-all">Clear all</button>
                 <button id="check-out">Check Out</button>
             </div>
+            <div class="available-tables" style="display:none;">
+                <h4 style="text-align:center;padding:10px 0;">SELECT TABLE</h4>
+                <div id="tables"></div>
+            </div>
         </div>
     </div>
     <div class="pop-up-wrapper" style="display:none;">
@@ -100,6 +105,56 @@ if (!isset($_SESSION['cashier'])) {
                 <div id="delete" style="background:red;">DELETE</div>
             </div>
             <button id="proceed">Proceed</button>
+        </div>
+    </div>
+</div>
+<div class="orders" style="z-index:3000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
+    <div class="orders-list-wrapper" style="position:relative;">
+        <button id="exit-orders-panel" style="position:absolute;right:3%;top:3%;padding:15px 30px;background:red;color:#fff;font-size:15px;font-weight:bold;border-radius:4px;border:1px solid transparent;">EXIT</button>
+        <span style="font-size:30px;">Pending Orders</span>
+        <div class="orders-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Table ID</th>
+                        <th>Order</th>
+                        <th>Time Ordered</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="cashier-balance" style="z-index:3000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+    <div class="balance-wrapper">
+        <span>Balance : <span id="total-balance">0</span></span>
+        <div class="report">
+            <table>
+                <thead>
+                    <th>ITEM</th>
+                    <th>AMOUNT</th>
+                    <th>DISCOUNTED</th>
+                    <th>CURRENT USER</th>
+                    <th>TIME</th>
+                    <th>DATE</th>
+                </thead>
+                <tbody id="tbody2">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="confirm-check-out-modal" style="display:none;">
+    <div>
+        <span>You haven't selected a table yet.</span>
+        <div>
+            <button id="continue-check-out">Continue anyway</button>
+            <button id="back">Back</button>
         </div>
     </div>
 </div>
