@@ -27,6 +27,7 @@ var interval;
 var discounted = false;
 var showAvailableTables = false;
 var chosenTable = 'None';
+var cafeTicket;
 
 setInterval(() => {
     //render time now
@@ -319,7 +320,7 @@ $(document).ready(function(){
                         //show tables
                         if (!showAvailableTables) {
                             showAvailableTables = true;
-                            $(".available-tables").css("display", "block");
+                           // $(".available-tables").css("display", "block");
                             $.ajax({
                                 type: 'POST',
                                 url: 'show_available_tables.php',
@@ -707,6 +708,15 @@ $(document).ready(function(){
             
                                     } else {
                                         let wrapper = document.getElementById("print-wrapper");
+
+                                        let ticket = '';
+                                        //generate ticket
+                                        for (let i = 0; i < 4; i++){
+                                            ticket += Math.round(Math.random() * 9);
+                                        }
+                                        
+                                        cafeTicket = ticket;
+
                                         wrapper.insertAdjacentHTML("beforeend", `
                                         <div class="document-to-print">
                                             <div class="print-header">
@@ -791,12 +801,12 @@ $(document).ready(function(){
                                                 //let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
 
                                                 //inserting into database..
-                                                insertIntoDatabase(section, ticketNumbers, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
+                                                insertIntoDatabase(section, cafeTicket,ticketNumbers, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
 
                                                 let d_time = `${hr}:${min} ${txt}, ${day}`;
                                                 let d_mon_and_date = `${mon} ${date}`;
                                                 //insert into detailed report
-                                                detailedReportDatabase(section, ticketNumbers, pickedItems, price, d_time, d_mon_and_date);
+                                                detailedReportDatabase(section, cafeTicket, ticketNumbers, pickedItems, price, d_time, d_mon_and_date);
                 
                                                 let notifs = document.querySelectorAll(".check-out-notif");
                                                 setTimeout(function(){
@@ -956,7 +966,7 @@ $(document).ready(function(){
     })
 })
 
-function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time, date){
+function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems, price, time, date){
     
     $.ajax({
         type: 'POST',
@@ -968,7 +978,8 @@ function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time
             price: price,
             time: time,
             mon: date,
-            discounted: discounted
+            discounted: discounted,
+            cafeticket: cafeticket
         },
         success: function(res){
             console.log(res);
@@ -977,7 +988,7 @@ function detailedReportDatabase(section, ticketNumbers, pickedItems, price, time
 
 }
 
-function insertIntoDatabase(section, tickets, items, pricelist, time, date){
+function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time, date){
     console.log(time + " " + date);
     //verify tickets
     console.log(tickets);
@@ -1003,7 +1014,8 @@ function insertIntoDatabase(section, tickets, items, pricelist, time, date){
             pricelist: pricelist,
             time: time,
             date: date,
-            tablenumber: chosenTable
+            tablenumber: chosenTable,
+            cafeticket: ticketcafe
         },
         success: function(res){
             res == 'success' ? success_notif() : error_notif();
@@ -1044,6 +1056,22 @@ function insertIntoDatabase(section, tickets, items, pricelist, time, date){
                         }
                     })
                 } */
+                //add balance
+                let disc = 0;
+                if (isEmployee){
+                    for (let i = 0; i < discount.length; i++){
+                        disc += discount[i];
+                    }
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'add_cashier_balance.php',
+                    data: {
+                        balance: totalPrice - disc
+                    }, success: function(res){
+                        console.log(res)
+                    }
+                })
             }
             function error_notif(){
                 setTimeout(function(){
@@ -1233,16 +1261,67 @@ $("#extend").on("click", function(){
     }
     
 })
+//check balance
+$("#check-balance").on("click", function(){
+    if (!pageReloading){
+        
+        $.ajax({
+            type: 'POST',
+            url: 'check_balance.php',
+            data: {
+                date: `${months[time.getMonth()]} ${time.getDate()}`
+            },
+            success: function(res){
+                res = JSON.parse(res);
+                let table_container = document.getElementById("tbody2");
+                for (let i = 0; i < res.length; i++){
+                    let txt = `
+                    <tr id="b-item${res[i][0]}">
+                        <td>${res[i][1]}</td>
+                        <td>${res[i][2]}</td>`;
+                    if (res[i][3] == 'true') {
+                        res[i][3] = 'Employee';
+                    } else {
+                        res[i][3] = 'Customer';
+                    }
+                    table_container.insertAdjacentHTML("afterbegin", `
+                        ${txt}
+                        <td>${res[i][3]}</td>
+                        <td>${res[i][4]}</td>
+                        <td>${res[i][5]}</td>
+                        <td>${res[i][6]}</td>
+                    </tr>
+                    `);
+                }
+            }
+        })
+        //fetch current user balance
+        $.ajax({
+            type: 'POST',
+            url: 'fetch_balance.php',
+            data: {
+                date: `${months[time.getMonth()]} ${time.getDate()}`
+            },
+            success: function(res){
+                $("#cashier-balance").html(res);
+            }
+        })
+        $(".cashier-balance").css("display", "block");
+    }
+    
+})
 
 $("#log-out").on("click", function(){
     if (!pageReloading){
-        $.ajax({
-            type: 'POST',
-            url: 'logged_out.php',
-            success: function(res){
-                location.reload();
-            }
-        })
+        confirmation("log-out", "Continue logging out?");
+    }
+})
+
+$("#exit-cashier-balance").on("click", function(){
+    $(".cashier-balance").css("display", "none");
+    let container = document.getElementById("tbody2");
+    while (container.lastElementChild) {
+        container.removeChild(container.lastElementChild);
     }
 })
 
@@ -1355,3 +1434,24 @@ $("#exit-orders-panel").on("click", function(){
         container.removeChild(container.lastElementChild);
     }
 })
+
+function confirmation(action, message){
+    $("#message").html(message);
+
+    $(".confirmation-overlay").css("display", "block");
+
+    $(".confirmation-buttons #yes").on("click", function(){
+        $.ajax({
+            type: 'POST',
+            url: 'logged_out.php',
+            success: function(res){
+                location.reload();
+            }
+        })
+    })
+
+    $(".confirmation-buttons #no").on("click", function(){
+        $(".confirmation-overlay").css("display", "none");
+    })
+    
+}

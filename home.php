@@ -9,6 +9,7 @@ if (!isset($_SESSION['cashier'])) {
     <title>Cashier Interface (<?php echo $_SESSION['cashier']; ?>)</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="./js/jquery-3.6.2.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=0">
 </head>
 <body>
 <div id="body-content">
@@ -116,10 +117,10 @@ if (!isset($_SESSION['cashier'])) {
             <table>
                 <thead>
                     <tr>
-                        <th>Table ID</th>
+                        <th>Ticket No.</th>
+                        <th>Table No.</th>
                         <th>Order</th>
                         <th>Time Ordered</th>
-                        <th>Date</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -130,15 +131,23 @@ if (!isset($_SESSION['cashier'])) {
         </div>
     </div>
 </div>
-<div class="cashier-balance" style="z-index:3000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+<div class="cashier-balance" style="z-index:3000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
     <div class="balance-wrapper">
-        <span>Balance : <span id="total-balance">0</span></span>
+        <button id="exit-cashier-balance">Exit</button>
+        <div class="cashier-profile">
+            <div class="profile-pic-container">
+                <div class="profile-pic"></div>
+                <div class="name-of-cashier"><span>Cashier : <?php echo $_SESSION['logoutlastId']; ?></span></div>
+            </div>
+            <button id="log-out">LOGOUT</button>
+        </div>
+        <span>Balance : <span id="cashier-balance">0</span></span>
         <div class="report">
             <table>
                 <thead>
                     <th>ITEM</th>
                     <th>AMOUNT</th>
-                    <th>DISCOUNTED</th>
+                    <th>isEmployee</th>
                     <th>CURRENT USER</th>
                     <th>TIME</th>
                     <th>DATE</th>
@@ -155,6 +164,15 @@ if (!isset($_SESSION['cashier'])) {
         <div>
             <button id="continue-check-out">Continue anyway</button>
             <button id="back">Back</button>
+        </div>
+    </div>
+</div>
+<div class="confirmation-overlay" style="z-index:3100;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
+    <div class="confirmation-wrapper">
+        <span id="message">Message</span>
+        <div class="confirmation-buttons">
+            <button id="yes">YES</button>
+            <button id="no">NO</button> 
         </div>
     </div>
 </div>

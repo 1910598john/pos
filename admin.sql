@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2023 at 10:29 AM
+-- Generation Time: Feb 21, 2023 at 05:12 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -48,36 +48,28 @@ INSERT INTO `auth` (`id`, `username`, `password`) VALUES
 
 CREATE TABLE `cafe_report` (
   `id` int(10) NOT NULL,
+  `ticket` varchar(10) NOT NULL,
   `item` varchar(30) NOT NULL,
   `amount` int(10) NOT NULL,
   `user` varchar(30) NOT NULL,
   `time` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
-  `table_id` varchar(30) NOT NULL
+  `table_id` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cafe_report`
 --
 
-INSERT INTO `cafe_report` (`id`, `item`, `amount`, `user`, `time`, `date`, `status`, `table_id`) VALUES
-(31, 'A5 (HOT)', 90, 'John Mark', '4:20 PM', 'Feb 20', 'deleted', '10'),
-(32, 'A4 (ICED)', 130, 'John Mark', '4:20 PM', 'Feb 20', 'deleted', '10'),
-(33, 'A7 (ICED)', 130, 'John Mark', '4:20 PM', 'Feb 20', 'deleted', '10'),
-(34, 'A6 (HOT)', 90, 'John Mark', '4:20 PM', 'Feb 20', 'deleted', '10'),
-(35, 'A5 (ICED)', 130, 'John Mark', '4:26 PM', 'Feb 20', 'deleted', 'None'),
-(36, 'A5 (HOT)', 90, 'John Mark', '4:26 PM', 'Feb 20', 'deleted', 'None'),
-(37, 'Dinosaur Paint', 350, 'John Mark', '4:41 PM', 'Feb 20', 'deleted', 'None'),
-(38, 'Spinner Girl', 200, 'John Mark', '4:41 PM', 'Feb 20', 'deleted', 'None'),
-(39, 'Spinner Metal', 350, 'John Mark', '4:41 PM', 'Feb 20', 'deleted', 'None'),
-(40, 'Yoyo', 150, 'John Mark', '4:41 PM', 'Feb 20', 'deleted', 'None'),
-(41, 'Pop It', 200, 'John Mark', '4:41 PM', 'Feb 20', 'deleted', 'None'),
-(42, 'B2 (HOT)', 90, 'John Mark', '4:45 PM', 'Feb 20', 'Served', '10'),
-(43, 'B1 (ICED)', 130, 'John Mark', '4:45 PM', 'Feb 20', 'Served', '10'),
-(44, 'B4 (ICED)', 130, 'John Mark', '4:45 PM', 'Feb 20', 'Served', '10'),
-(45, 'A4 (ICED)', 130, 'John Mark', '5:05 PM', 'Feb 20', 'Served', '11'),
-(46, 'A4 (HOT)', 90, 'John Mark', '5:05 PM', 'Feb 20', 'Served', '11');
+INSERT INTO `cafe_report` (`id`, `ticket`, `item`, `amount`, `user`, `time`, `date`, `status`, `table_id`) VALUES
+(43, '7782', 'A1 (HOT)', 54, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
+(44, '7782', 'A1 (ICED)', 78, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
+(45, '7782', 'A3 (ICED)', 78, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
+(46, '8726', 'A2 (HOT)', 90, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
+(47, '8726', 'A1 (ICED)', 130, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
+(48, '6575', 'A2 (HOT)', 54, 'John Mark', '11:59 PM', 'Feb 21', 'Pending', 'None'),
+(49, '6575', 'A1 (ICED)', 78, 'John Mark', '11:59 PM', 'Feb 21', 'Pending', 'None');
 
 -- --------------------------------------------------------
 
@@ -86,20 +78,22 @@ INSERT INTO `cafe_report` (`id`, `item`, `amount`, `user`, `time`, `date`, `stat
 --
 
 CREATE TABLE `cashier_auth` (
-  `id` int(6) NOT NULL,
+  `id` int(10) NOT NULL,
   `name` varchar(30) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   `logged_in` varchar(30) NOT NULL,
-  `logged_out` varchar(30) NOT NULL
+  `logged_out` varchar(30) NOT NULL,
+  `balance` varchar(30) NOT NULL,
+  `last_id` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cashier_auth`
 --
 
-INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`) VALUES
-(6, 'John Mark', 'jmcatamora', 'invoker123', '04:44 PM', '04:43 PM');
+INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`) VALUES
+(1, 'John Mark', 'jmcatamora', 'invoker123', '11:58 PM', '11:58 PM', '352', '236');
 
 -- --------------------------------------------------------
 
@@ -123,62 +117,13 @@ CREATE TABLE `detailed_report` (
 --
 
 INSERT INTO `detailed_report` (`id`, `ticketNumber`, `item`, `amount`, `discounted`, `user`, `time`, `date`) VALUES
-(118, 0, 'A1 (HOT)', 90, 'false', 'John Mark', '2:27 PM, Mon', 'Feb 20'),
-(119, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '2:37 PM, Mon', 'Feb 20'),
-(120, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '2:37 PM, Mon', 'Feb 20'),
-(121, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '2:38 PM, Mon', 'Feb 20'),
-(122, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '2:38 PM, Mon', 'Feb 20'),
-(123, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '2:39 PM, Mon', 'Feb 20'),
-(124, 0, 'A9 (HOT)', 90, 'false', 'John Mark', '2:39 PM, Mon', 'Feb 20'),
-(125, 0, 'A1 (HOT)', 90, 'false', 'John Mark', '2:41 PM, Mon', 'Feb 20'),
-(126, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '2:41 PM, Mon', 'Feb 20'),
-(127, 0, 'A1 (HOT)', 90, 'false', 'John Mark', '2:52 PM, Mon', 'Feb 20'),
-(128, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '2:52 PM, Mon', 'Feb 20'),
-(129, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '2:53 PM, Mon', 'Feb 20'),
-(130, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '2:53 PM, Mon', 'Feb 20'),
-(131, 0, 'A2 (HOT)', 90, 'false', 'John Mark', '2:53 PM, Mon', 'Feb 20'),
-(132, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '2:53 PM, Mon', 'Feb 20'),
-(133, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '2:56 PM, Mon', 'Feb 20'),
-(134, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '2:56 PM, Mon', 'Feb 20'),
-(135, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '2:57 PM, Mon', 'Feb 20'),
-(136, 0, 'A1 (HOT)', 90, 'false', 'John Mark', '2:57 PM, Mon', 'Feb 20'),
-(137, 0, 'A5 (ICED)', 130, 'false', 'John Mark', '2:57 PM, Mon', 'Feb 20'),
-(138, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '3:01 PM, Mon', 'Feb 20'),
-(139, 0, 'A5 (ICED)', 130, 'false', 'John Mark', '3:21 PM, Mon', 'Feb 20'),
-(140, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '3:21 PM, Mon', 'Feb 20'),
-(141, 0, 'A6 (HOT)', 90, 'false', 'John Mark', '3:26 PM, Mon', 'Feb 20'),
-(142, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '3:42 PM, Mon', 'Feb 20'),
-(143, 0, 'A1 (HOT)', 90, 'false', 'John Mark', '3:42 PM, Mon', 'Feb 20'),
-(144, 0, 'A2 (HOT)', 90, 'false', 'John Mark', '3:42 PM, Mon', 'Feb 20'),
-(145, 0, 'A5 (ICED)', 130, 'false', 'John Mark', '3:42 PM, Mon', 'Feb 20'),
-(146, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '3:42 PM, Mon', 'Feb 20'),
-(147, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '3:52 PM, Mon', 'Feb 20'),
-(148, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '3:52 PM, Mon', 'Feb 20'),
-(149, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '4:17 PM, Mon', 'Feb 20'),
-(150, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '4:17 PM, Mon', 'Feb 20'),
-(151, 0, 'A7 (HOT)', 90, 'false', 'John Mark', '4:17 PM, Mon', 'Feb 20'),
-(152, 0, 'A1 (ICED)', 130, 'false', 'John Mark', '4:19 PM, Mon', 'Feb 20'),
-(153, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '4:19 PM, Mon', 'Feb 20'),
-(154, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '4:19 PM, Mon', 'Feb 20'),
-(155, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '4:20 PM, Mon', 'Feb 20'),
-(156, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '4:20 PM, Mon', 'Feb 20'),
-(157, 0, 'A7 (ICED)', 130, 'false', 'John Mark', '4:20 PM, Mon', 'Feb 20'),
-(158, 0, 'A6 (HOT)', 90, 'false', 'John Mark', '4:20 PM, Mon', 'Feb 20'),
-(159, 0, 'A5 (ICED)', 130, 'false', 'John Mark', '4:26 PM, Mon', 'Feb 20'),
-(160, 0, 'A5 (HOT)', 90, 'false', 'John Mark', '4:26 PM, Mon', 'Feb 20'),
-(161, 4341, '1 hour', 150, 'false', 'John Mark', '4:32 PM, Mon', 'Feb 20'),
-(162, 8531, '2 hours', 200, 'false', 'John Mark', '4:34 PM, Mon', 'Feb 20'),
-(163, 6403, '1 hour', 150, 'false', 'John Mark', '4:34 PM, Mon', 'Feb 20'),
-(164, 0, 'Dinosaur Paint', 350, 'false', 'John Mark', '4:41 PM, Mon', 'Feb 20'),
-(165, 0, 'Spinner Girl', 200, 'false', 'John Mark', '4:41 PM, Mon', 'Feb 20'),
-(166, 0, 'Spinner Metal', 350, 'false', 'John Mark', '4:41 PM, Mon', 'Feb 20'),
-(167, 0, 'Yoyo', 150, 'false', 'John Mark', '4:41 PM, Mon', 'Feb 20'),
-(168, 0, 'Pop It', 200, 'false', 'John Mark', '4:41 PM, Mon', 'Feb 20'),
-(169, 0, 'B2 (HOT)', 90, 'false', 'John Mark', '4:45 PM, Mon', 'Feb 20'),
-(170, 0, 'B1 (ICED)', 130, 'false', 'John Mark', '4:45 PM, Mon', 'Feb 20'),
-(171, 0, 'B4 (ICED)', 130, 'false', 'John Mark', '4:45 PM, Mon', 'Feb 20'),
-(172, 0, 'A4 (ICED)', 130, 'false', 'John Mark', '5:05 PM, Mon', 'Feb 20'),
-(173, 0, 'A4 (HOT)', 90, 'false', 'John Mark', '5:05 PM, Mon', 'Feb 20');
+(234, 7782, 'A1 (HOT)', 54, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
+(235, 7782, 'A1 (ICED)', 78, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
+(236, 7782, 'A3 (ICED)', 78, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
+(237, 8726, 'A2 (HOT)', 90, 'false', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
+(238, 8726, 'A1 (ICED)', 130, 'false', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
+(239, 6575, 'A2 (HOT)', 54, 'true', 'John Mark', '11:59 PM, Tue', 'Feb 21'),
+(240, 6575, 'A1 (ICED)', 78, 'true', 'John Mark', '11:59 PM, Tue', 'Feb 21');
 
 -- --------------------------------------------------------
 
@@ -196,15 +141,6 @@ CREATE TABLE `playground_report` (
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `playground_report`
---
-
-INSERT INTO `playground_report` (`id`, `ticketNumber`, `item`, `amount`, `user`, `time`, `date`) VALUES
-(1, '4341', '1 hour', 150, 'John Mark', '4:32 PM', 'Feb 20'),
-(2, '8531', '2 hours', 200, 'John Mark', '4:34 PM', 'Feb 20'),
-(3, '6403', '1 hour', 150, 'John Mark', '4:34 PM', 'Feb 20');
-
 -- --------------------------------------------------------
 
 --
@@ -220,15 +156,6 @@ CREATE TABLE `playground_time` (
   `date` varchar(30) NOT NULL,
   `extended` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `playground_time`
---
-
-INSERT INTO `playground_time` (`id`, `ticketID`, `item`, `remaining_time`, `status`, `date`, `extended`) VALUES
-(20, 4341, '1 hour', '760', 'running', 'Feb 20', 'false'),
-(21, 8531, '2 hours', '4360', 'running', 'Feb 20', 'false'),
-(22, 6403, '1 hour', '760', 'running', 'Feb 20', 'false');
 
 -- --------------------------------------------------------
 
@@ -403,31 +330,31 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
 
 --
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `products`

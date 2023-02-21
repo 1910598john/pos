@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -12,7 +13,14 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
-$sql = "SELECT id, ticket, item, time, status, table_id FROM cafe_report WHERE NOT status='deleted' AND date='$date'";
+
+if (isset($_SESSION['logoutlastId'])) {
+    $lastid = $_SESSION['logoutlastId'];
+    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE id < '$lastid' AND date='$date'";
+} else {
+    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE date='$date'";
+}
+
 $result = $conn->query($sql);
 $items = array();
 if ($result->num_rows >= 1) {
@@ -21,18 +29,18 @@ if ($result->num_rows >= 1) {
     while($row = $result->fetch_assoc()) {
         $entry = array();
         $entry[0] = $row["id"];
-        $entry[1] = $row['ticket'];
-        $entry[2] = $row["table_id"];
-        $entry[3] = $row["item"];
-        $entry[4] = $row["time"];
-        $entry[5] = $row["status"];
+        $entry[1] = $row['item'];
+        $entry[2] = $row["amount"];
+        $entry[3] = $row["discounted"];
+        $entry[4] = $row["user"];
+        $entry[5] = $row["time"];
+        $entry[6] = $row["date"];
         $items[$x] = $entry;
         $x += 1;
     }
+    $_SESSION['lastId'] = $items[$x - 1][0];
     echo json_encode($items);
-} else {
-    echo 'No orders';
-}
+} 
 
 $conn->close();
 ?>
