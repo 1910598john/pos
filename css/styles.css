@@ -843,13 +843,14 @@ button{
     background: #fff;
     padding: 100px 20px 50px; 
     text-align: center;
+    color: #666;
 }
 .balance-wrapper > span{
     font-size: 30px;
 }
 .balance-wrapper .report{
     width: 100%;
-    box-shadow: 0 0 2px #666;
+    box-shadow: 0 0 2px #424242;
     margin: 10px 0;
     height: 50vh;
     overflow-y: scroll;
@@ -858,10 +859,20 @@ button{
 }
 .balance-wrapper .report table{
     width: 100%;
+    color: #424242;
 }
 .balance-wrapper .report table th{
     font-size: 12px;
     padding: 5px;
+}
+.balance-wrapper .header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+}
+.balance-wrapper .header span:nth-child(1){
+    font-size: 30px;
 }
 .cashier-profile{
     position: absolute;

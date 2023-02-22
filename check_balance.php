@@ -16,10 +16,8 @@ $date = $_POST['date'];
 
 if (isset($_SESSION['logoutlastId'])) {
     $lastid = $_SESSION['logoutlastId'];
-    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE id < '$lastid' AND date='$date'";
-} else {
-    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE date='$date'";
-}
+    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE id > '$lastid' AND date='$date'";
+} 
 
 $result = $conn->query($sql);
 $items = array();
@@ -40,7 +38,7 @@ if ($result->num_rows >= 1) {
     }
     $_SESSION['lastId'] = $items[$x - 1][0];
     echo json_encode($items);
-} 
+}
 
 $conn->close();
 ?>

@@ -17,24 +17,34 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT name, username, password FROM cashier_auth";
+$sql = "SELECT name, username, last_id, password FROM cashier_auth";
 $result = $conn->query($sql);
 
 if (isset($_POST['username'])){
     $uname = $_POST['username'];
     $pwd = $_POST['password'];
     $verifiedCashier = false;
+    
     if ($result->num_rows > 0) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
             if ($row["username"] == $uname && $row["password"] == $pwd) {
                 $verifiedCashier = true;
+                $lastid = $row['last_id'];
                 $pos_user = $row['name'];
             }
         }
         if ($verifiedCashier) {
+            
+            
             $_SESSION["cashier"] = $pos_user;
             //header('Location: http://localhost/pos/home.php');
+            
+            if ($lastid != '0') {
+                $_SESSION['logoutlastId'] = $lastid;
+            }
+            
+            
             header('Location: http://localhost/pos/logged_in.php');
         } else {
             header('Location: http://localhost/pos/');

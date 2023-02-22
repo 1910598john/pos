@@ -11,7 +11,7 @@ if (!isset($_SESSION['cashier'])) {
     <script src="./js/jquery-3.6.2.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=0">
 </head>
-<body>
+<body onbeforeunload="force_close()">
 <div id="body-content">
     <div id="notification-container"></div>
     <div class="side-bar">
@@ -137,11 +137,14 @@ if (!isset($_SESSION['cashier'])) {
         <div class="cashier-profile">
             <div class="profile-pic-container">
                 <div class="profile-pic"></div>
-                <div class="name-of-cashier"><span>Cashier : <?php echo $_SESSION['logoutlastId']; ?></span></div>
+                <div class="name-of-cashier"><span>Cashier : <?php echo $_SESSION['cashier']; ?></span></div>
             </div>
             <button id="log-out">LOGOUT</button>
         </div>
-        <span>Balance : <span id="cashier-balance">0</span></span>
+        <div class="header">
+            <span>Balance : <span id="cashier-balance">0</span></span>
+            <span style="font-size:15px;">Daily Sales : <span id="total-sales" style="font-size:15px;">0</span></span>
+        </div>
         <div class="report">
             <table>
                 <thead>

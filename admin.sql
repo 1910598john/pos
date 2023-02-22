@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2023 at 05:12 PM
+-- Generation Time: Feb 22, 2023 at 01:37 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -58,19 +58,6 @@ CREATE TABLE `cafe_report` (
   `table_id` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cafe_report`
---
-
-INSERT INTO `cafe_report` (`id`, `ticket`, `item`, `amount`, `user`, `time`, `date`, `status`, `table_id`) VALUES
-(43, '7782', 'A1 (HOT)', 54, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
-(44, '7782', 'A1 (ICED)', 78, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
-(45, '7782', 'A3 (ICED)', 78, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
-(46, '8726', 'A2 (HOT)', 90, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
-(47, '8726', 'A1 (ICED)', 130, 'John Mark', '11:58 PM', 'Feb 21', 'Pending', 'None'),
-(48, '6575', 'A2 (HOT)', 54, 'John Mark', '11:59 PM', 'Feb 21', 'Pending', 'None'),
-(49, '6575', 'A1 (ICED)', 78, 'John Mark', '11:59 PM', 'Feb 21', 'Pending', 'None');
-
 -- --------------------------------------------------------
 
 --
@@ -93,7 +80,8 @@ CREATE TABLE `cashier_auth` (
 --
 
 INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`) VALUES
-(1, 'John Mark', 'jmcatamora', 'invoker123', '11:58 PM', '11:58 PM', '352', '236');
+(1, 'John Mark', 'jmcatamora', 'invoker123', '08:36 AM', '08:31 AM', '0', '0'),
+(2, 'Janine', 'janine', 'janine', '08:35 AM', '08:35 AM', '0', '0');
 
 -- --------------------------------------------------------
 
@@ -111,19 +99,6 @@ CREATE TABLE `detailed_report` (
   `time` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `detailed_report`
---
-
-INSERT INTO `detailed_report` (`id`, `ticketNumber`, `item`, `amount`, `discounted`, `user`, `time`, `date`) VALUES
-(234, 7782, 'A1 (HOT)', 54, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
-(235, 7782, 'A1 (ICED)', 78, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
-(236, 7782, 'A3 (ICED)', 78, 'true', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
-(237, 8726, 'A2 (HOT)', 90, 'false', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
-(238, 8726, 'A1 (ICED)', 130, 'false', 'John Mark', '11:58 PM, Tue', 'Feb 21'),
-(239, 6575, 'A2 (HOT)', 54, 'true', 'John Mark', '11:59 PM, Tue', 'Feb 21'),
-(240, 6575, 'A1 (ICED)', 78, 'true', 'John Mark', '11:59 PM, Tue', 'Feb 21');
 
 -- --------------------------------------------------------
 
@@ -330,31 +305,31 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
 
 --
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `products`

@@ -534,6 +534,21 @@ $(document).ready(function(){
                         }
                     }, 5000);
                 } else {
+                    $(".pop-up-wrapper").css("display", "block");
+                    $(".buttons-container div").on("click", function(){
+                        if (proceedButtonClicked) {
+                            proceedButtonClicked = false;
+                        }
+    
+                        if ($(this).html() == "DELETE") {
+                            amount = 0;
+                            $("#amount").html(amount);
+                        } else {
+                            amount += parseInt($(this).html());
+                            $("#amount").html(amount);
+                        }
+                    })
+                    /*
                     if (chosenTable == 'None' && cafeItemsPicked){
                         $(".confirm-check-out-modal").css("display", "block");
                         $(".confirm-check-out-modal #back").on("click", function(){
@@ -572,7 +587,7 @@ $(document).ready(function(){
                                 $("#amount").html(amount);
                             }
                         })
-                    }
+                    } */
                     
                 }
             }
@@ -724,6 +739,9 @@ $(document).ready(function(){
                                                 <span style="font-size:12px;">Osmeña st., Masbate City</span>
                                             </div>
                                             <table id="table">
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${cafeTicket}</span></td>
+                                                </tr>
                                                 <tr>
                                                     <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Item:</td>
                                                     <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Price:</td>
@@ -1306,6 +1324,21 @@ $("#check-balance").on("click", function(){
                 $("#cashier-balance").html(res);
             }
         })
+        $.ajax({
+            type: 'POST',
+            url: 'daily_sales_check.php',
+            data: {
+                date: `${months[time.getMonth()]} ${time.getDate()}`
+            },
+            success: function(res){
+                res = JSON.parse(res);
+                let daily = 0;
+                for (let i = 0; i < res.length; i++) {
+                    daily += parseInt(res[i]);
+                }
+                $("#total-sales").html(daily);
+            }
+        })
         $(".cashier-balance").css("display", "block");
     }
     
@@ -1454,4 +1487,12 @@ function confirmation(action, message){
         $(".confirmation-overlay").css("display", "none");
     })
     
+}
+
+//force close
+function force_close(){
+    $.ajax({
+        type: 'POST',
+        url: 'force_close.php'
+    })
 }
