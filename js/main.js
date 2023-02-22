@@ -256,7 +256,7 @@ $(document).ready(function(){
                 if (i < 18) {
                     image = `url(./images/coffee.jpg)`;
                 } else if (i > 18 && i < 29) {
-                    image = `url(./images/drinks.svg)`;
+                    image = `url(./images/lemon.jpg)`;
                 } 
                 else if (i > 28 && i < 37) {
                     image = `url(./images/healthy.webp)`;
@@ -284,6 +284,12 @@ $(document).ready(function(){
                 }
                 else if (i > 62 &&  i < 65) {
                     image = `url(./images/desserts.jpg)`;
+                }
+                else if (i > 64 &&  i < 68) {
+                    image = `url(./images/sushi_roll.webp)`;
+                }
+                else if (i > 67 &&  i < 72) {
+                    image = `url(./images/asian_noodles.jpg)`;
                 }
                 else if (itemname.includes("ADD")) {
                     image = `url(./images/desserts.jpg)`;
