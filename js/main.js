@@ -900,7 +900,7 @@ $(document).ready(function(){
                                         <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
                                         setTimeout(function(){
                                             location.reload();
-                                        }, 5000);
+                                        }, 2000);
                                     }, 3500);
                                 }
                             })

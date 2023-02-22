@@ -17,7 +17,10 @@ $date = $_POST['date'];
 if (isset($_SESSION['logoutlastId'])) {
     $lastid = $_SESSION['logoutlastId'];
     $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE id > '$lastid' AND date='$date'";
-} 
+} else {
+    $sql = "SELECT id, item, amount, discounted, user, time, date FROM detailed_report WHERE date='$date'";
+}
+
 
 $result = $conn->query($sql);
 $items = array();
