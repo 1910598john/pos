@@ -1052,10 +1052,11 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
                 setTimeout(function(){
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                     <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 }, 3000)
-                setTimeout(function(){
-                    location.reload();
-                }, 10000);
+                
                 //add row in playground_time table
                 if (section == 'play') {
                     let time = new Date();
@@ -1118,7 +1119,7 @@ $("#remove").on("click", function(){
         }, 3000)
         setTimeout(function(){
             location.reload();
-        }, 5000);
+        }, 2000);
     }
     
 })
@@ -1243,7 +1244,7 @@ $("#extend").on("click", function(){
                                                             <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
                                                             setTimeout(function(){
                                                                 location.reload();
-                                                            }, 5000);
+                                                            }, 2000);
                                                         }, 3500);
                                                     }
                                                 })
