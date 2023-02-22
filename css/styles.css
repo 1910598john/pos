@@ -28,23 +28,17 @@
 .items-container-playground::-webkit-scrollbar{
     display: none;
 }
-#one-hour{
+#one-hour, #half-hour, #two-hours, #unlimited{
     background-image: url(../images/clock.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
-#two-hours{
-    background-image: url(../images/clock.jpg);
+#ktv{
+    background-image: url(../images/ktv.webp);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-}
-#unlimited{
-    background-image: url(../images/clock.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
 }
 body{
     background: rgb(241, 241, 241);
@@ -107,12 +101,11 @@ button{
     padding: 20px;
     background: #fff;
     border-radius: 10px;
-    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.tickets-container .confirm-button button{
+.tickets-container .confirm-button button, .tickets-container .cancel-extend button{
     padding: 15px 30px;
     font-weight: bold;
     font-size: 20px;
@@ -120,9 +113,18 @@ button{
     border-radius: 4px;
     background: #666;
     border: 1px solid transparent;
-    margin: 20px 0 0;
 }
-.amount-to-pay-wrapper{
+.buttons-tickets-list{
+    display: flex;
+}
+.buttons-tickets-list button{
+    margin: 10px 5px;
+}
+.buttons-tickets-list .cancel-extend button{
+    background: red;
+}
+
+#amount-to-pay > div{
     position: absolute;
     left: 50%;
     top: 50%;
@@ -133,11 +135,8 @@ button{
     z-index: 2500;
     border-radius: 10px;
     box-shadow: 0 0 5px #666;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
 }
-.amount-to-pay-wrapper button{
+.buttons-extension button{
     background: #666;
     color: #fff;
     font-weight: bold;
@@ -145,6 +144,10 @@ button{
     border-radius: 4px;
     margin: 5px;
     border: 1px solid transparent;
+}
+.amount-to-pay-wrapper {
+    display: flex;
+    flex-wrap: wrap;
 }
 .amount-to-pay-wrapper > div{
     background: green;
@@ -311,7 +314,7 @@ button{
     height: 120px;
     border-radius: 4px;
     box-shadow: 0 0 5px gray;
-    background: rgb(241, 241, 241);
+    background: #fff;
     cursor: pointer;
     margin: 10px;
     position: relative;
@@ -349,7 +352,7 @@ button{
     width: 120px;
     height: 120px;
     box-shadow: 0 0 5px gray;
-    background: rgb(241, 241, 241);
+    background: #fff;
     border-radius: 4px;
     position: relative;
     margin: 10px;
@@ -755,7 +758,7 @@ button{
     position: fixed;
     left: 10px;
     bottom: 10px;
-    z-index: 1000;
+    z-index: 4000;
     width: 200px;
 }
 .check-out-notif{
@@ -903,7 +906,7 @@ button{
     padding: 3px;
     border-radius: 4px;
     border: 1px solid transparent;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 #exit-cashier-balance{
     padding: 15px 30px;

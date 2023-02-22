@@ -23,7 +23,10 @@ $mon_and_date = $_POST['mon'];
 $items_length = count($items);
 $currentUser = $_SESSION['cashier'];
 $discounted = $_POST['discounted'];
-$cafeticket = $_POST['cafeticket'];
+
+if (isset($_POST['cafeticket'])) {
+    $cafeticket = $_POST['cafeticket'];
+}
 $section = $_POST['section'];
 
 if ($items_length > 1) {

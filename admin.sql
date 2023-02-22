@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2023 at 04:14 AM
+-- Generation Time: Feb 22, 2023 at 10:57 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -81,7 +81,8 @@ CREATE TABLE `cashier_auth` (
 --
 
 INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`, `status`) VALUES
-(2, 'John', 'jmcatamora', 'invoker123', '11:10 AM', '11:10 AM', 0, '0', 'active');
+(2, 'John', 'jmcatamora', 'invoker123', '05:54 PM', '05:01 PM', 660, '0', 'active'),
+(3, 'Janine', 'janine', 'janine', '05:02 PM', '05:02 PM', 0, '0', 'inactive');
 
 -- --------------------------------------------------------
 
@@ -101,6 +102,43 @@ CREATE TABLE `detailed_report` (
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `detailed_report`
+--
+
+INSERT INTO `detailed_report` (`id`, `section`, `ticketNumber`, `item`, `amount`, `discounted`, `user`, `time`, `date`) VALUES
+(75, 'play', '6770', 'Half hour', '90', 'false', 'John', '5:54 PM, Wed', 'Feb 22'),
+(76, 'play', '3440', '1 hour', '150', 'false', 'John', '5:54 PM, Wed', 'Feb 22'),
+(77, 'play', '1405', 'Half hour', '90', 'false', 'John', '5:55 PM, Wed', 'Feb 22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `items`
+--
+
+CREATE TABLE `items` (
+  `id` int(10) NOT NULL,
+  `section` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `description` varchar(30) NOT NULL,
+  `price` varchar(30) NOT NULL,
+  `discount` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `section`, `name`, `description`, `price`, `discount`) VALUES
+(1, '', '1 hour', '60 minutes', '150', '0'),
+(2, 'play', '1 hour', '60 minutes', '150', '0'),
+(3, 'play', '2 hours', '120 minutes', '200', '0'),
+(4, 'play', 'Unlimited', 'No time', '250', '0'),
+(5, 'play', 'Half hour', '30 minutes', '90', '0'),
+(6, 'play', 'Adults pass', 'Socks', '50', '0'),
+(7, 'play', 'Adult pass', 'Socks', '40', '0');
+
 -- --------------------------------------------------------
 
 --
@@ -117,6 +155,15 @@ CREATE TABLE `playground_report` (
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `playground_report`
+--
+
+INSERT INTO `playground_report` (`id`, `ticketNumber`, `item`, `amount`, `user`, `time`, `date`) VALUES
+(49, '6770', 'Half hour', 90, 'John', '5:54 PM', 'Feb 22'),
+(50, '3440', '1 hour', 150, 'John', '5:54 PM', 'Feb 22'),
+(51, '1405', 'Half hour', 90, 'John', '5:55 PM', 'Feb 22');
+
 -- --------------------------------------------------------
 
 --
@@ -125,13 +172,20 @@ CREATE TABLE `playground_report` (
 
 CREATE TABLE `playground_time` (
   `id` int(10) NOT NULL,
-  `ticketID` int(4) NOT NULL,
+  `ticketID` varchar(30) NOT NULL,
   `item` varchar(30) NOT NULL,
   `remaining_time` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL,
   `extended` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `playground_time`
+--
+
+INSERT INTO `playground_time` (`id`, `ticketID`, `item`, `remaining_time`, `status`, `date`, `extended`) VALUES
+(1, '1405', 'Half hour', '1738', 'running', 'Feb 22', 'false');
 
 -- --------------------------------------------------------
 
@@ -223,7 +277,9 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`) VALUES
 (81, 'Bacon & egg noodles', 'Asian Noodles', '190', 40),
 (82, 'Sausage & egg noodles', 'Asian Noodles', '190', 40),
 (83, 'Ham & egg noodles', 'Asian Noodles', '190', 40),
-(84, 'Fish ball & egg noodles', 'Asian Noodles', '190', 40);
+(84, 'Fish ball & egg noodles', 'Asian Noodles', '190', 40),
+(86, 'Adult Pass', 'Socks', '50', 0),
+(87, 'Adult Pass', 'Socks', '40', 0);
 
 -- --------------------------------------------------------
 
@@ -276,6 +332,12 @@ ALTER TABLE `detailed_report`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `playground_report`
 --
 ALTER TABLE `playground_report`
@@ -313,37 +375,43 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `tables`

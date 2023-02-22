@@ -1,6 +1,7 @@
 var itemsContainer = document.getElementById("items-container");
 const pickedItems = [];
 const price = [];
+const end_time_list = [];
 var totalPrice = 0;
 var totalPriceElement = document.getElementById("total-price");
 var time_table = document.getElementById("time-table");
@@ -206,7 +207,12 @@ $(document).ready(function(){
                     }
                     
                     map.set(`id${res[i][0]}`, rem);
-                    if (res[i][1] == '1 hour'){
+                    if (res[i][1] == 'Half hour'){
+                        res[i][1] = 'Half hour';
+                        txt = '30 mins';
+                        itemName = "Half hour";
+                    }
+                     else if (res[i][1] == '1 hour'){
                         res[i][1] = '1hr';
                         txt = '60 mins';
                         itemName = "1hr";
@@ -214,7 +220,12 @@ $(document).ready(function(){
                         res[i][1] = '2hrs';
                         txt = '120 mins';
                         itemName = "2hrs";
-                    } else if (res[i][1] == 'Unlimited'){
+                    } else if (res[i][1] == 'KTV'){
+                        res[i][1] = 'KTV';
+                        txt = '120 mins';
+                        itemName = "KTV";
+                    }
+                    else if (res[i][1] == 'Unlimited'){
                         res[i][1] = 'Unli';
                         txt = 'No limit';
                         itemName = "Unli";
@@ -717,6 +728,8 @@ $(document).ready(function(){
                                                 <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;text-align:center;">${pickedItems[x]}</td>
                                                 <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;font-weight:bold;text-align:center;">₱${price[x]}</td>
                                             </tr>`);
+
+                                            console.log(pickedItems);
             
                                             window.print();
             
@@ -939,6 +952,8 @@ $(document).ready(function(){
                 }, 5000);
     
             } else {
+
+
                 if (showAvailableTables) {
                     showAvailableTables = false;
                     $(".available-tables").css("display", "none");
@@ -961,8 +976,24 @@ $(document).ready(function(){
                     </div>`);
                     itemPrice = 150;
                     pickedItems.push("1 hour");
+
+                    
+
+                }
+                else if (itemId == "half-hour") {
+                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                    <div class="item-to-check-out">
+                        <span>Half hour</span>
+                        <span>30 minutes</span>
+                        <span>₱90</span>
+                    </div>`);
+                    itemPrice = 90;
+                    pickedItems.push("Half hour");
+
+                    
     
-                } else if (itemId == "two-hours") {
+                }
+                 else if (itemId == "two-hours") {
                     document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
                     <div class="item-to-check-out">
                         <span>2 hours</span>
@@ -971,6 +1002,9 @@ $(document).ready(function(){
                     </div>`);
                     itemPrice = 200;
                     pickedItems.push("2 hours");
+
+                   
+
                 } else if (itemId == "unlimited") {
                     document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
                     <div class="item-to-check-out">
@@ -980,6 +1014,18 @@ $(document).ready(function(){
                     </div>`);
                     itemPrice = 250;
                     pickedItems.push("Unlimited");
+                }
+                else if (itemId == "ktv") {
+                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                    <div class="item-to-check-out">
+                        <span>KTV</span>
+                        <span>120 minutes</span>
+                        <span>₱200</span>
+                    </div>`);
+                    itemPrice = 200;
+                    pickedItems.push("KTV");
+
+                    
                 }
                 price.push(itemPrice);
                 totalPrice += itemPrice;
@@ -991,7 +1037,6 @@ $(document).ready(function(){
 })
 
 function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems, price, time, date){
-    
     $.ajax({
         type: 'POST',
         url: 'detailed_report.php',
@@ -1066,7 +1111,7 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
                         data: {
                             tickets: tickets,
                             items: items,
-                            date: `${months[time.getMonth()]} ${time.getDate()}`
+                            date: `${months[time.getMonth()]} ${time.getDate()}`,
                         },
                     })
                 } /*else {
@@ -1131,9 +1176,15 @@ $("#extend").on("click", function(){
             <div class="tickets-container" id="tickets-list-wrapper">
                 <div class="tickets" id="tickets-container">
                 </div>
-                <div class="confirm-button">
-                    <button>Confirm</button>
+                <div class="buttons-tickets-list">
+                    <div class="confirm-button">
+                        <button>Confirm</button>
+                    </div>
+                    <div class="cancel-extend">
+                        <button>Cancel</button>
+                    </div>
                 </div>
+                
             </div>
         </div>`)
         //fetch today's tickets
@@ -1165,6 +1216,9 @@ $("#extend").on("click", function(){
                 
             }
         })
+        $(".cancel-extend button").on("click", function(){
+            location.reload();
+        })
         $(".confirm-button button").on("click", function(){
             $.ajax({
                 type: 'POST',
@@ -1178,20 +1232,47 @@ $("#extend").on("click", function(){
                         if (itemName == '2 hours'){
                             document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                             <div id="amount-to-pay">
-                                <div class="amount-to-pay-wrapper">
-                                    <div id="fifty">50</div>
-                                    <div id="free" style="font-size:12px;">Free 1hr</div>
-                                    <button>Confirm</button>
+                                <div>
+                                    <div class="amount-to-pay-wrapper">
+                                        <div id="fifty">50</div>
+                                        <div id="free" style="font-size:12px;">Free 1hr</div>
+                                    </div>
+                                    <div class="buttons-extension">
+                                        <button id="continue">Confirm</button>
+                                        <button id="cancel-extend" style="background:red;">Cancel</button>
+                                    </div>
                                 </div>
                             </div>`);
-                        } else {
+                        } else if (itemName == '1 hour') {
                             document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                             <div id="amount-to-pay">
-                                <div class="amount-to-pay-wrapper">
-                                    <div id="fifty">50</div>
-                                    <div id="1hun">100</div>
-                                    <div id="free" style="font-size:12px;">Free 1hr</div>
-                                    <button>Confirm</button>
+                                <div>
+                                    <div class="amount-to-pay-wrapper">
+                                        <div id="fifty">50</div>
+                                        <div id="1hun">100</div>
+                                        <div id="free" style="font-size:12px;">Free 1hr</div>
+                                    </div>
+                                    <div class="buttons-extension">
+                                        <button id="continue">Confirm</button>
+                                        <button id="cancel-extend" style="background:red;">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>`);
+                        } else if (itemName == 'Half hour') {
+                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                            <div id="amount-to-pay">
+                                <div>
+                                    <div class="amount-to-pay-wrapper">
+                                        <div id="fifty">60</div>
+                                        <div id="1hun">110</div>
+                                        <div id="1hun">160</div>
+                                        <div id="free" style="font-size:12px;">Free 1hr</div>
+                                        
+                                    </div>
+                                    <div class="buttons-extension">
+                                        <button id="continue">Confirm</button>
+                                        <button id="cancel-extend" style="background:red;">Cancel</button>
+                                    </div>
                                 </div>
                             </div>`);
                         }
@@ -1209,7 +1290,10 @@ $("#extend").on("click", function(){
                                 }
                             }
                         })
-                        $(".amount-to-pay-wrapper button").on("click", function(){
+                        $(".buttons-extension #cancel-extend").on("click", function(){
+                            location.reload();
+                        })
+                        $(".buttons-extension #continue").on("click", function(){
                             clearInterval(interval);
                             if (!pageReloading){
                                 if (amountToPay != undefined) {
@@ -1352,7 +1436,12 @@ $("#check-balance").on("click", function(){
 
 $("#log-out").on("click", function(){
     if (!pageReloading){
-        confirmation("log-out", "Continue logging out?");
+        confirmation("log-out", "Do you want to continue?");
+    }
+})
+$("#change-user").on("click", function(){
+    if (!pageReloading){
+        confirmation("change-user", "Continue changing user?");
     }
 })
 
@@ -1480,13 +1569,24 @@ function confirmation(action, message){
     $(".confirmation-overlay").css("display", "block");
 
     $(".confirmation-buttons #yes").on("click", function(){
-        $.ajax({
-            type: 'POST',
-            url: 'logged_out.php',
-            success: function(res){
-                location.reload();
-            }
-        })
+        if (action == 'log-out') {
+            $.ajax({
+                type: 'POST',
+                url: 'logged_out.php',
+                success: function(res){
+                    location.reload();
+                }
+            })
+        } else if (action == 'change-user') {
+            $.ajax({
+                type: 'POST',
+                url: 'change_user.php',
+                success: function(res){
+                    location.reload();
+                }
+            })
+        }
+        
     })
 
     $(".confirmation-buttons #no").on("click", function(){

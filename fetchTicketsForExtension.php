@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 $date = $_POST['date'];
 
-$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND date='$date' ";
+$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND NOT item='KTV' AND date='$date' ";
 $result = $conn->query($sql);
 $tickets = array();
 if ($result->num_rows > 0) {
@@ -23,8 +23,7 @@ if ($result->num_rows > 0) {
         $tickets[$x] = $row['ticketID'];
         $x += 1;
     }
-    
-} 
+}
 echo json_encode($tickets);
 $conn->close();
 ?>
