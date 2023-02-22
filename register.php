@@ -17,8 +17,8 @@ if (isset($_POST['username'])){
     $uname = $_POST['username'];
     $pwd = $_POST['password'];
 
-    $sql = "INSERT INTO cashier_auth (name, username, password, balance, last_id)
-    VALUES ('$name', '$uname', '$pwd', '0', '0')";
+    $sql = "INSERT INTO cashier_auth (name, username, password, balance, last_id, status)
+    VALUES ('$name', '$uname', '$pwd', '0', '0', 'inactive')";
 
     if ($conn->query($sql) === TRUE) {
         header('Location: http://localhost/pos/');

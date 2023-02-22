@@ -17,7 +17,7 @@ if (isset($_SESSION['cashier'])) {
     $name = $_SESSION['cashier'];
     date_default_timezone_set('Asia/Manila');
     $date = date("h:i A");
-    $sql = "UPDATE cashier_auth SET logged_in='$date' WHERE name='$name'";
+    $sql = "UPDATE cashier_auth SET logged_in='$date', status='active' WHERE name='$name'";
     if ($conn->query($sql) === TRUE) {
         header('Location: http://localhost/pos/home.php');
     }
