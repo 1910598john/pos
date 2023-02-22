@@ -1121,7 +1121,6 @@ $("#remove").on("click", function(){
             location.reload();
         }, 2000);
     }
-    
 })
 
 $("#extend").on("click", function(){

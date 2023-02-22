@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2023 at 01:37 AM
+-- Generation Time: Feb 22, 2023 at 04:14 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -65,23 +65,23 @@ CREATE TABLE `cafe_report` (
 --
 
 CREATE TABLE `cashier_auth` (
-  `id` int(10) NOT NULL,
+  `id` int(20) NOT NULL,
   `name` varchar(30) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   `logged_in` varchar(30) NOT NULL,
   `logged_out` varchar(30) NOT NULL,
-  `balance` varchar(30) NOT NULL,
-  `last_id` varchar(30) NOT NULL
+  `balance` int(30) NOT NULL,
+  `last_id` varchar(30) NOT NULL,
+  `status` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cashier_auth`
 --
 
-INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`) VALUES
-(1, 'John Mark', 'jmcatamora', 'invoker123', '08:36 AM', '08:31 AM', '0', '0'),
-(2, 'Janine', 'janine', 'janine', '08:35 AM', '08:35 AM', '0', '0');
+INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`, `status`) VALUES
+(2, 'John', 'jmcatamora', 'invoker123', '11:10 AM', '11:10 AM', 0, '0', 'active');
 
 -- --------------------------------------------------------
 
@@ -91,9 +91,10 @@ INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `
 
 CREATE TABLE `detailed_report` (
   `id` int(10) NOT NULL,
-  `ticketNumber` int(4) NOT NULL,
+  `section` varchar(30) NOT NULL,
+  `ticketNumber` varchar(10) NOT NULL,
   `item` varchar(30) NOT NULL,
-  `amount` int(10) NOT NULL,
+  `amount` varchar(50) NOT NULL,
   `discounted` varchar(30) NOT NULL,
   `user` varchar(30) NOT NULL,
   `time` varchar(30) NOT NULL,
@@ -215,7 +216,14 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`) VALUES
 (74, 'Spaghetti', 'Group food', '400', 40),
 (75, 'Carbonara', 'Group food', '450', 40),
 (76, 'Banana split (3 ice cream)', 'Desserts', '180', 40),
-(77, 'Ice cream with toppings', 'Desserts', '80', 40);
+(77, 'Ice cream with toppings', 'Desserts', '80', 40),
+(78, 'Tuna roll', 'Sushi Roll', '190', 40),
+(79, 'Ham and cheese roll', 'Sushi roll', '190', 40),
+(80, 'Sausage and cheese roll', 'Sushi Roll', '190', 40),
+(81, 'Bacon & egg noodles', 'Asian Noodles', '190', 40),
+(82, 'Sausage & egg noodles', 'Asian Noodles', '190', 40),
+(83, 'Ham & egg noodles', 'Asian Noodles', '190', 40),
+(84, 'Fish ball & egg noodles', 'Asian Noodles', '190', 40);
 
 -- --------------------------------------------------------
 
@@ -305,37 +313,37 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `tables`
