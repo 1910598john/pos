@@ -206,8 +206,8 @@ $(document).ready(function(){
                     } else {
                         rem = parseInt(res[i][2]);
                     }
-                    
                     map.set(`id${res[i][0]}`, rem);
+                    
                     if (res[i][1] == 'Half hour'){
                         res[i][1] = 'Half hour';
                         txt = '30 mins';
@@ -414,7 +414,6 @@ $(document).ready(function(){
                 else if (i > 71 &&  i < 74) {
                     image = `url(./image/adult_pass.webp)`;
                 }
-                
                 
                 
                 $(`#fetched-item${i + 1}`).css({
@@ -1211,6 +1210,7 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
                 //add row in playground_time table
                 if (section == 'play') {
                     let time = new Date();
+
                     $.ajax({
                         type: 'POST',
                         url: 'playground_time.php',
@@ -1498,20 +1498,19 @@ $("#check-balance").on("click", function(){
                 res = JSON.parse(res);
                 var table_container = document.getElementById("tbody2");
                 for (let i = 0; i < res.length; i++){
+                    let temp = res[i][3];
                     let txt = `
                     <tr id="b-item${res[i][0]}">
                         <td>${res[i][1]}</td>
                         <td>${res[i][2]}</td>`;
                     if (res[i][3] == 'true') {
-                        let temp = res[i][3];
                         temp = 'Employee';
                     } else {
-                        let temp = res[i][3];
                         temp = 'Customer';
                     }
                     table_container.insertAdjacentHTML("afterbegin", `
                         ${txt}
-                        <td>${res[i][3]}</td>
+                        <td>${temp}</td>
                         <td>${res[i][4]}</td>
                         <td>${res[i][5]}</td>
                         <td>${res[i][6]}</td>
@@ -1550,20 +1549,19 @@ $("#check-balance").on("click", function(){
                                     container.removeChild(container.lastElementChild);
                                 }
                                 for (let i = 0; i < res.length; i++){
+                                    let temp = res[i][3];
                                     let txt = `
                                     <tr id="b-item${res[i][0]}">
                                         <td>${res[i][1]}</td>
                                         <td>${res[i][2]}</td>`;
                                     if (res[i][3] == 'true') {
-                                        let temp = res[i][3];
                                         temp = 'Employee';
                                     } else {
-                                        let temp = res[i][3];
                                         temp = 'Customer';
                                     }
                                     table_container.insertAdjacentHTML("afterbegin", `
                                         ${txt}
-                                        <td>${res[i][3]}</td>
+                                        <td>${temp}</td>
                                         <td>${res[i][4]}</td>
                                         <td>${res[i][5]}</td>
                                         <td>${res[i][6]}</td>
@@ -1602,20 +1600,19 @@ $("#check-balance").on("click", function(){
                                     container.removeChild(container.lastElementChild);
                                 }
                                 for (let i = 0; i < res.length; i++){
+                                    let temp = res[i][3];
                                     let txt = `
                                     <tr id="b-item${res[i][0]}">
                                         <td>${res[i][1]}</td>
                                         <td>${res[i][2]}</td>`;
                                     if (res[i][3] == 'true') {
-                                        let temp = res[i][3];
                                         temp = 'Employee';
                                     } else {
-                                        let temp = res[i][3];
                                         temp = 'Customer';
                                     }
                                     table_container.insertAdjacentHTML("afterbegin", `
                                         ${txt}
-                                        <td>${res[i][3]}</td>
+                                        <td>${temp}</td>
                                         <td>${res[i][4]}</td>
                                         <td>${res[i][5]}</td>
                                         <td>${res[i][6]}</td>
@@ -1641,20 +1638,19 @@ $("#check-balance").on("click", function(){
                             container.removeChild(container.lastElementChild);
                         }
                         for (let i = 0; i < res.length; i++){
+                            let temp = res[i][3];
                             let txt = `
                             <tr id="b-item${res[i][0]}">
                                 <td>${res[i][1]}</td>
                                 <td>${res[i][2]}</td>`;
                             if (res[i][3] == 'true') {
-                                let temp = res[i][3];
                                 temp = 'Employee';
                             } else {
-                                let temp = res[i][3];
                                 temp = 'Customer';
                             }
                             table_container.insertAdjacentHTML("afterbegin", `
                                 ${txt}
-                                <td>${res[i][3]}</td>
+                                <td>${temp}</td>
                                 <td>${res[i][4]}</td>
                                 <td>${res[i][5]}</td>
                                 <td>${res[i][6]}</td>
@@ -1747,6 +1743,9 @@ $("#show-pending-orders").on("click", function(){
                     } else if (res[i][5] == 'Ready'){
                         entry_html += `<td class="order-status" style="color:rgb(36, 163, 206);font-weight:bold;">${res[i][5]}</td>
                         `;
+                    }  else if (res[i][5] == 'Cancelled'){
+                        entry_html += `<td class="order-status" style="color:orange;font-weight:bold;">${res[i][5]}</td>
+                        `;
                     }
                     else if (res[i][5] == 'Served'){
                         entry_html += `<td class="order-status" style="color:#28a745;font-weight:bold;">${res[i][5]}</td>
@@ -1754,6 +1753,7 @@ $("#show-pending-orders").on("click", function(){
                     }
                     entry_html += `
                         <td class="table-action">
+                            <button id="cancel-order" class="${res[i][0]}">Cancel</button>
                             <button id="ready" class="${res[i][0]}">Ready</button>
                             <button id="serve" class="${res[i][0]}">Serve</button>
                             <button id="delete-order-entry" class="${res[i][0]}">Delete</button>
@@ -1765,6 +1765,25 @@ $("#show-pending-orders").on("click", function(){
                 $(".orders").css("display", "block");
 
                 //actions..
+                //cancel
+                $(".table-action #cancel-order").on("click", function(){
+                    let txt = $(this).attr("class");
+                    
+                    /*
+                    $.ajax({
+                        type: 'POST',
+                        url: 'update_order.php',
+                        data: {
+                            action: "Cancel",
+                            id: $(this).attr("class")
+                        },
+                        success: function(res){
+                            $(`#order${txt} .order-status`).html("Cancelled");
+                            $(`#order${txt} .order-status`).css("color", "orange");
+                        }
+                    }) */
+                })
+
                 //ready
                 $(".table-action #ready").on("click", function(){
                     let txt = $(this).attr("class");
@@ -1781,6 +1800,7 @@ $("#show-pending-orders").on("click", function(){
                         }
                     })
                 })
+                
                 //to be served
                 $(".table-action #serve").on("click", function(){
                     let txt = $(this).attr("class");
@@ -1826,7 +1846,7 @@ $("#exit-orders-panel").on("click", function(){
 })
 
 function confirmation(action, message){
-    $("#message").html(message);
+    $("#message").html(`<span style="font-size:20px;color:#666;">${message}</span>`);
 
     $(".confirmation-overlay").css("display", "block");
 

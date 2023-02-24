@@ -17,6 +17,8 @@ $id = $_POST['id'];
 $action = $_POST['action'];
 if ($action == 'delete'){
     $action = "deleted";
+} elseif ($action == 'Cancel') {
+    $action = 'Cancelled';
 }
 
 $sql = "UPDATE cafe_report SET status='$action' WHERE id='$id'";

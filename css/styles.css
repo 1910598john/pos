@@ -358,8 +358,12 @@ button{
     margin: 10px;
     cursor: pointer;
 }
+.main .items-container > div, .main .items-container-playground > div{
+    transition: .3s;
+}
 .main .items-container > div:hover, .main .items-container-playground > div:hover{
-    box-shadow: 0 0 10px gray;
+    box-shadow: 0 0 10px black;
+    transition: .3s;
 }
 
 .items-container .item .item-price{
@@ -824,12 +828,15 @@ button{
     font-size: 15px;
 }
 .orders .table-action button:nth-child(1){
-    background: rgb(36, 163, 206);
+    background: orange;
 }
 .orders .table-action button:nth-child(2){
-    background: #28a745;
+    background: rgb(36, 163, 206);
 }
 .orders .table-action button:nth-child(3){
+    background: #28a745;
+}
+.orders .table-action button:nth-child(4){
     background: red;
 }
 /* */
@@ -937,7 +944,7 @@ button{
     display: flex;
 }
 .confirmation-buttons button{
-    padding: 10px 30px;
+    padding: 15px 40px;
     margin: 20px 5px 0;
     font-size: 15px;
     color: #fff;

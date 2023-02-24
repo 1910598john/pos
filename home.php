@@ -152,7 +152,7 @@ if (!isset($_SESSION['cashier'])) {
             <button id="change-user" style="background:#28a745;">CHANGE USER</button>
         </div>
         <div class="header">
-            <span>Grand Total : <span id="total-sales">0</span></span>
+            <span>Total Sales : <span id="total-sales">0</span></span>
         </div>
         <select id="cat-cashier" style="position:absolute;left:20px;padding:5px;border-radius:4px;color:#666;">
             <option value="all">All</option>
@@ -185,7 +185,7 @@ if (!isset($_SESSION['cashier'])) {
         </div>
     </div>
 </div>
-<div class="confirmation-overlay" style="z-index:3100;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
+<div class="confirmation-overlay" style="z-index:5000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
     <div class="confirmation-wrapper">
         <span id="message">Message</span>
         <div class="confirmation-buttons">
