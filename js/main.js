@@ -29,6 +29,7 @@ var discounted = false;
 var showAvailableTables = false;
 var chosenTable = 'None';
 var cafeTicket;
+var cashier_balance;
 
 setInterval(() => {
     //render time now
@@ -264,57 +265,163 @@ $(document).ready(function(){
                 </div>`);
                 let image;
                 let itemname = `${items[i][0]}`;
-                if (i < 18) {
-                    image = `url(./images/coffee.jpg)`;
-                } else if (i > 18 && i < 29) {
-                    image = `url(./images/lemon.jpg)`;
+                if (i < 2) {
+                    image = `url(./image/hk_milk_tea.jpg)`;
+                } else if (i > 1 && i < 4) {
+                    image = `url(./image/matcha.jpg)`;
                 } 
-                else if (i > 28 && i < 37) {
-                    image = `url(./images/healthy.webp)`;
+                else if (i > 3 && i < 6) {
+                    image = `url(./image/coffee.jpg)`;
                 } 
-                else if (i > 37 &&  i < 43) {
-                    image = `url(./images/toys.png)`;
+                else if (i > 5 &&  i < 8) {
+                    image = `url(./image/coffee_hazelnut.jpg)`;
                 }
-                else if (i > 42 &&  i < 45) {
-                    image = `url(./images/softdrinks.png)`;
+                else if (i > 7 &&  i < 10) {
+                    image = `url(./image/milo.png)`;
+                }
+                else if (i > 9 &&  i < 12) {
+                    image = `url(./image/coffee_ovaltine.jpg)`;
+                }
+                else if (i > 11 &&  i < 14) {
+                    image = `url(./image/coffee_chocolate.webp)`;
+                }
+                else if (i > 13 &&  i < 16) {
+                    image = `url(./image/coffee_hazelnut_choco.jpg)`;
+                }
+                else if (i > 15 &&  i < 18) {
+                    image = `url(./image/horlicks.jpg)`;
+                }
+                else if (i > 17 &&  i < 19) {
+                    image = `url(./image/add_on.jpg)`;
+                }
+                else if (i > 18 &&  i < 21) {
+                    image = `url(./image/lemon_tea.jpg)`;
+                }
+                else if (i > 20 &&  i < 23) {
+                    image = `url(./image/lemon_water.jpeg)`;
+                }
+                else if (i > 22 &&  i < 25) {
+                    image = `url(./image/honey_lemon.webp)`;
+                }
+                else if (i > 24 &&  i < 27) {
+                    image = `url(./image/lemon_coke.png)`;
+                }
+                else if (i > 26 &&  i < 29) {
+                    image = `url(./image/sprite_with_lemon.jpg)`;
+                }
+                else if (i > 28 &&  i < 31) {
+                    image = `url(./image/almondmilk.png)`;
+                }
+                else if (i > 30 &&  i < 33) {
+                    image = `url(./image/soya_milk.webp)`;
+                }
+                else if (i > 32 &&  i < 35) {
+                    image = `url(./image/ginger_with_honey.jpeg)`;
+                }
+                else if (i > 34 &&  i < 37) {
+                    image = `url(./image/honey_citron.jpg)`;
+                }
+                else if (i > 36 &&  i < 38) {
+                    image = `url(./image/water.webp)`;
+                }
+                else if (i > 37 &&  i < 43) {
+                    image = `url(./image/toys.jpg)`;
+                }
+                else if (i > 42 &&  i < 44) {
+                    image = `url(./image/royal.webp)`;
+                }
+                else if (i > 43 &&  i < 45) {
+                    image = `url(./image/sprite.jpg)`;
                 }
                 else if (i > 44 &&  i < 46) {
-                    image = `url(./images/beer.png)`;
+                    image = `url(./image/beer.webp)`;
                 }
                 else if (i > 45 &&  i < 47) {
-                    image = `url(./images/softdrinks.png)`;
+                    image = `url(./image/coke.jpg)`;
                 }
-                else if (i > 46 &&  i < 53) {
-                    image = `url(./images/waffle.webp)`;
+                else if (i > 46 &&  i < 48) {
+                    image = `url(./image/waffle_original.webp)`;
                 }
-                else if (i > 52 &&  i < 57) {
-                    image = `url(./images/pizza_waffle.png)`;
+                else if (i > 47 &&  i < 49) {
+                    image = `url(./image/waffle_ice_cream.jpg)`;
                 }
-                else if (i > 56 &&  i < 63) {
-                    image = `url(./images/group_food.png)`;
+                else if (i > 48 &&  i < 50) {
+                    image = `url(./image/waffle_banana.jpg)`;
                 }
-                else if (i > 62 &&  i < 65) {
-                    image = `url(./images/desserts.jpg)`;
+                else if (i > 49 &&  i < 51) {
+                    image = `url(./image/choco_waffle.jpg)`;
                 }
-                else if (i > 64 &&  i < 68) {
-                    image = `url(./images/sushi_roll.webp)`;
+                else if (i > 50 &&  i < 52) {
+                    image = `url(./image/choco_waffle_ice_cream.jpg)`;
                 }
-                else if (i > 67 &&  i < 72) {
-                    image = `url(./images/asian_noodles.jpg)`;
+                else if (i > 51 &&  i < 53) {
+                    image = `url(./image/choco_waffle_banana.webp)`;
                 }
-                else if (itemname.includes("ADD")) {
-                    image = `url(./images/desserts.jpg)`;
+                else if (i > 52 &&  i < 54) {
+                    image = `url(./image/pizza_tuna.jpg)`;
+                }
+                else if (i > 53 &&  i < 55) {
+                    image = `url(./image/pizza_sausage.jpg)`;
+                }
+                else if (i > 54 &&  i < 56) {
+                    image = `url(./image/pizza_cheese.jpg)`;
+                }
+                else if (i > 55 &&  i < 57) {
+                    image = `url(./image/hawaiian_pizza.jpg)`;
+                }
+                else if (i > 56 &&  i < 58) {
+                    image = `url(./image/fries.webp)`;
+                }
+                else if (i > 57 &&  i < 60) {
+                    image = `url(./image/baked_chicken.jpg)`;
+                }
+                else if (i > 59 &&  i < 61) {
+                    image = `url(./image/chinese_bbq.jpeg)`;
+                }
+                else if (i > 60 &&  i < 62) {
+                    image = `url(./image/spaghetti.jpg)`;
+                }
+                else if (i > 61 &&  i < 63) {
+                    image = `url(./image/carbonara.jpg)`;
+                }
+                else if (i > 62 &&  i < 64) {
+                    image = `url(./image/banana_split.jpg)`;
+                }
+                else if (i > 63 &&  i < 65) {
+                    image = `url(./image/ice_cream_toppings.jpg)`;
+                }
+                else if (i > 64 &&  i < 66) {
+                    image = `url(./image/tuna_roll_sushi.jpg)`;
+                }
+                else if (i > 65 &&  i < 67) {
+                    image = `url(./image/ham_cheese_roll.jpg)`;
+                }
+                else if (i > 66 &&  i < 68) {
+                    image = `url(./image/sausage_cheese_roll.jpg)`;
+                }
+                else if (i > 67 &&  i < 69) {
+                    image = `url(./image/bacon_egg_noodles.jpg)`;
+                }
+                else if (i > 68 &&  i < 70) {
+                    image = `url(./image/sausage_egg_noodles.jpg)`;
+                }
+                else if (i > 69 &&  i < 71) {
+                    image = `url(./image/ham_egg_noodles.jpg)`;
+                }
+                else if (i > 70 &&  i < 72) {
+                    image = `url(./image/fishball_egg_noodles.jpg)`;
+                }
+                else if (i > 71 &&  i < 74) {
+                    image = `url(./image/adult_pass.webp)`;
                 }
                 
-                else if (i == 37) {
-                    image = `url(./images/water.png)`;
-                }
+                
                 
                 $(`#fetched-item${i + 1}`).css({
                     'background-image': image,
                     'background-position' : 'center',
                     'background-repeat' :'no-repeat',
-                    'background-size' : 'contain'
+                    'background-size' : 'cover'
                 });
                 
             }
@@ -440,7 +547,6 @@ $(document).ready(function(){
                     }
                     console.log(price);
                 }
-                
             })
         }
     })
@@ -1372,7 +1478,6 @@ $("#extend").on("click", function(){
 //check balance
 $("#check-balance").on("click", function(){
     if (!pageReloading){
-        
         $.ajax({
             type: 'POST',
             url: 'check_balance.php',
@@ -1380,17 +1485,29 @@ $("#check-balance").on("click", function(){
                 date: `${months[time.getMonth()]} ${time.getDate()}`
             },
             success: function(res){
+                $.ajax({
+                    type: 'POST',
+                    url: 'fetch_balance.php',
+                    data: {
+                        date: `${months[time.getMonth()]} ${time.getDate()}`
+                    },
+                    success: function(res){
+                        $("#total-cashier").html(`₱${res}`);
+                    }
+                })
                 res = JSON.parse(res);
-                let table_container = document.getElementById("tbody2");
+                var table_container = document.getElementById("tbody2");
                 for (let i = 0; i < res.length; i++){
                     let txt = `
                     <tr id="b-item${res[i][0]}">
                         <td>${res[i][1]}</td>
                         <td>${res[i][2]}</td>`;
                     if (res[i][3] == 'true') {
-                        res[i][3] = 'Employee';
+                        let temp = res[i][3];
+                        temp = 'Employee';
                     } else {
-                        res[i][3] = 'Customer';
+                        let temp = res[i][3];
+                        temp = 'Customer';
                     }
                     table_container.insertAdjacentHTML("afterbegin", `
                         ${txt}
@@ -1401,6 +1518,151 @@ $("#check-balance").on("click", function(){
                     </tr>
                     `);
                 }
+                //on change function
+                $("#cat-cashier").on("change", function(){
+                    if ($(this).val() == 'play') {
+                        $("#section-cashier").html("Playground");
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetch_balance_play.php',
+                            data: {
+                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                            },
+                            success: function(res){
+                                res = JSON.parse(res);
+                                let total = 0;
+                                for (let i = 0; i < res.length; i++ ){
+                                    total += parseInt(res[i]);
+                                }
+                                $("#total-cashier").html(`₱${total}`);
+                            }
+                        })
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetch_playground_items_cashier.php',
+                            data: {
+                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                            },
+                            success:function(res){
+                                res = JSON.parse(res);
+                                let container = document.getElementById("tbody2");
+                                while (container.lastElementChild) {
+                                    container.removeChild(container.lastElementChild);
+                                }
+                                for (let i = 0; i < res.length; i++){
+                                    let txt = `
+                                    <tr id="b-item${res[i][0]}">
+                                        <td>${res[i][1]}</td>
+                                        <td>${res[i][2]}</td>`;
+                                    if (res[i][3] == 'true') {
+                                        let temp = res[i][3];
+                                        temp = 'Employee';
+                                    } else {
+                                        let temp = res[i][3];
+                                        temp = 'Customer';
+                                    }
+                                    table_container.insertAdjacentHTML("afterbegin", `
+                                        ${txt}
+                                        <td>${res[i][3]}</td>
+                                        <td>${res[i][4]}</td>
+                                        <td>${res[i][5]}</td>
+                                        <td>${res[i][6]}</td>
+                                    </tr>
+                                    `);
+                                }
+                            }
+                        })
+                    } else if ($(this).val() == 'cafe') {
+                        $("#section-cashier").html("Cafe");
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetch_balance_cafe.php',
+                            data: {
+                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                            },
+                            success: function(res){
+                                res = JSON.parse(res);
+                                let total = 0;
+                                for (let i = 0; i < res.length; i++ ){
+                                    total += parseInt(res[i]);
+                                }
+                                $("#total-cashier").html(`₱${total}`);
+                            }
+                        })
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetch_cafe_items_cashier.php',
+                            data: {
+                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                            },
+                            success:function(res){
+                                res = JSON.parse(res);
+                                let container = document.getElementById("tbody2");
+                                while (container.lastElementChild) {
+                                    container.removeChild(container.lastElementChild);
+                                }
+                                for (let i = 0; i < res.length; i++){
+                                    let txt = `
+                                    <tr id="b-item${res[i][0]}">
+                                        <td>${res[i][1]}</td>
+                                        <td>${res[i][2]}</td>`;
+                                    if (res[i][3] == 'true') {
+                                        let temp = res[i][3];
+                                        temp = 'Employee';
+                                    } else {
+                                        let temp = res[i][3];
+                                        temp = 'Customer';
+                                    }
+                                    table_container.insertAdjacentHTML("afterbegin", `
+                                        ${txt}
+                                        <td>${res[i][3]}</td>
+                                        <td>${res[i][4]}</td>
+                                        <td>${res[i][5]}</td>
+                                        <td>${res[i][6]}</td>
+                                    </tr>
+                                    `);
+                                }
+                            }
+                        })
+                    } else if ($(this).val() == 'all') {
+                        $("#section-cashier").html("Cashier Total");
+                        $.ajax({
+                            type: 'POST',
+                            url: 'fetch_balance.php',
+                            data: {
+                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                            },
+                            success: function(res){
+                                $("#total-cashier").html(`₱${res}`);
+                            }
+                        })
+                        let container = document.getElementById("tbody2");
+                        while (container.lastElementChild) {
+                            container.removeChild(container.lastElementChild);
+                        }
+                        for (let i = 0; i < res.length; i++){
+                            let txt = `
+                            <tr id="b-item${res[i][0]}">
+                                <td>${res[i][1]}</td>
+                                <td>${res[i][2]}</td>`;
+                            if (res[i][3] == 'true') {
+                                let temp = res[i][3];
+                                temp = 'Employee';
+                            } else {
+                                let temp = res[i][3];
+                                temp = 'Customer';
+                            }
+                            table_container.insertAdjacentHTML("afterbegin", `
+                                ${txt}
+                                <td>${res[i][3]}</td>
+                                <td>${res[i][4]}</td>
+                                <td>${res[i][5]}</td>
+                                <td>${res[i][6]}</td>
+                            </tr>
+                            `);
+                        }
+                    }
+                }) 
             }
         })
         //fetch current user balance
@@ -1411,7 +1673,7 @@ $("#check-balance").on("click", function(){
                 date: `${months[time.getMonth()]} ${time.getDate()}`
             },
             success: function(res){
-                $("#cashier-balance").html(res);
+                $("#cashier-balance").html(`₱${res}`);
             }
         })
         $.ajax({
@@ -1426,7 +1688,7 @@ $("#check-balance").on("click", function(){
                 for (let i = 0; i < res.length; i++) {
                     daily += parseInt(res[i]);
                 }
-                $("#total-sales").html(daily);
+                $("#total-sales").html(`₱${daily}`);
             }
         })
         $(".cashier-balance").css("display", "block");

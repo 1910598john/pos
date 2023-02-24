@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2023 at 10:57 AM
+-- Generation Time: Feb 24, 2023 at 08:30 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -81,8 +81,8 @@ CREATE TABLE `cashier_auth` (
 --
 
 INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`, `status`) VALUES
-(2, 'John', 'jmcatamora', 'invoker123', '05:54 PM', '05:01 PM', 660, '0', 'active'),
-(3, 'Janine', 'janine', 'janine', '05:02 PM', '05:02 PM', 0, '0', 'inactive');
+(2, 'John', 'jmcatamora', 'invoker123', '03:25 PM', '12:23 PM', 0, '0', 'active'),
+(4, 'Janine', 'janine', 'janine', '12:23 PM', '12:23 PM', 0, '0', 'inactive');
 
 -- --------------------------------------------------------
 
@@ -101,15 +101,6 @@ CREATE TABLE `detailed_report` (
   `time` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `detailed_report`
---
-
-INSERT INTO `detailed_report` (`id`, `section`, `ticketNumber`, `item`, `amount`, `discounted`, `user`, `time`, `date`) VALUES
-(75, 'play', '6770', 'Half hour', '90', 'false', 'John', '5:54 PM, Wed', 'Feb 22'),
-(76, 'play', '3440', '1 hour', '150', 'false', 'John', '5:54 PM, Wed', 'Feb 22'),
-(77, 'play', '1405', 'Half hour', '90', 'false', 'John', '5:55 PM, Wed', 'Feb 22');
 
 -- --------------------------------------------------------
 
@@ -155,15 +146,6 @@ CREATE TABLE `playground_report` (
   `date` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `playground_report`
---
-
-INSERT INTO `playground_report` (`id`, `ticketNumber`, `item`, `amount`, `user`, `time`, `date`) VALUES
-(49, '6770', 'Half hour', 90, 'John', '5:54 PM', 'Feb 22'),
-(50, '3440', '1 hour', 150, 'John', '5:54 PM', 'Feb 22'),
-(51, '1405', 'Half hour', 90, 'John', '5:55 PM', 'Feb 22');
-
 -- --------------------------------------------------------
 
 --
@@ -179,13 +161,6 @@ CREATE TABLE `playground_time` (
   `date` varchar(30) NOT NULL,
   `extended` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `playground_time`
---
-
-INSERT INTO `playground_time` (`id`, `ticketID`, `item`, `remaining_time`, `status`, `date`, `extended`) VALUES
-(1, '1405', 'Half hour', '1738', 'running', 'Feb 22', 'false');
 
 -- --------------------------------------------------------
 
@@ -272,7 +247,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`) VALUES
 (76, 'Banana split (3 ice cream)', 'Desserts', '180', 40),
 (77, 'Ice cream with toppings', 'Desserts', '80', 40),
 (78, 'Tuna roll', 'Sushi Roll', '190', 40),
-(79, 'Ham and cheese roll', 'Sushi roll', '190', 40),
+(79, 'Ham and cheese roll', 'Sushi Roll', '190', 40),
 (80, 'Sausage and cheese roll', 'Sushi Roll', '190', 40),
 (81, 'Bacon & egg noodles', 'Asian Noodles', '190', 40),
 (82, 'Sausage & egg noodles', 'Asian Noodles', '190', 40),
@@ -375,19 +350,19 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
 --
 ALTER TABLE `cashier_auth`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -399,13 +374,13 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `products`

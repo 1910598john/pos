@@ -17,17 +17,13 @@ $date = $_POST['date'];
 $name = $_SESSION['cashier'];
 if (isset($_SESSION['logoutlastId'])) {
     $lastid = $_SESSION['logoutlastId'];
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE id > '$lastid' AND date='$date' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE id > '$lastid' AND section='cafe' AND date='$date' AND user='$name'";
 } else {
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE  date='$date' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE  date='$date' AND section='cafe' AND user='$name'";
 }
-
 
 $result = $conn->query($sql);
 $items = array();
-$play = array();
-$cafe = array();
-$test = array();
 if ($result->num_rows >= 1) {
     // output data of each row
     $x = 0;

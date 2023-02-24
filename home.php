@@ -12,6 +12,7 @@ if (!isset($_SESSION['cashier'])) {
     <meta name="viewport" content="width=device-width, initial-scale=0">
 </head>
 <body onbeforeunload="force_close()">
+<div class="print-wrapper" id="print-wrapper"></div>
 <div id="body-content">
     <div id="notification-container"></div>
     <div class="side-bar">
@@ -151,9 +152,13 @@ if (!isset($_SESSION['cashier'])) {
             <button id="change-user" style="background:#28a745;">CHANGE USER</button>
         </div>
         <div class="header">
-            <span>Balance : <span id="cashier-balance">0</span></span>
-            <span style="font-size:15px;">Daily Sales : <span id="total-sales" style="font-size:15px;">0</span></span>
+            <span>Grand Total : <span id="total-sales">0</span></span>
         </div>
+        <select id="cat-cashier" style="position:absolute;left:20px;padding:5px;border-radius:4px;color:#666;">
+            <option value="all">All</option>
+            <option value="play" style="font-size:15px;">Playground</option>
+            <option value="cafe" style="font-size:15px;">Cafe</option>
+        </select>
         <div class="report">
             <table>
                 <thead>
@@ -168,6 +173,7 @@ if (!isset($_SESSION['cashier'])) {
                 </tbody>
             </table>
         </div>
+        <div style="position:absolute;left:50px;font-size:25px;"><span id="section-cashier">Cashier Total</span></span> : <span id="total-cashier">0</span></span>
     </div>
 </div>
 <div class="confirm-check-out-modal" style="display:none;">
@@ -188,7 +194,7 @@ if (!isset($_SESSION['cashier'])) {
         </div>
     </div>
 </div>
-<div class="print-wrapper" id="print-wrapper"></div>
+
 <script src="./js/main.js"></script>
 </body>
 </html>

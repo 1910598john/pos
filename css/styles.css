@@ -29,16 +29,16 @@
     display: none;
 }
 #one-hour, #half-hour, #two-hours, #unlimited{
-    background-image: url(../images/clock.jpg);
+    background-image: url(../image/clock.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 #ktv{
-    background-image: url(../images/ktv.webp);
+    background-image: url(../image/ktv.jpg);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
 }
 body{
     background: rgb(241, 241, 241);
@@ -358,6 +358,10 @@ button{
     margin: 10px;
     cursor: pointer;
 }
+.main .items-container > div:hover, .main .items-container-playground > div:hover{
+    box-shadow: 0 0 10px gray;
+}
+
 .items-container .item .item-price{
     position: absolute;
     left: -1px;
@@ -749,7 +753,7 @@ button{
         margin: 0;
         padding: 0;
     }
-    body > div:nth-child(1){
+    body > div:not(:nth-child(1)){
         display: none;
     }
 }
@@ -854,7 +858,7 @@ button{
 .balance-wrapper .report{
     width: 100%;
     box-shadow: 0 0 2px #424242;
-    margin: 10px 0;
+    margin: 40px 0 10px;
     height: 50vh;
     overflow-y: scroll;
     border-radius: 4px;
@@ -869,10 +873,8 @@ button{
     padding: 5px;
 }
 .balance-wrapper .header{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px;
+    text-align: right;
+    padding: 20px;
 }
 .balance-wrapper .header span:nth-child(1){
     font-size: 30px;
@@ -893,7 +895,7 @@ button{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-image: url(../images/cashier.webp);
+    background-image: url(../image/cashier_profile.webp);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
