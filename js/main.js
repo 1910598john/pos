@@ -65,6 +65,29 @@ $(document).ready(function(){
     $(".side-bar").animate({
         left: "0"
     }, "slow");
+
+    //check items ended time already passed
+        $.ajax({
+            type: 'POST',
+            url: 'get_ended_items.php',
+            success: function(res) {
+                clearInterval(interval);
+                res = JSON.parse(res);
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'time_passed.php',
+                        data: {
+                            id: res[i]
+                        },
+                        success: function(id) {
+                            console.log(id + " time has passed.");
+                        }
+                    })
+                }
+            }
+        })
     
     //start playground time
     function start_time(map){
@@ -82,8 +105,32 @@ $(document).ready(function(){
         let ended_alert_created = false;
         interval = setInterval(startCountdown, 1000);
         
+
+        //check items ended time already passed
+        $.ajax({
+            type: 'POST',
+            url: 'get_ended_items.php',
+            success: function(res) {
+                res = JSON.parse(res);
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'time_passed.php',
+                        data: {
+                            id: res[i]
+                        },
+                        success: function(id) {
+                            console.log(id + " time has passed.");
+                        }
+                    })
+                }
+            }
+        })
+
         function startCountdown(){
             
+            //
             if (map.size == 1) {
                 clearInterval(interval);
             }
@@ -94,7 +141,7 @@ $(document).ready(function(){
                     let rem = map.get(`id${i}`) / 60;
                     rem = Math.round(rem);
                     //time ended
-                    if (map.get(`id${i}`) == 1){
+                    if (map.get(`id${i}`) == 1 || map.get(`id_status${i}`) == 'ended'){
                         //update status
                         $.ajax({
                             type: 'POST',
@@ -181,6 +228,8 @@ $(document).ready(function(){
             x += 1
         };
     }
+    //
+    
 
 
     //render playground time section
@@ -191,6 +240,7 @@ $(document).ready(function(){
             date: `${months[time.getMonth()]} ${time.getDate()}`
         },
         success: function(res){
+            console.log(res);
             if (!res.length == 0) {
                 res = JSON.parse(res);
                 let len = res.length;
@@ -207,7 +257,7 @@ $(document).ready(function(){
                         rem = parseInt(res[i][2]);
                     }
                     map.set(`id${res[i][0]}`, rem);
-                    
+                    map.set(`id_status${res[i][0]}`, res[i][4]);
                     if (res[i][1] == 'Half hour'){
                         res[i][1] = 'Half hour';
                         txt = '30 mins';
@@ -1261,16 +1311,27 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
 
 $("#remove").on("click", function(){
     if (!pageReloading){
-        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-        <div class="check-out-notif" style="background:orange;padding:20px 10px 20px 10px;">Removing ended..</div>`);
+        clearInterval(interval);
+        $.ajax({
+            type: 'POST',
+            url: 'remove_ended_items.php',
+            success: function(res){
+                console.log(res);
+                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                <div class="check-out-notif" style="background:orange;padding:20px 10px 20px 10px;">Removing ended..</div>`);
+                
+                setTimeout(function(){
+                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                    <div class="check-out-notif" style="background:orange;padding:20px 10px;">Reloading the page..</div>`);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
+                }, 3000)
+                
+            }
+        })
+
         
-        setTimeout(function(){
-            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-            <div class="check-out-notif" style="background:orange;padding:20px 10px;">Reloading the page..</div>`);
-        }, 3000)
-        setTimeout(function(){
-            location.reload();
-        }, 2000);
     }
 })
 
