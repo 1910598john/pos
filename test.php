@@ -1,5 +1,5 @@
 <?php
 session_start();
-echo $_SESSION['ended_items'];
+var_dump($_SESSION['ended_items']);
 
 ?>

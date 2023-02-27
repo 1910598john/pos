@@ -17,6 +17,7 @@ $status = 'running';
 $items_length = count($items);
 $tickets = $_POST['tickets'];
 $date = $_POST['date'];
+$year = $_POST['year'];
 
 date_default_timezone_set('Asia/Manila');
 
@@ -44,7 +45,7 @@ if ($items_length > 1) {
         $remaining_time = 30 * 60;
         $extended = 'false';
     }
-    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended, end_time) VALUES($tickets[0], '$items[0]', '$remaining_time','$status', '$date', '$extended', '$end_time');";
+    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, year, extended, end_time) VALUES($tickets[0], '$items[0]', '$remaining_time','$status', '$date','$year', '$extended', '$end_time');";
     for ($i = 1; $i < $items_length; $i++){
         if ($items[$i] == '1 hour') {
             $end_time = date("h:i A m/d/y", strtotime("+1 hour"));
@@ -69,7 +70,7 @@ if ($items_length > 1) {
             $remaining_time = 30 * 60;
             $extended = 'false';
         }
-        $sql .= "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended, end_time) VALUES($tickets[$i], '$items[$i]', '$remaining_time','$status', '$date', '$extended', '$end_time');";
+        $sql .= "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, year, extended, end_time) VALUES($tickets[$i], '$items[$i]', '$remaining_time','$status', '$date', '$year', '$extended', '$end_time');";
     }
     if ($conn->multi_query($sql) === TRUE){
         echo 'Success';
@@ -101,7 +102,7 @@ if ($items_length > 1) {
         $remaining_time = 30 * 60;
         $extended = 'false';
     }
-    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, extended, end_time) VALUES($tickets[0],'$items[0]', '$remaining_time','$status', '$date', '$extended', '$end_time')";
+    $sql = "INSERT INTO playground_time(ticketID, item, remaining_time, status, date, year, extended, end_time) VALUES($tickets[0],'$items[0]', '$remaining_time','$status', '$date','$year', '$extended', '$end_time')";
 
     if ($conn->query($sql) === TRUE){
         echo 'Success';

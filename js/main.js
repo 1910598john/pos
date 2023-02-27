@@ -65,28 +65,6 @@ $(document).ready(function(){
     $(".side-bar").animate({
         left: "0"
     }, "slow");
-
-    //check items ended time already passed
-    $.ajax({
-        type: 'POST',
-        url: 'get_ended_items.php',
-        success: function(res) {
-            res = JSON.parse(res);
-            console.log(res);
-            for (let i = 0; i < res.length; i++) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'time_passed.php',
-                    data: {
-                        id: res[i]
-                    },
-                    success: function(id) {
-                        console.log(id + " time has passed.");
-                    }
-                })
-            }
-        }
-    })
     
     //start playground time
     function start_time(map){
@@ -104,25 +82,6 @@ $(document).ready(function(){
         let ended_alert_created = false;
         interval = setInterval(startCountdown, 1000);
         
-
-        //check items ended time already passed
-        $.ajax({
-            type: 'POST',
-            url: 'get_ended_items.php',
-            success: function(res) {
-                res = JSON.parse(res);
-                console.log(res);
-                for (let i = 0; i < res.length; i++) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'time_passed.php',
-                        data: {
-                            id: res[i]
-                        },
-                    })
-                }
-            }
-        })
 
         function startCountdown(){
             //
@@ -207,7 +166,7 @@ $(document).ready(function(){
             }
             
             //update playground time every 10 seconds
-            if (x == 10) {
+            if (x == 5) {
                 for(let i = firstId; i < (firstId + size); i++) {
                     $.ajax({
                         type: 'POST',
@@ -215,6 +174,29 @@ $(document).ready(function(){
                         data:{
                             id: i,
                             rem: map.get(`id${i}`)
+                        }, success: function(){
+                            //check items ended time already passed
+                            $.ajax({
+                                type: 'POST',
+                                url: 'get_ended_items.php',
+                                success: function(res) {
+                                    console.log(res);
+                                    res = JSON.parse(res);
+                                    console.log(res);
+                                    for (let i = 0; i < res.length; i++) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'time_passed.php',
+                                            data: {
+                                                id: res[i]
+                                            },
+                                            success: function(id) {
+                                                console.log(id + " time has passed.");
+                                            }
+                                        })
+                                    }
+                                }
+                            })
                         }
                     })
                 }
@@ -242,10 +224,9 @@ $(document).ready(function(){
                     if (res[i][4] == 'ended') {
                         res[i][2] = "1";
                     }
-                    
                     items_remaining_time.push(res[i][2]);
                     let txt = '';
-                    let rem = 0;
+                    let rem;
                     let itemName;
                     if (res[i][2] == 'No limit'){
                         rem = 0;
@@ -1262,6 +1243,7 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
                         data: {
                             tickets: tickets,
                             items: items,
+                            year: `${time.getFullYear()}`,
                             date: `${months[time.getMonth()]} ${time.getDate()}`,
                         },
                     })
