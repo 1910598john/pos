@@ -1840,6 +1840,13 @@ $("#show-pending-orders").on("click", function(){
                                 </div>
                             </div>`);
 
+                            $(".cancellation-option-overlay").on("click", function(){
+                                $(this).remove();
+                            })
+                            $(".cancellation-option-overlay > div").on("click", function(event){
+                                event.stopPropagation();
+                            })
+
                             //cancel all orders
                             $(".cancellation-option-overlay button:nth-child(1)").on("click", function(){
                                 $(".cancellation-option-overlay").remove();
