@@ -957,3 +957,63 @@ button{
 .confirmation-buttons button:nth-child(2){
     background: red;
 }
+.cancel-order-confirmation > div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 4px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.cancel-order-confirmation > div input{
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+.cancel-order-confirmation > div button{
+    background:rgb(36, 180, 36);
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    padding: 10px;
+}
+.cancellation-option-overlay > div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 4px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.cancellation-option-overlay > div button{
+    padding: 20px 50px;
+    font-size: 15px;
+    margin: 0 10px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    margin: 20px 10px 0;
+}
+.cancellation-option-overlay > div button:nth-child(1){
+    background: #666;
+    color: #fff;
+}
+.cancellation-option-overlay > div > div{
+    display: flex;
+}
+.cancellation-option-overlay > div button:nth-child(2){
+    background: #fff;
+    color: #666;
+    border: 1px solid #666;
+}

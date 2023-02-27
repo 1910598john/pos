@@ -1,5 +1,5 @@
 <?php
 session_start();
-unset($_SESSION['ended_items']);
+echo $_SESSION['ended_items'];
 
 ?>

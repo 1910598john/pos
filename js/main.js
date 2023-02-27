@@ -67,27 +67,26 @@ $(document).ready(function(){
     }, "slow");
 
     //check items ended time already passed
-        $.ajax({
-            type: 'POST',
-            url: 'get_ended_items.php',
-            success: function(res) {
-                clearInterval(interval);
-                res = JSON.parse(res);
-                console.log(res);
-                for (let i = 0; i < res.length; i++) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'time_passed.php',
-                        data: {
-                            id: res[i]
-                        },
-                        success: function(id) {
-                            console.log(id + " time has passed.");
-                        }
-                    })
-                }
+    $.ajax({
+        type: 'POST',
+        url: 'get_ended_items.php',
+        success: function(res) {
+            res = JSON.parse(res);
+            console.log(res);
+            for (let i = 0; i < res.length; i++) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'time_passed.php',
+                    data: {
+                        id: res[i]
+                    },
+                    success: function(id) {
+                        console.log(id + " time has passed.");
+                    }
+                })
             }
-        })
+        }
+    })
     
     //start playground time
     function start_time(map){
@@ -120,16 +119,12 @@ $(document).ready(function(){
                         data: {
                             id: res[i]
                         },
-                        success: function(id) {
-                            console.log(id + " time has passed.");
-                        }
                     })
                 }
             }
         })
 
         function startCountdown(){
-            
             //
             if (map.size == 1) {
                 clearInterval(interval);
@@ -141,7 +136,7 @@ $(document).ready(function(){
                     let rem = map.get(`id${i}`) / 60;
                     rem = Math.round(rem);
                     //time ended
-                    if (map.get(`id${i}`) == 1 || map.get(`id_status${i}`) == 'ended'){
+                    if (map.get(`id${i}`) == 1){
                         //update status
                         $.ajax({
                             type: 'POST',
@@ -229,9 +224,6 @@ $(document).ready(function(){
         };
     }
     //
-    
-
-
     //render playground time section
     $.ajax({
         type: 'POST',
@@ -247,9 +239,13 @@ $(document).ready(function(){
                 let map = new Map();
                 map.set('firstId', parseInt(res[0][0]));
                 for (let i = 0; i < len; i++){
+                    if (res[i][4] == 'ended') {
+                        res[i][2] = "1";
+                    }
+                    
                     items_remaining_time.push(res[i][2]);
                     let txt = '';
-                    let rem;
+                    let rem = 0;
                     let itemName;
                     if (res[i][2] == 'No limit'){
                         rem = 0;
@@ -257,7 +253,6 @@ $(document).ready(function(){
                         rem = parseInt(res[i][2]);
                     }
                     map.set(`id${res[i][0]}`, rem);
-                    map.set(`id_status${res[i][0]}`, res[i][4]);
                     if (res[i][1] == 'Half hour'){
                         res[i][1] = 'Half hour';
                         txt = '30 mins';
@@ -1326,12 +1321,10 @@ $("#remove").on("click", function(){
                     setTimeout(function(){
                         location.reload();
                     }, 2000);
-                }, 3000)
+                }, 2000)
                 
             }
         })
-
-        
     }
 })
 
@@ -1828,7 +1821,144 @@ $("#show-pending-orders").on("click", function(){
                 //actions..
                 //cancel
                 $(".table-action #cancel-order").on("click", function(){
-                    let txt = $(this).attr("class");
+                    //cancel all
+
+                    let id = $(this).attr("class");
+                    //fetch ticket
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fetch_ticket_for_cancellation.php',
+                        data: {
+                            id: id
+                        },
+                        success: function(res){
+                            let ticket = res;
+                            document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                            <div class="cancellation-option-overlay" id="cancel-order-confirmation" style="z-index:4000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+                                <div>
+                                    <span style="text-align:center;font-size:20px;color:#666;">Cancel option:</span>
+                                    <div>
+                                        <button>All orders</button>
+                                        <button>Chosen item</button>
+                                    </div>
+                                </div>
+                            </div>`);
+
+                            //cancel all orders
+                            $(".cancellation-option-overlay button:nth-child(1)").on("click", function(){
+                                $(".cancellation-option-overlay").remove();
+                                document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                                <div class="cancel-order-confirmation" id="cancel-order-confirmation" style="z-index:4000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+                                    <div>
+                                        <span style="text-align:center;font-weight:bold;color:#666;font-size:20px;">Cancel ${res} all orders.</span>
+                                        <input id="admin-password" type="password" placeholder="Admin password.."/>
+                                        <button id="order-cancellation-confirm">Cancel Order</button>
+                                    </div>
+                                </div>`);
+
+                                $(".cancel-order-confirmation").on("click", function(){
+                                    $(this).remove();
+                                })
+                                $(".cancel-order-confirmation > div").on("click", function(event){
+                                    event.stopPropagation();
+                                })
+
+                                $("#order-cancellation-confirm").on("click", function(){
+                                    let pass = document.getElementById("admin-password");
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'verify_admin_password.php',
+                                        data: {
+                                            pass: pass.value,
+                                        },
+                                        success: function(res){
+                                            if (res == 'confirmed') {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'cancel_all_orders_confirmed.php',
+                                                    data: {
+                                                        ticket: ticket
+                                                    },
+                                                    success: function(res){
+                                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                        <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
+                                                        $(".cancel-order-confirmation").remove();
+                                                        setTimeout(function(){
+                                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
+                                                            setTimeout(function(){
+                                                                location.reload();
+                                                            }, 2000);
+                                                        }, 1000);
+                                                    }
+                                                })
+                                                
+                                            } else {
+                                                alert("Not an admin password.");
+                                            }
+                                        }
+                                    })
+                                })
+                            })
+
+                            //individual
+                            $(".cancellation-option-overlay button:nth-child(2)").on("click", function(){
+                                $(".cancellation-option-overlay").remove();
+                                document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
+                                <div class="cancel-order-confirmation" id="cancel-order-confirmation" style="z-index:4000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+                                    <div>
+                                        <span style="text-align:center;font-weight:bold;color:#666;font-size:20px;">Cancel ${res} order.</span>
+                                        <input id="admin-password" type="password" placeholder="Admin password.."/>
+                                        <button id="order-cancellation-confirm">Cancel Order</button>
+                                    </div>
+                                </div>`);
+
+                                $(".cancel-order-confirmation").on("click", function(){
+                                    $(this).remove();
+                                })
+                                $(".cancel-order-confirmation > div").on("click", function(event){
+                                    event.stopPropagation();
+                                })
+
+                                $("#order-cancellation-confirm").on("click", function(){
+                                    let pass = document.getElementById("admin-password");
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'verify_admin_password.php',
+                                        data: {
+                                            pass: pass.value,
+                                        },
+                                        success: function(res){
+                                            if (res == 'confirmed') {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'cancel_order_confirmed.php',
+                                                    data: {
+                                                        id: id
+                                                    },
+                                                    success: function(res){
+                                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                        <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
+                                                        $(".cancel-order-confirmation").remove();
+                                                        setTimeout(function(){
+                                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
+                                                            setTimeout(function(){
+                                                                location.reload();
+                                                            }, 2000);
+                                                        }, 1000);
+                                                    }
+                                                })
+                                                
+                                            } else {
+                                                alert("Not an admin password.");
+                                            }
+                                        }
+                                    })
+                                })
+                            })
+                        }
+                    })
                     
                     /*
                     $.ajax({
@@ -1940,6 +2070,7 @@ function confirmation(action, message){
 
 //force close
 function force_close(){
+    clearInterval(interval);
     $.ajax({
         type: 'POST',
         url: 'force_close.php'
