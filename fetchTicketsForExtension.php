@@ -12,8 +12,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
-
-$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND NOT item='KTV' AND date='$date' ";
+$year = $_POST['year'];
+$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND NOT item='KTV' AND date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $tickets = array();
 if ($result->num_rows > 0) {

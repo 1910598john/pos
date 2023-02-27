@@ -14,7 +14,8 @@ if ($conn->connect_error) {
 }
 $date = $_POST['date'];
 $user = $_SESSION['cashier'];
-$sql = "SELECT amount FROM detailed_report WHERE user='$user' AND section='play' AND date='$date'";
+$year = $_POST['year'];
+$sql = "SELECT amount FROM detailed_report WHERE user='$user' AND section='play' AND date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $items = array();
 if ($result->num_rows >= 1) {

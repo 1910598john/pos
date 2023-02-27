@@ -12,7 +12,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
-$sql = "SELECT id, ticket, item, time, status, table_id FROM cafe_report WHERE NOT status='deleted' AND date='$date'";
+$year = $_POST['year'];
+$sql = "SELECT id, ticket, item, time, status, table_id FROM cafe_report WHERE NOT status='deleted' AND date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $items = array();
 if ($result->num_rows >= 1) {

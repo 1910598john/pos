@@ -13,6 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
+$year = $_POST['year'];
 $user = $_SESSION['cashier'];
 $sql = "SELECT balance FROM cashier_auth WHERE name='$user'";
 $result = $conn->query($sql);

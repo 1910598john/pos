@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2023 at 08:30 AM
+-- Generation Time: Feb 27, 2023 at 08:58 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -55,7 +55,8 @@ CREATE TABLE `cafe_report` (
   `time` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
-  `table_id` varchar(10) NOT NULL
+  `table_id` varchar(10) NOT NULL,
+  `year` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -81,8 +82,7 @@ CREATE TABLE `cashier_auth` (
 --
 
 INSERT INTO `cashier_auth` (`id`, `name`, `username`, `password`, `logged_in`, `logged_out`, `balance`, `last_id`, `status`) VALUES
-(2, 'John', 'jmcatamora', 'invoker123', '03:25 PM', '12:23 PM', 0, '0', 'active'),
-(4, 'Janine', 'janine', 'janine', '12:23 PM', '12:23 PM', 0, '0', 'inactive');
+(2, 'John', 'jmcatamora', 'invoker123', '03:39 PM', '03:41 PM', 0, '79', 'active');
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,8 @@ CREATE TABLE `detailed_report` (
   `discounted` varchar(30) NOT NULL,
   `user` varchar(30) NOT NULL,
   `time` varchar(30) NOT NULL,
-  `date` varchar(30) NOT NULL
+  `date` varchar(30) NOT NULL,
+  `year` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -143,7 +144,8 @@ CREATE TABLE `playground_report` (
   `amount` int(10) NOT NULL,
   `user` varchar(30) NOT NULL,
   `time` varchar(30) NOT NULL,
-  `date` varchar(30) NOT NULL
+  `date` varchar(30) NOT NULL,
+  `year` varchar(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -153,13 +155,15 @@ CREATE TABLE `playground_report` (
 --
 
 CREATE TABLE `playground_time` (
-  `id` int(10) NOT NULL,
-  `ticketID` varchar(30) NOT NULL,
+  `id` int(6) NOT NULL,
+  `ticketID` varchar(10) NOT NULL,
   `item` varchar(30) NOT NULL,
   `remaining_time` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
   `date` varchar(30) NOT NULL,
-  `extended` varchar(30) NOT NULL
+  `extended` varchar(30) NOT NULL,
+  `end_time` varchar(30) NOT NULL,
+  `year` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -173,88 +177,89 @@ CREATE TABLE `products` (
   `name` varchar(30) NOT NULL,
   `description` varchar(30) NOT NULL,
   `price` varchar(10) NOT NULL,
-  `discount` int(10) NOT NULL
+  `discount` int(10) NOT NULL,
+  `stock` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`) VALUES
-(13, 'A1 (HOT)', 'HK style Milk Tea', '90', 40),
-(14, 'A1 (ICED)', 'HK style Milk Tea', '130', 40),
-(15, 'A2 (HOT)', 'Matcha Milk', '90', 40),
-(16, 'A2 (ICED)', 'Matcha Milk', '130', 40),
-(17, 'A3 (HOT)', 'Coffee', '90', 40),
-(18, 'A3 (ICED)', 'Coffee', '130', 40),
-(19, 'A4 (HOT)', 'Coffee Hazelnut', '90', 40),
-(20, 'A4 (ICED)', 'Coffee Hazelnut', '130', 40),
-(21, 'A5 (HOT)', 'Milo', '90', 40),
-(22, 'A5 (ICED)', 'Milo', '130', 40),
-(23, 'A6 (HOT)', 'Ovaltine', '90', 40),
-(24, 'A6 (ICED)', 'Ovaltine', '130', 40),
-(25, 'A7 (HOT)', 'Chocolate', '90', 40),
-(26, 'A7 (ICED)', 'Chocolate', '130', 40),
-(27, 'A8 (HOT)', 'Chocolate Hazelnut', '90', 40),
-(28, 'A8 (ICED)', 'Chocolate Hazelnut', '130', 40),
-(29, 'A9 (HOT)', 'Horlicks', '90', 40),
-(30, 'A9 (ICED)', 'Horlicks', '130', 40),
-(31, 'ADD ON', 'Ice cream, Toppings, Sauce', '80', 40),
-(32, 'B1 (HOT)', 'Lemon Tea', '90', 40),
-(33, 'B1 (ICED)', 'Lemon Tea', '130', 40),
-(34, 'B2 (HOT)', 'Lemon Water', '90', 40),
-(35, 'B2 (ICED)', 'Lemon Water', '130', 40),
-(36, 'B3 (HOT)', 'Honey Lemon', '90', 40),
-(37, 'B3 (ICED)', 'Honey Lemon', '130', 40),
-(38, 'B4 (HOT)', 'Coke With Lemon', '90', 40),
-(39, 'B4 (ICED)', 'Coke With Lemon', '130', 40),
-(40, 'B5 (HOT)', 'Sprite With Lemon', '90', 40),
-(41, 'B5 (ICED)', 'Sprite With Lemon', '130', 40),
-(42, 'C1 (HOT)', 'HK style Almond Milk', '90', 40),
-(43, 'C1 (ICED)', 'HK style Almond Milk', '130', 40),
-(44, 'C2 (HOT)', 'Soya Milk', '90', 40),
-(45, 'C2 (ICED)', 'Soya Milk', '130', 40),
-(46, 'C3 (HOT)', 'Ginger With Honey', '90', 40),
-(47, 'C3 (ICED)', 'Ginger With Honey', '130', 40),
-(48, 'C4 (HOT)', 'Honey Citron Tea', '90', 40),
-(49, 'C4 (ICED)', 'Honey Citron Tea', '130', 40),
-(50, 'Water', 'Water', '30', 40),
-(51, 'Dinosaur Paint', 'Toys', '350', 0),
-(52, 'Spinner Girl', 'Toys', '200', 0),
-(53, 'Spinner Metal', 'Toys', '350', 0),
-(54, 'Yoyo', 'Toys', '150', 0),
-(55, 'Pop It', 'Toys', '200', 0),
-(56, 'Royal', 'Soft Drinks', '80', 40),
-(57, 'Sprite', 'Soft Drinks', '80', 40),
-(58, 'Beer', 'Drinks', '85', 40),
-(59, 'Coke', 'Soft Drinks', '80', 40),
-(60, 'Original Waffle', 'Waffle', '100', 40),
-(61, 'Ice Cream Waffle', 'Waffle', '130', 40),
-(62, 'Banana Waffle', 'Waffle', '130', 40),
-(63, 'Choco Waffle', 'Choco Waffle', '120', 40),
-(64, 'Ice Cream choco waffle', 'Choco Waffle', '150', 40),
-(65, 'Banana choco waffle', 'Choco Waffle', '150', 40),
-(66, 'Pizza with tuna', 'Pizza Waffle', '190', 40),
-(67, 'Pizza with sausage', 'Pizza Waffle', '190', 40),
-(68, 'Pizza with cheese', 'Pizza Waffle', '150', 40),
-(69, 'Hawaiian Pizza', 'Pizza Waffle', '190', 40),
-(70, 'Fries', 'Group food', '100', 40),
-(71, 'Baked chicken with vege (half)', 'Group food', '280', 40),
-(72, 'Baked chicken with vege (whole', 'Group food', '550', 40),
-(73, 'Chinese style BBQ pork (10 sti', 'Group food', '280', 40),
-(74, 'Spaghetti', 'Group food', '400', 40),
-(75, 'Carbonara', 'Group food', '450', 40),
-(76, 'Banana split (3 ice cream)', 'Desserts', '180', 40),
-(77, 'Ice cream with toppings', 'Desserts', '80', 40),
-(78, 'Tuna roll', 'Sushi Roll', '190', 40),
-(79, 'Ham and cheese roll', 'Sushi Roll', '190', 40),
-(80, 'Sausage and cheese roll', 'Sushi Roll', '190', 40),
-(81, 'Bacon & egg noodles', 'Asian Noodles', '190', 40),
-(82, 'Sausage & egg noodles', 'Asian Noodles', '190', 40),
-(83, 'Ham & egg noodles', 'Asian Noodles', '190', 40),
-(84, 'Fish ball & egg noodles', 'Asian Noodles', '190', 40),
-(86, 'Adult Pass', 'Socks', '50', 0),
-(87, 'Adult Pass', 'Socks', '40', 0);
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `discount`, `stock`) VALUES
+(13, 'A1 (HOT)', 'HK style Milk Tea', '90', 40, NULL),
+(14, 'A1 (ICED)', 'HK style Milk Tea', '130', 40, NULL),
+(15, 'A2 (HOT)', 'Matcha Milk', '90', 40, NULL),
+(16, 'A2 (ICED)', 'Matcha Milk', '130', 40, NULL),
+(17, 'A3 (HOT)', 'Coffee', '90', 40, NULL),
+(18, 'A3 (ICED)', 'Coffee', '130', 40, NULL),
+(19, 'A4 (HOT)', 'Coffee Hazelnut', '90', 40, NULL),
+(20, 'A4 (ICED)', 'Coffee Hazelnut', '130', 40, NULL),
+(21, 'A5 (HOT)', 'Milo', '90', 40, NULL),
+(22, 'A5 (ICED)', 'Milo', '130', 40, NULL),
+(23, 'A6 (HOT)', 'Ovaltine', '90', 40, NULL),
+(24, 'A6 (ICED)', 'Ovaltine', '130', 40, NULL),
+(25, 'A7 (HOT)', 'Chocolate', '90', 40, NULL),
+(26, 'A7 (ICED)', 'Chocolate', '130', 40, NULL),
+(27, 'A8 (HOT)', 'Chocolate Hazelnut', '90', 40, NULL),
+(28, 'A8 (ICED)', 'Chocolate Hazelnut', '130', 40, NULL),
+(29, 'A9 (HOT)', 'Horlicks', '90', 40, NULL),
+(30, 'A9 (ICED)', 'Horlicks', '130', 40, NULL),
+(31, 'ADD ON', 'Ice cream, Toppings, Sauce', '80', 40, NULL),
+(32, 'B1 (HOT)', 'Lemon Tea', '90', 40, NULL),
+(33, 'B1 (ICED)', 'Lemon Tea', '130', 40, NULL),
+(34, 'B2 (HOT)', 'Lemon Water', '90', 40, NULL),
+(35, 'B2 (ICED)', 'Lemon Water', '130', 40, NULL),
+(36, 'B3 (HOT)', 'Honey Lemon', '90', 40, NULL),
+(37, 'B3 (ICED)', 'Honey Lemon', '130', 40, NULL),
+(38, 'B4 (HOT)', 'Coke With Lemon', '90', 40, NULL),
+(39, 'B4 (ICED)', 'Coke With Lemon', '130', 40, NULL),
+(40, 'B5 (HOT)', 'Sprite With Lemon', '90', 40, NULL),
+(41, 'B5 (ICED)', 'Sprite With Lemon', '130', 40, NULL),
+(42, 'C1 (HOT)', 'HK style Almond Milk', '90', 40, NULL),
+(43, 'C1 (ICED)', 'HK style Almond Milk', '130', 40, NULL),
+(44, 'C2 (HOT)', 'Soya Milk', '90', 40, NULL),
+(45, 'C2 (ICED)', 'Soya Milk', '130', 40, NULL),
+(46, 'C3 (HOT)', 'Ginger With Honey', '90', 40, NULL),
+(47, 'C3 (ICED)', 'Ginger With Honey', '130', 40, NULL),
+(48, 'C4 (HOT)', 'Honey Citron Tea', '90', 40, NULL),
+(49, 'C4 (ICED)', 'Honey Citron Tea', '130', 40, NULL),
+(50, 'Water', 'Water', '30', 40, NULL),
+(51, 'Dinosaur Paint', 'Toys', '350', 0, NULL),
+(52, 'Spinner Girl', 'Toys', '200', 0, NULL),
+(53, 'Spinner Metal', 'Toys', '350', 0, NULL),
+(54, 'Yoyo', 'Toys', '150', 0, NULL),
+(55, 'Pop It', 'Toys', '200', 0, NULL),
+(56, 'Royal', 'Soft Drinks', '80', 40, NULL),
+(57, 'Sprite', 'Soft Drinks', '80', 40, NULL),
+(58, 'Beer', 'Drinks', '85', 40, NULL),
+(59, 'Coke', 'Soft Drinks', '80', 40, NULL),
+(60, 'Original Waffle', 'Waffle', '100', 40, NULL),
+(61, 'Ice Cream Waffle', 'Waffle', '130', 40, NULL),
+(62, 'Banana Waffle', 'Waffle', '130', 40, NULL),
+(63, 'Choco Waffle', 'Choco Waffle', '120', 40, NULL),
+(64, 'Ice Cream choco waffle', 'Choco Waffle', '150', 40, NULL),
+(65, 'Banana choco waffle', 'Choco Waffle', '150', 40, NULL),
+(66, 'Pizza with tuna', 'Pizza Waffle', '190', 40, NULL),
+(67, 'Pizza with sausage', 'Pizza Waffle', '190', 40, NULL),
+(68, 'Pizza with cheese', 'Pizza Waffle', '150', 40, NULL),
+(69, 'Hawaiian Pizza', 'Pizza Waffle', '190', 40, NULL),
+(70, 'Fries', 'Group food', '100', 40, NULL),
+(71, 'Baked chicken with vege (half)', 'Group food', '280', 40, NULL),
+(72, 'Baked chicken with vege (whole', 'Group food', '550', 40, NULL),
+(73, 'Chinese style BBQ pork (10 sti', 'Group food', '280', 40, NULL),
+(74, 'Spaghetti', 'Group food', '400', 40, NULL),
+(75, 'Carbonara', 'Group food', '450', 40, NULL),
+(76, 'Banana split (3 ice cream)', 'Desserts', '180', 40, NULL),
+(77, 'Ice cream with toppings', 'Desserts', '80', 40, NULL),
+(78, 'Tuna roll', 'Sushi Roll', '190', 40, NULL),
+(79, 'Ham and cheese roll', 'Sushi Roll', '190', 40, NULL),
+(80, 'Sausage and cheese roll', 'Sushi Roll', '190', 40, NULL),
+(81, 'Bacon & egg noodles', 'Asian Noodles', '190', 40, NULL),
+(82, 'Sausage & egg noodles', 'Asian Noodles', '190', 40, NULL),
+(83, 'Ham & egg noodles', 'Asian Noodles', '190', 40, NULL),
+(84, 'Fish ball & egg noodles', 'Asian Noodles', '190', 40, NULL),
+(86, 'Adult Pass', 'Socks', '50', 0, NULL),
+(87, 'Adult Pass', 'Socks', '40', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -350,7 +355,7 @@ ALTER TABLE `auth`
 -- AUTO_INCREMENT for table `cafe_report`
 --
 ALTER TABLE `cafe_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
 
 --
 -- AUTO_INCREMENT for table `cashier_auth`
@@ -362,7 +367,7 @@ ALTER TABLE `cashier_auth`
 -- AUTO_INCREMENT for table `detailed_report`
 --
 ALTER TABLE `detailed_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=245;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -374,13 +379,13 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `playground_report`
 --
 ALTER TABLE `playground_report`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `playground_time`
 --
 ALTER TABLE `playground_time`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `products`

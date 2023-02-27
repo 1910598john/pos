@@ -211,7 +211,8 @@ $(document).ready(function(){
         type: 'POST',
         url: 'fetch_playground_time.php',
         data: {
-            date: `${months[time.getMonth()]} ${time.getDate()}`
+            date: `${months[time.getMonth()]} ${time.getDate()}`,
+            year: `${time.getFullYear()}`
         },
         success: function(res){
             console.log(res);
@@ -1167,7 +1168,7 @@ $(document).ready(function(){
     })
 })
 
-function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems, price, time, date){
+function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems, price, _time, date){
     $.ajax({
         type: 'POST',
         url: 'detailed_report.php',
@@ -1176,8 +1177,9 @@ function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems,
             tickets: ticketNumbers,
             items: pickedItems,
             price: price,
-            time: time,
+            time: _time,
             mon: date,
+            year: `${time.getFullYear()}`,
             discounted: discounted,
             cafeticket: cafeticket
         },
@@ -1188,8 +1190,7 @@ function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems,
 
 }
 
-function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time, date){
-    console.log(time + " " + date);
+function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, _time, date){
     //verify tickets
     console.log(tickets);
     for (let i = 0; i < tickets.length; i++) {
@@ -1205,6 +1206,7 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
     
+    
     $.ajax({
         type: 'POST',
         url: url,
@@ -1212,8 +1214,9 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, time
             tickets: tickets,
             items: items,
             pricelist: pricelist,
-            time: time,
+            time: _time,
             date: date,
+            year: `${time.getFullYear()}`,
             tablenumber: chosenTable,
             cafeticket: ticketcafe
         },
@@ -1334,7 +1337,8 @@ $("#extend").on("click", function(){
             type: 'POST',
             url: 'fetchTicketsForExtension.php',
             data: {
-                date: `${months[time.getMonth()]} ${time.getDate()}`
+                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                year: `${time.getFullYear()}`
             },
             success: function(res){
                 res = JSON.parse(res);
@@ -1518,14 +1522,16 @@ $("#check-balance").on("click", function(){
             type: 'POST',
             url: 'check_balance.php',
             data: {
-                date: `${months[time.getMonth()]} ${time.getDate()}`
+                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                year: `${time.getFullYear()}`
             },
             success: function(res){
                 $.ajax({
                     type: 'POST',
                     url: 'fetch_balance.php',
                     data: {
-                        date: `${months[time.getMonth()]} ${time.getDate()}`
+                        date: `${months[time.getMonth()]} ${time.getDate()}`,
+                        year: `${time.getFullYear()}`
                     },
                     success: function(res){
                         $("#total-cashier").html(`₱${res}`);
@@ -1561,7 +1567,8 @@ $("#check-balance").on("click", function(){
                             type: 'POST',
                             url: 'fetch_balance_play.php',
                             data: {
-                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                                year: `${time.getFullYear()}`
                             },
                             success: function(res){
                                 res = JSON.parse(res);
@@ -1576,7 +1583,8 @@ $("#check-balance").on("click", function(){
                             type: 'POST',
                             url: 'fetch_playground_items_cashier.php',
                             data: {
-                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                                year: `${time.getFullYear()}`
                             },
                             success:function(res){
                                 res = JSON.parse(res);
@@ -1612,7 +1620,8 @@ $("#check-balance").on("click", function(){
                             type: 'POST',
                             url: 'fetch_balance_cafe.php',
                             data: {
-                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                                year: `${time.getFullYear()}`
                             },
                             success: function(res){
                                 res = JSON.parse(res);
@@ -1627,7 +1636,8 @@ $("#check-balance").on("click", function(){
                             type: 'POST',
                             url: 'fetch_cafe_items_cashier.php',
                             data: {
-                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                                year: `${time.getFullYear()}`
                             },
                             success:function(res){
                                 res = JSON.parse(res);
@@ -1663,7 +1673,8 @@ $("#check-balance").on("click", function(){
                             type: 'POST',
                             url: 'fetch_balance.php',
                             data: {
-                                date: `${months[time.getMonth()]} ${time.getDate()}`
+                                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                                year: `${time.getFullYear()}`
                             },
                             success: function(res){
                                 $("#total-cashier").html(`₱${res}`);
@@ -1702,7 +1713,8 @@ $("#check-balance").on("click", function(){
             type: 'POST',
             url: 'fetch_balance.php',
             data: {
-                date: `${months[time.getMonth()]} ${time.getDate()}`
+                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                year: `${time.getFullYear()}`
             },
             success: function(res){
                 $("#cashier-balance").html(`₱${res}`);
@@ -1712,7 +1724,8 @@ $("#check-balance").on("click", function(){
             type: 'POST',
             url: 'daily_sales_check.php',
             data: {
-                date: `${months[time.getMonth()]} ${time.getDate()}`
+                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                year: `${time.getFullYear()}`
             },
             success: function(res){
                 res = JSON.parse(res);
@@ -1757,7 +1770,8 @@ $("#show-pending-orders").on("click", function(){
         type: 'POST',
         url: 'fetch_pending_orders.php',
         data : {
-            date: `${mon} ${date}`
+            date: `${mon} ${date}`,
+            year: `${time.getFullYear()}`
         },
         success: function(res){
             if (res == 'No orders'){
@@ -1821,7 +1835,7 @@ $("#show-pending-orders").on("click", function(){
                                     <span style="text-align:center;font-size:20px;color:#666;">Cancel option:</span>
                                     <div>
                                         <button>All orders</button>
-                                        <button>Chosen item</button>
+                                        <button>Selected</button>
                                     </div>
                                 </div>
                             </div>`);

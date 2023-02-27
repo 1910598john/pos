@@ -13,7 +13,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
-$sql = "SELECT id, ticketID, item, remaining_time, status, end_time FROM playground_time WHERE NOT status='removed' AND date='$date'";
+$year = $_POST['year'];
+$sql = "SELECT id, ticketID, item, remaining_time, status, end_time FROM playground_time WHERE NOT status='removed' AND date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $items = array();
 $end_items = array();

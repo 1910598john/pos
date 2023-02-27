@@ -17,14 +17,15 @@ $items = $_POST['items'];
 $pricelist = $_POST['pricelist'];
 $time = $_POST['time'];
 $date = $_POST['date'];
+$year = $_POST['year'];
 $items_length = count($items);
 $ticketNumber = $_POST['tickets'];
 $currentUser = $_SESSION['cashier'];
 
 if ($items_length > 1) {
-    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date) VALUES($ticketNumber[0], '$items[0]', $pricelist[0], '$currentUser', '$time', '$date');";
+    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber[0], '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year');";
     for ($i = 1; $i < $items_length; $i++){
-        $sql .= "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date) VALUES($ticketNumber[$i], '$items[$i]', $pricelist[$i], '$currentUser', '$time', '$date');";
+        $sql .= "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber[$i], '$items[$i]', $pricelist[$i], '$currentUser', '$time', '$date', '$year');";
     }
     if ($conn->multi_query($sql) === TRUE){
         echo 'success';
@@ -33,7 +34,7 @@ if ($items_length > 1) {
     }
     
 } elseif ($items_length == 1){
-    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date) VALUES($ticketNumber[0], '$items[0]', $pricelist[0], '$currentUser', '$time', '$date')";
+    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber[0], '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year')";
     if ($conn->query($sql) === TRUE){
         echo 'success';
     } else {

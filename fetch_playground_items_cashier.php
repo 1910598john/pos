@@ -14,12 +14,13 @@ if ($conn->connect_error) {
 }
 
 $date = $_POST['date'];
+$year = $_POST['year'];
 $name = $_SESSION['cashier'];
 if (isset($_SESSION['logoutlastId'])) {
     $lastid = $_SESSION['logoutlastId'];
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE id > '$lastid' AND section='play' AND date='$date' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date, year FROM detailed_report WHERE id > '$lastid' AND section='play' AND date='$date' AND year='$year' AND user='$name'";
 } else {
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date FROM detailed_report WHERE  date='$date' AND section='play' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date, yearFROM detailed_report WHERE  date='$date' AND year='$year' AND section='play' AND user='$name'";
 }
 
 

@@ -12,7 +12,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $date = $_POST['date'];
-$sql = "SELECT amount FROM detailed_report WHERE date='$date'";
+$year = $_POST['year'];
+$sql = "SELECT amount FROM detailed_report WHERE date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $amount_list = array();
 if ($result->num_rows >= 1) {
