@@ -309,34 +309,19 @@ button{
     flex-wrap: wrap;
     padding: 20px;
 }
+
 .main .items-container-playground > div{
     width: 120px;
     height: 120px;
-    border-radius: 4px;
     box-shadow: 0 0 5px gray;
     background: #fff;
-    cursor: pointer;
-    margin: 10px;
+    border-radius: 4px;
     position: relative;
+    margin: 10px;
+    cursor: pointer;
 }
-@media screen and (max-width: 1028) {
-    .main .items-container-playground > div{
-        width: 50px;
-        height: 50px;
-    }
-}
-.main .items-container-playground > div span{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: orange;
-    text-shadow: 0 0 3px orange;
-    font-size: 20px;
-}
-.main .items-container-playground > div .price{
+
+.items-container-playground .item .item-price{
     position: absolute;
     left: -1px;
     top: 0;
@@ -347,6 +332,39 @@ button{
     border-top-left-radius: 4px;
     font-weight: bold;
 }
+.items-container-playground .item .item-name-container{
+    position: absolute;
+    bottom: -10%;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    height: 40%;
+}
+.items-container-playground .item .item-name-container span{
+    font-size: 11px;
+    text-align: center;
+    color: #666;
+    padding: 0;
+    line-height: 12px;
+}
+.items-container-playground .item .item-name-container span:nth-child(1){
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+@media screen and (max-width: 1028) {
+    .main .items-container-playground > div{
+        width: 50px;
+        height: 50px;
+    }
+}
+
 
 .main .items-container > div{
     width: 120px;
@@ -357,9 +375,6 @@ button{
     position: relative;
     margin: 10px;
     cursor: pointer;
-}
-.main .items-container > div, .main .items-container-playground > div{
-    transition: .3s;
 }
 .main .items-container > div:hover, .main .items-container-playground > div:hover{
     box-shadow: 0 0 10px black;

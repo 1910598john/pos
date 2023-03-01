@@ -47,26 +47,8 @@ if (!isset($_SESSION['cashier'])) {
         <div class="main-content">
             <div class="items-container" id="items-container" style="box-shadow: 0 0 5px gray;"></div>
             <div class="items-container-playground" id="items-container-playground" style="box-shadow: 0 0 5px gray;">
-                <div id="half-hour">
-                    <div class="price">₱90</div>
-                    <span>Half hour</span>
-                </div>
-                <div id="one-hour">
-                    <div class="price">₱150</div>
-                    <span>1 hour</span>
-                </div>
-                <div id="two-hours">
-                    <div class="price">₱200</div>
-                    <span>2 hours</span>
-                </div>
-                <div id="unlimited">
-                    <div class="price">₱250</div>
-                    <span>Unlimited</span>
-                </div>
-                <div id="ktv">
-                    <div class="price">₱200</div>
-                    <span>KTV</span>
-                </div>
+                
+                <!---->
             </div>
         </div>
     </div>

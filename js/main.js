@@ -281,170 +281,51 @@ $(document).ready(function(){
         url: 'fetchAvailableProducts.php',
         success: function(items){
             items = JSON.parse(items);
+            console.log(items);
             for (let i = 0; i < items.length; i++) {
-                itemsContainer.insertAdjacentHTML("beforeend", `
-                <div class="item" id="fetched-item${i + 1}">
-                    <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
-                    <div class="item-name-container">
-                        <span data-item="${items[i][0]}">${items[i][0]}</span>
-                        <span data-description="${items[i][1]}">${items[i][1]}</span>
-                    </div>
-                </div>`);
-                let image;
-                let itemname = `${items[i][0]}`;
-                if (i < 2) {
-                    image = `url(./image/hk_milk_tea.jpg)`;
-                } else if (i > 1 && i < 4) {
-                    image = `url(./image/matcha.jpg)`;
-                } 
-                else if (i > 3 && i < 6) {
-                    image = `url(./image/coffee.jpg)`;
-                } 
-                else if (i > 5 &&  i < 8) {
-                    image = `url(./image/coffee_hazelnut.jpg)`;
-                }
-                else if (i > 7 &&  i < 10) {
-                    image = `url(./image/milo.png)`;
-                }
-                else if (i > 9 &&  i < 12) {
-                    image = `url(./image/coffee_ovaltine.jpg)`;
-                }
-                else if (i > 11 &&  i < 14) {
-                    image = `url(./image/coffee_chocolate.webp)`;
-                }
-                else if (i > 13 &&  i < 16) {
-                    image = `url(./image/coffee_hazelnut_choco.jpg)`;
-                }
-                else if (i > 15 &&  i < 18) {
-                    image = `url(./image/horlicks.jpg)`;
-                }
-                else if (i > 17 &&  i < 19) {
-                    image = `url(./image/add_on.jpg)`;
-                }
-                else if (i > 18 &&  i < 21) {
-                    image = `url(./image/lemon_tea.jpg)`;
-                }
-                else if (i > 20 &&  i < 23) {
-                    image = `url(./image/lemon_water.jpeg)`;
-                }
-                else if (i > 22 &&  i < 25) {
-                    image = `url(./image/honey_lemon.webp)`;
-                }
-                else if (i > 24 &&  i < 27) {
-                    image = `url(./image/lemon_coke.png)`;
-                }
-                else if (i > 26 &&  i < 29) {
-                    image = `url(./image/sprite_with_lemon.jpg)`;
-                }
-                else if (i > 28 &&  i < 31) {
-                    image = `url(./image/almondmilk.png)`;
-                }
-                else if (i > 30 &&  i < 33) {
-                    image = `url(./image/soya_milk.webp)`;
-                }
-                else if (i > 32 &&  i < 35) {
-                    image = `url(./image/ginger_with_honey.jpeg)`;
-                }
-                else if (i > 34 &&  i < 37) {
-                    image = `url(./image/honey_citron.jpg)`;
-                }
-                else if (i > 36 &&  i < 38) {
-                    image = `url(./image/water.webp)`;
-                }
-                else if (i > 37 &&  i < 43) {
-                    image = `url(./image/toys.jpg)`;
-                }
-                else if (i > 42 &&  i < 44) {
-                    image = `url(./image/royal.webp)`;
-                }
-                else if (i > 43 &&  i < 45) {
-                    image = `url(./image/sprite.jpg)`;
-                }
-                else if (i > 44 &&  i < 46) {
-                    image = `url(./image/beer.webp)`;
-                }
-                else if (i > 45 &&  i < 47) {
-                    image = `url(./image/coke.jpg)`;
-                }
-                else if (i > 46 &&  i < 48) {
-                    image = `url(./image/waffle_original.webp)`;
-                }
-                else if (i > 47 &&  i < 49) {
-                    image = `url(./image/waffle_ice_cream.jpg)`;
-                }
-                else if (i > 48 &&  i < 50) {
-                    image = `url(./image/waffle_banana.jpg)`;
-                }
-                else if (i > 49 &&  i < 51) {
-                    image = `url(./image/choco_waffle.jpg)`;
-                }
-                else if (i > 50 &&  i < 52) {
-                    image = `url(./image/choco_waffle_ice_cream.jpg)`;
-                }
-                else if (i > 51 &&  i < 53) {
-                    image = `url(./image/choco_waffle_banana.webp)`;
-                }
-                else if (i > 52 &&  i < 54) {
-                    image = `url(./image/pizza_tuna.jpg)`;
-                }
-                else if (i > 53 &&  i < 55) {
-                    image = `url(./image/pizza_sausage.jpg)`;
-                }
-                else if (i > 54 &&  i < 56) {
-                    image = `url(./image/pizza_cheese.jpg)`;
-                }
-                else if (i > 55 &&  i < 57) {
-                    image = `url(./image/hawaiian_pizza.jpg)`;
-                }
-                else if (i > 56 &&  i < 58) {
-                    image = `url(./image/fries.webp)`;
-                }
-                else if (i > 57 &&  i < 60) {
-                    image = `url(./image/baked_chicken.jpg)`;
-                }
-                else if (i > 59 &&  i < 61) {
-                    image = `url(./image/chinese_bbq.jpeg)`;
-                }
-                else if (i > 60 &&  i < 62) {
-                    image = `url(./image/spaghetti.jpg)`;
-                }
-                else if (i > 61 &&  i < 63) {
-                    image = `url(./image/carbonara.jpg)`;
-                }
-                else if (i > 62 &&  i < 64) {
-                    image = `url(./image/banana_split.jpg)`;
-                }
-                else if (i > 63 &&  i < 65) {
-                    image = `url(./image/ice_cream_toppings.jpg)`;
-                }
-                else if (i > 64 &&  i < 66) {
-                    image = `url(./image/tuna_roll_sushi.jpg)`;
-                }
-                else if (i > 65 &&  i < 67) {
-                    image = `url(./image/ham_cheese_roll.jpg)`;
-                }
-                else if (i > 66 &&  i < 68) {
-                    image = `url(./image/sausage_cheese_roll.jpg)`;
-                }
-                else if (i > 67 &&  i < 69) {
-                    image = `url(./image/bacon_egg_noodles.jpg)`;
-                }
-                else if (i > 68 &&  i < 70) {
-                    image = `url(./image/sausage_egg_noodles.jpg)`;
-                }
-                else if (i > 69 &&  i < 71) {
-                    image = `url(./image/ham_egg_noodles.jpg)`;
-                }
-                else if (i > 70 &&  i < 72) {
-                    image = `url(./image/fishball_egg_noodles.jpg)`;
-                }
-                else if (i > 71 &&  i < 74) {
-                    image = `url(./image/adult_pass.webp)`;
+                if (items[i][3] == 'cafe'){
+                    itemsContainer.insertAdjacentHTML("beforeend", `
+                    <div class="item" id="fetched-item${i + 1}">
+                        <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
+                        <div class="item-name-container">
+                            <span data-item="${items[i][0]}">${items[i][0]}</span>
+                            <span data-description="${items[i][1]}">${items[i][1]}</span>
+                        </div>
+                    </div>`);
+                } else {
+                    if (items[i][1].includes("time") || items[i][1].includes("minutes")) {
+                        document.getElementById("items-container-playground").insertAdjacentHTML("beforeend", `
+                        <div class="item time" id="fetched-item${i + 1}">
+                            <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
+                            <div class="item-name-container">
+                                <span data-item="${items[i][0]}">${items[i][0]}</span>
+                                <span data-description="${items[i][1]}">${items[i][1]}</span>
+                            </div>
+                        </div>`);
+                    }
+                    else {
+                        document.getElementById("items-container-playground").insertAdjacentHTML("beforeend", `
+                        <div class="item" id="fetched-item${i + 1}">
+                            <div class="item-price"><span data-price="${items[i][2]}">₱${items[i][2]}</span></div>
+                            <div class="item-name-container">
+                                <span data-item="${items[i][0]}">${items[i][0]}</span>
+                                <span data-description="${items[i][1]}">${items[i][1]}</span>
+                            </div>
+                        </div>`);
+                    }
+
+                    if (items[i][0] == 'KTV') {
+                        $(`#fetched-item${i + 1}`).addClass("ktv");
+                    } else if (items[i][0].includes("Pass") || items[i][0].includes("Socks")){
+                        $(`#fetched-item${i + 1}`).addClass("pass");
+                    }
+                
                 }
                 
-                
+                let image = items[i][4];
+
                 $(`#fetched-item${i + 1}`).css({
-                    'background-image': image,
+                    'background-image': `url(${image})`,
                     'background-position' : 'center',
                     'background-repeat' :'no-repeat',
                     'background-size' : 'cover'
@@ -453,16 +334,19 @@ $(document).ready(function(){
             }
             
             //cafe item pick function..
-            $(".item").on("click", function(){
+            $(".items-container .item").on("click", function(){
                 if (!pageReloading){
                     if (isEmployee){
                         
                         location.reload();
                     }
+
+
                     
                     if (playgroundItemsPicked) {
                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                         <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
+                        section = 'cafe';
     
                     } else {
                         $("#employee").css("display", "block");
@@ -535,6 +419,202 @@ $(document).ready(function(){
                     }, 5000);
                 }
             })
+
+            //playground item pick function..
+            $(".items-container-playground .item").on("click", function(){
+                if (!pageReloading){
+                    if (isEmployee){
+                        
+                        location.reload();
+                    }
+                    if ($(this).css("opacity") != 0.5) {
+                        if ($(this).hasClass("ktv")) {
+                            $(".items-container-playground .time").css("opacity", ".5");
+                            $(".items-container-playground .item").css("opacity", ".5");
+                        }
+                        else if ($(this).hasClass("time")) {
+                            $(".items-container-playground .time").css("opacity", ".5");
+                        } else if ($(this).hasClass("pass")) {
+                            $(".items-container-playground .ktv").css("opacity", ".5");
+                        }
+                        
+    
+                        if (cafeItemsPicked) {
+                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                            <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
+                            section = 'play';
+        
+                        } else {
+                            $("#employee").css("display", "none");
+                            
+                            //show tables
+                            if (!showAvailableTables) {
+                                showAvailableTables = true;
+                               // $(".available-tables").css("display", "block");
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'show_available_tables.php',
+                                    success: function(res){
+                                        res = JSON.parse(res);
+                                        for (let i = res.length - 1; i >= 0; i--) {
+                                            document.getElementById("tables").insertAdjacentHTML("afterbegin", `
+                                            <div class="table-id">${res[i]}</div>`)
+                                        }
+                                        
+                                        $("#tables > div").on("click", function(){
+                                            $("#tables > div").css("background", "rgb(36, 163, 206)");
+                                            $(this).css("background", "orange");
+                                            chosenTable = $(this).html();
+                                        })
+                                    }
+                                })
+                            }
+                            playgroundItemsPicked = true;
+                            $(".check-out-modal").addClass("check-out-modal-animate");
+                            $(".check-out-modal").removeClass("check-out-modal-animate2");
+                            let itemId = $(this).attr("id");
+                            let item = document.getElementById(`${itemId}`);
+                            
+                            //get item price
+                            let itemPrice = item.children[0].children[0].dataset.price;
+                            let itemName = item.children[1].children[0].dataset.item;
+                            let itemDescription = item.children[1].children[1].dataset.description;
+    
+                            //fetch discount
+                            $.ajax({
+                                type: 'POST',
+                                url: 'fetchItemDiscount.php',
+                                data: {
+                                    item: itemName
+                                },
+                                success: function(res){
+                                    let disc;
+                                    disc = parseInt(itemPrice) * parseFloat(`0.${res}`);
+                                    discount.push(Math.round(disc));
+                                }
+                            })
+                            
+                            //add items
+                            price.push(parseInt(itemPrice));
+                            pickedItems.push(itemName);
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>${itemName}</span>
+                                <span>${itemDescription}</span>
+                                <span>₱${itemPrice}</span>
+                            </div>`);
+                            totalPrice += parseInt(itemPrice);
+                            totalPriceElement.innerHTML = `₱${totalPrice}`;
+    
+                        }
+                        let notifs = document.querySelectorAll(".check-out-notif");
+                        setTimeout(function(){
+                            for (let i = 0; i < notifs.length; i++){
+                                notifs[i].remove();
+                            }
+                        }, 5000);
+                    }
+                    
+                    
+                }
+                /*
+                if (!pageReloading){
+                    $("#employee").css("display", "none");
+                    if (cafeItemsPicked) {
+                        $("#employee").css("display", "block");
+                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                        <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
+                        
+                        let notifs = document.querySelectorAll(".check-out-notif");
+                        setTimeout(function(){
+                            for (let i = 0; i < notifs.length; i++){
+                                notifs[i].remove();
+                            }
+                        }, 5000);
+            
+                    } else {
+
+
+                        if (showAvailableTables) {
+                            showAvailableTables = false;
+                            $(".available-tables").css("display", "none");
+                            let container = document.getElementById("tables");
+                            while (container.lastElementChild) {
+                                container.removeChild(container.lastElementChild);
+                            }
+                        }
+                        playgroundItemsPicked = true;
+                        let itemId = $(this).attr("id");
+                        $(".check-out-modal").addClass("check-out-modal-animate");
+                        $(".check-out-modal").removeClass("check-out-modal-animate2");
+            
+                        if (itemId == "one-hour") {
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>1 hour</span>
+                                <span>60 minutes</span>
+                                <span>₱150</span>
+                            </div>`);
+                            itemPrice = 150;
+                            pickedItems.push("1 hour");
+
+                            
+
+                        }
+                        else if (itemId == "half-hour") {
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>Half hour</span>
+                                <span>30 minutes</span>
+                                <span>₱90</span>
+                            </div>`);
+                            itemPrice = 90;
+                            pickedItems.push("Half hour");
+
+                            
+            
+                        }
+                        else if (itemId == "two-hours") {
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>2 hours</span>
+                                <span>120 minutes</span>
+                                <span>₱200</span>
+                            </div>`);
+                            itemPrice = 200;
+                            pickedItems.push("2 hours");
+
+                        
+
+                        } else if (itemId == "unlimited") {
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>Unlimited</span>
+                                <span>No limit</span>
+                                <span>₱250</span>
+                            </div>`);
+                            itemPrice = 250;
+                            pickedItems.push("Unlimited");
+                        }
+                        else if (itemId == "ktv") {
+                            document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                            <div class="item-to-check-out">
+                                <span>KTV</span>
+                                <span>120 minutes</span>
+                                <span>₱200</span>
+                            </div>`);
+                            itemPrice = 200;
+                            pickedItems.push("KTV");
+
+                            
+                        }
+                        price.push(itemPrice);
+                        totalPrice += itemPrice;
+                        totalPriceElement.innerHTML = `₱${totalPrice}`;
+                    } 
+                }
+                */
+            })
             
             $("#employee").on("click", function(){
                 if (!pageReloading){
@@ -586,6 +666,8 @@ $(document).ready(function(){
             while (discount.length > 0) {
                 discount.pop();
             }
+
+            $(".items-container-playground .item").css("opacity", "1");
             
             $(".check-out-modal").removeClass("check-out-modal-animate");
             $(".check-out-modal").addClass("check-out-modal-animate2");
@@ -656,7 +738,6 @@ $(document).ready(function(){
                 }
             }, 5000);
         }
-        
     })
 
     //check out function..
@@ -807,124 +888,77 @@ $(document).ready(function(){
                                     $(".pop-up-wrapper").css("display", "none");
             
                                     
-                                    if (section == 'play') {
-                                        generateTickets();
-                                        //generate tickets
-                                        function generateTickets(){
-                                            for (let i = 0; i < pickedItems.length; i++){
-                                                let txt = '';
-                                                for (let j = 0; j < 4; j++) {
-                                                    let num = Math.round(Math.random() * 9);
-                                                    txt += num;
-                                                }
-                                                ticketNumbers.push(txt);
-                
-                                                verifyTickets(ticketNumbers);
-                                            }
-                                        }
-                                        
-                                        function verifyTickets(tickets){
-                                            let len = 0;
-                                            for (let x = 0; x < tickets.length; x++){
-                                                if (tickets[x].length == 4) {
-                                                    len += 1;
-                                                }
-                                            }
-                                            if (!(len == tickets.length)) {
-                                                generateTickets();
-                                            }
-                                        }
-            
-                                        for (let x = 0; x < pickedItems.length; x++) {
-                                            let wrapper = document.getElementById("print-wrapper");
-                                            wrapper.insertAdjacentHTML("beforeend", `
-                                            <div class="document-to-print">
-                                                <div class="print-header">
-                                                    <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                                    <span style="font-size:12px;">Osmeña st., Masbate City</span>
-                                                </div>
-                                                <table id="table">
-                                                    <tr>
-                                                        <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${ticketNumbers[x]}</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style=" font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Item:</td>
-                                                        <td style=" font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Price:</td>
-                                                    </tr>
-                                                </table>
-                                            </div>`)
-            
-                                            let table = document.getElementById("table");
-                                            table.insertAdjacentHTML("beforeend", `
-                                            <tr>
-                                                <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;text-align:center;">${pickedItems[x]}</td>
-                                                <td style="margin-bottom:10px;padding:5px 0 5px; font-size: 11px;font-weight:bold;text-align:center;">₱${price[x]}</td>
-                                            </tr>`);
+                                    
+                                    let wrapper = document.getElementById("print-wrapper");
 
-                                            console.log(pickedItems);
-            
-                                            window.print();
-            
-                                            //clear elements
-                                            let container = document.getElementById("print-wrapper");
-                                            while (container.lastElementChild) {
-                                                container.removeChild(container.lastElementChild);
-                                            }
-                                        }
-            
-                                    } else {
-                                        let wrapper = document.getElementById("print-wrapper");
-
-                                        let ticket = '';
-                                        //generate ticket
-                                        for (let i = 0; i < 4; i++){
-                                            ticket += Math.round(Math.random() * 9);
-                                        }
-                                        
-                                        cafeTicket = ticket;
-
-                                        wrapper.insertAdjacentHTML("beforeend", `
-                                        <div class="document-to-print">
-                                            <div class="print-header">
-                                                <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
-                                                <span style="font-size:12px;">Osmeña st., Masbate City</span>
-                                            </div>
-                                            <table id="table">
-                                                <tr>
-                                                    <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${cafeTicket}</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Item:</td>
-                                                    <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Price:</td>
-                                                </tr>
-                                            </table>
-                                        </div>`)
-
-                                        let table = document.getElementById("table");
-                                        for (let i = 0; i < pickedItems.length; i++) {
-                                            table.insertAdjacentHTML("beforeend", `
-                                            <tr>
-                                                <td style="padding:1px 0; font-size: 11px;text-align:center;">${pickedItems[i]}</td>
-                                                <td style="padding:1px 0; font-size: 11px;font-weight:bold;text-align:center;">₱${price[i]}</td>
-                                            </tr>`)
-                                        }
-                                        if (isEmployee){
-                                            table.insertAdjacentHTML("beforeend", `
-                                            <tr>
-                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
-                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
-                                            </tr>`)
-                                        } else {
-                                            table.insertAdjacentHTML("beforeend", `
-                                            <tr>
-                                                <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
-                                            </tr>`)
-                                        }
-                                        
-            
-                                        //print
-                                        window.print();
+                                    let ticket = '';
+                                    //generate ticket
+                                    for (let i = 0; i < 4; i++){
+                                        ticket += Math.round(Math.random() * 9);
                                     }
+                                    
+                                    cafeTicket = ticket;
+
+                                    wrapper.insertAdjacentHTML("beforeend", `
+                                    <div class="document-to-print">
+                                        <div class="print-header">
+                                            <span style="font-size:12px;">ANSON'S PLAYGROUND AND CAFE</span>
+                                            <span style="font-size:12px;">Osmeña st., Masbate City</span>
+                                        </div>
+                                        <table id="table">
+                                            <tr>
+                                                <td colspan="2" style="text-align:center;padding: 3px 0 3px 0; font-size: 30px;"><span style="font-size:13px;"></span> <span style="font-weight:bold;">${cafeTicket}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Item:</td>
+                                                <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Price:</td>
+                                            </tr>
+                                        </table>
+                                    </div>`)
+
+                                    let table = document.getElementById("table");
+                                    for (let i = 0; i < pickedItems.length; i++) {
+                                        table.insertAdjacentHTML("beforeend", `
+                                        <tr>
+                                            <td style="padding:1px 0; font-size: 11px;text-align:center;">${pickedItems[i]}</td>
+                                            <td style="padding:1px 0; font-size: 11px;font-weight:bold;text-align:center;">₱${price[i]}</td>
+                                        </tr>`)
+                                    }
+                                    if (isEmployee){
+                                        table.insertAdjacentHTML("beforeend", `
+                                        <tr>
+                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Total: <span style="font-weight:bold">₱${totalPrice - disc}</span></td>
+                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Amount paid:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${amount}</span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;"><span style="font-weight:bold"><span style="font-size:11px;">₱${amount} - ₱${totalPrice - disc}</span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Change:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${change}</span></span></td>
+                                        </tr>`)
+
+                                    } else {
+                                        table.insertAdjacentHTML("beforeend", `
+                                        <tr>
+                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
+                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;">Amount paid:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${amount}</span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:11px;">₱${amount} - ₱${totalPrice}</span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;">Change:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${change}</span></span></td>
+                                        </tr>`)
+                                        
+                                    }
+                                    
+        
+                                    //print
+                                    window.print();
+                                    
                                     
                                     
                                     //notif
@@ -970,12 +1004,12 @@ $(document).ready(function(){
                                                 //let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
 
                                                 //inserting into database..
-                                                insertIntoDatabase(section, cafeTicket,ticketNumbers, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
+                                                insertIntoDatabase(section, cafeTicket, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
 
                                                 let d_time = `${hr}:${min} ${txt}, ${day}`;
                                                 let d_mon_and_date = `${mon} ${date}`;
                                                 //insert into detailed report
-                                                detailedReportDatabase(section, cafeTicket, ticketNumbers, pickedItems, price, d_time, d_mon_and_date);
+                                                detailedReportDatabase(section, cafeTicket, pickedItems, price, d_time, d_mon_and_date);
                 
                                                 let notifs = document.querySelectorAll(".check-out-notif");
                                                 setTimeout(function(){
@@ -1067,114 +1101,15 @@ $(document).ready(function(){
         }
     })
 
-    //playground item pick function..
-    $(".items-container-playground > div").on("click", function(){
-        if (!pageReloading){
-            $("#employee").css("display", "none");
-            if (cafeItemsPicked) {
-                $("#employee").css("display", "block");
-                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
-                
-                let notifs = document.querySelectorAll(".check-out-notif");
-                setTimeout(function(){
-                    for (let i = 0; i < notifs.length; i++){
-                        notifs[i].remove();
-                    }
-                }, 5000);
     
-            } else {
-
-
-                if (showAvailableTables) {
-                    showAvailableTables = false;
-                    $(".available-tables").css("display", "none");
-                    let container = document.getElementById("tables");
-                    while (container.lastElementChild) {
-                        container.removeChild(container.lastElementChild);
-                    }
-                }
-                playgroundItemsPicked = true;
-                let itemId = $(this).attr("id");
-                $(".check-out-modal").addClass("check-out-modal-animate");
-                $(".check-out-modal").removeClass("check-out-modal-animate2");
-    
-                if (itemId == "one-hour") {
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out">
-                        <span>1 hour</span>
-                        <span>60 minutes</span>
-                        <span>₱150</span>
-                    </div>`);
-                    itemPrice = 150;
-                    pickedItems.push("1 hour");
-
-                    
-
-                }
-                else if (itemId == "half-hour") {
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out">
-                        <span>Half hour</span>
-                        <span>30 minutes</span>
-                        <span>₱90</span>
-                    </div>`);
-                    itemPrice = 90;
-                    pickedItems.push("Half hour");
-
-                    
-    
-                }
-                 else if (itemId == "two-hours") {
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out">
-                        <span>2 hours</span>
-                        <span>120 minutes</span>
-                        <span>₱200</span>
-                    </div>`);
-                    itemPrice = 200;
-                    pickedItems.push("2 hours");
-
-                   
-
-                } else if (itemId == "unlimited") {
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out">
-                        <span>Unlimited</span>
-                        <span>No limit</span>
-                        <span>₱250</span>
-                    </div>`);
-                    itemPrice = 250;
-                    pickedItems.push("Unlimited");
-                }
-                else if (itemId == "ktv") {
-                    document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
-                    <div class="item-to-check-out">
-                        <span>KTV</span>
-                        <span>120 minutes</span>
-                        <span>₱200</span>
-                    </div>`);
-                    itemPrice = 200;
-                    pickedItems.push("KTV");
-
-                    
-                }
-                price.push(itemPrice);
-                totalPrice += itemPrice;
-                totalPriceElement.innerHTML = `₱${totalPrice}`;
-            } 
-        }
-        
-    })
 })
 
-function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems, price, _time, date){
+function detailedReportDatabase(section, cafeticket, pickedItems, price, _time, date){
     $.ajax({
         type: 'POST',
         url: 'detailed_report.php',
         data: {
             section: section,
-            tickets: ticketNumbers,
             items: pickedItems,
             price: price,
             time: _time,
@@ -1190,9 +1125,9 @@ function detailedReportDatabase(section, cafeticket, ticketNumbers, pickedItems,
 
 }
 
-function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, _time, date){
+function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date){
     //verify tickets
-    console.log(tickets);
+    /*
     for (let i = 0; i < tickets.length; i++) {
         let temp = tickets[i];
         if (temp.length != 4) {
@@ -1203,6 +1138,7 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, _tim
         tickets[i] = temp;
     }
     console.log(tickets);
+    */
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
     
@@ -1211,7 +1147,6 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, _tim
         type: 'POST',
         url: url,
         data: {
-            tickets: tickets,
             items: items,
             pricelist: pricelist,
             time: _time,
@@ -1244,8 +1179,8 @@ function insertIntoDatabase(section, ticketcafe, tickets, items, pricelist, _tim
                         type: 'POST',
                         url: 'playground_time.php',
                         data: {
-                            tickets: tickets,
                             items: items,
+                            cafeticket: ticketcafe,
                             year: `${time.getFullYear()}`,
                             date: `${months[time.getMonth()]} ${time.getDate()}`,
                         },
