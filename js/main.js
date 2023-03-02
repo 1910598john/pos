@@ -428,23 +428,23 @@ $(document).ready(function(){
                         location.reload();
                     }
                     if ($(this).css("opacity") != 0.5) {
-                        if ($(this).hasClass("ktv")) {
-                            $(".items-container-playground .time").css("opacity", ".5");
-                            $(".items-container-playground .item").css("opacity", ".5");
-                        }
-                        else if ($(this).hasClass("time")) {
-                            $(".items-container-playground .time").css("opacity", ".5");
-                        } else if ($(this).hasClass("pass")) {
-                            $(".items-container-playground .ktv").css("opacity", ".5");
-                        }
                         
-    
                         if (cafeItemsPicked) {
                             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                             <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">Picking items in this section is disabled.</div>`);
                             section = 'play';
         
                         } else {
+                            if ($(this).hasClass("ktv")) {
+                                $(".items-container-playground .time").css("opacity", ".5");
+                                $(".items-container-playground .item").css("opacity", ".5");
+                            }
+                            else if ($(this).hasClass("time")) {
+                                $(".items-container-playground .time").css("opacity", ".5");
+                            } else if ($(this).hasClass("pass")) {
+                                $(".items-container-playground .ktv").css("opacity", ".5");
+                            }
+
                             $("#employee").css("display", "none");
                             
                             //show tables
@@ -701,6 +701,7 @@ $(document).ready(function(){
     $("#clear-all").on("click", () => {
 
         if (!pageReloading){
+            $(".items-container-playground .item").css("opacity", "1");
             if (pickedItems.length == 0) {
                 document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                 <div class="check-out-notif" style="background:#ed3a2d;padding:10px;">You have not picked an item.</div>`);
@@ -1174,12 +1175,27 @@ function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date){
                 //add row in playground_time table
                 if (section == 'play') {
                     let time = new Date();
+                    let chosenItems = items;
+                    let filtered_items;
+                    
+                    function list( value ) {
+                        return value.includes("hours") || value.includes("hour") || value.includes("Unlimited") || value.includes("KTV");
+                    }
+                     
+                    function filter() {
+                        var filtered = chosenItems.filter( list );
+
+                        filtered_items = filtered;
+                        console.log(filtered);
+                    }
+
+                    filter();
 
                     $.ajax({
                         type: 'POST',
                         url: 'playground_time.php',
                         data: {
-                            items: items,
+                            items: filtered_items,
                             cafeticket: ticketcafe,
                             year: `${time.getFullYear()}`,
                             date: `${months[time.getMonth()]} ${time.getDate()}`,
