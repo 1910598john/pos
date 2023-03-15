@@ -11,19 +11,19 @@ $conn = new mysqli($servername, $username, $password, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$date = $_POST['date'];
-$year = $_POST['year'];
-$sql = "SELECT ticketID FROM playground_time WHERE NOT item='Unlimited' AND NOT item='KTV' AND date='$date' AND year='$year' AND NOT status='removed'";
+
+$ticket = $_POST['ticket'];
+
+$sql = "SELECT amount FROM cafe_report WHERE ticket='$ticket'";
+$amount = array();
 $result = $conn->query($sql);
-$tickets = array();
-if ($result->num_rows > 0) {
-    // output data of each row
+if ($result->num_rows > 0){
     $x = 0;
     while($row = $result->fetch_assoc()) {
-        $tickets[$x] = $row['ticketID'];
+        $amount[$x] = $row['amount'];
         $x += 1;
     }
+    echo json_encode($amount);
 }
-echo json_encode($tickets);
 $conn->close();
 ?>

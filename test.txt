@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+date_default_timezone_set('Asia/Manila');
+
+$date=date_create("10:30 AM");
+date_add($date,date_interval_create_from_date_string("+1 hour and 30 minutes"));
+echo date_format($date, "h:i A");
+?>
+
+</body>
+</html>

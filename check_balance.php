@@ -18,9 +18,9 @@ $year = $_POST['year'];
 $name = $_SESSION['cashier'];
 if (isset($_SESSION['logoutlastId'])) {
     $lastid = $_SESSION['logoutlastId'];
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date, year FROM detailed_report WHERE id > '$lastid' AND year='$year' AND date='$date' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date, year, quantity FROM detailed_report WHERE id > '$lastid' AND year='$year' AND date='$date' AND user='$name' AND NOT is_cancelled='true'";
 } else {
-    $sql = "SELECT id, section, item, amount, discounted, user, time, date, year FROM detailed_report WHERE  date='$date' AND year='$year' AND user='$name'";
+    $sql = "SELECT id, section, item, amount, discounted, user, time, date, year, quantity FROM detailed_report WHERE  date='$date' AND year='$year' AND user='$name' AND NOT is_cancelled='true'";
 }
 
 
@@ -40,6 +40,7 @@ if ($result->num_rows >= 1) {
         $items[$x][4] = $row["user"];
         $items[$x][5] = $row["time"];
         $items[$x][6] = $row["date"];
+        $items[$x][7] = $row["quantity"];
         $x += 1;
         $last_id = $row["id"];
     }

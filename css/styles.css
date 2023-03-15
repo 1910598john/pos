@@ -74,7 +74,7 @@ button{
     font-size: 30px;
 }
 .side-bar{
-    width: 18%;
+    width: 20%;
     height: 100vh;
     position: fixed;
     left: -19%;
@@ -147,6 +147,7 @@ button{
 }
 .amount-to-pay-wrapper {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 .amount-to-pay-wrapper > div{
@@ -282,9 +283,9 @@ button{
     height: 70vh;
     width: 50%;
     position: absolute;
-    left: 40%;
+    left: 43%;
     top: 50%;
-    transform: translate(-40%, -50%);
+    transform: translate(-43%, -50%);
     border-radius: 4px;
 }
 .main .main-content > div{
@@ -1031,4 +1032,40 @@ button{
     background: #fff;
     color: #666;
     border: 1px solid #666;
+}
+
+/*  */
+.combo-deals-overlay{
+    display: none;
+}
+.combo-deals-overlay > div{
+    text-align: center;
+    border-radius: 4px;
+    padding: 20px;
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+}
+.combo-deals-overlay > div .content{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.combo-deals-overlay > div .header span{
+    font-size: 30px;
+}
+.combo-deals-overlay > div .content{
+    margin: 100px 20px;
+    text-align: left;
+}
+.combo-deals-overlay > div .content span{
+    font-size: 20px;
+}
+.combo-deals-overlay > div .content > div > div{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin: 20px 50px;
 }

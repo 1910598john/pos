@@ -1,6 +1,7 @@
 var itemsContainer = document.getElementById("items-container");
 const pickedItems = [];
 const price = [];
+const play_items = [];
 const end_time_list = [];
 var totalPrice = 0;
 var totalPriceElement = document.getElementById("total-price");
@@ -21,6 +22,7 @@ const time = new Date();
 var amountToPay;
 var selectedTicket;
 var itemName;
+var quantityforextension;
 var pageReloading = false;
 var isEmployee = false;
 var discount = [];
@@ -30,7 +32,11 @@ var showAvailableTables = false;
 var chosenTable = 'None';
 var cafeTicket;
 var cashier_balance;
-
+var play_quantity = 0;
+var play_item_aded = false;
+var play_item_end_time;
+var endtime = null;
+var foopayment = 0;
 setInterval(() => {
     //render time now
     let time = new Date();
@@ -66,7 +72,7 @@ $(document).ready(function(){
         left: "0"
     }, "slow");
     
-    //start playground time
+    /*
     function start_time(map){
         for (let i = 0; i < items_remaining_time.length; i++) {
             if (items_remaining_time[i] == 'No limit'){
@@ -82,7 +88,6 @@ $(document).ready(function(){
         let ended_alert_created = false;
         interval = setInterval(startCountdown, 1000);
         
-
         function startCountdown(){
             //
             if (map.size == 1) {
@@ -180,9 +185,7 @@ $(document).ready(function(){
                                 type: 'POST',
                                 url: 'get_ended_items.php',
                                 success: function(res) {
-                                    console.log(res);
                                     res = JSON.parse(res);
-                                    console.log(res);
                                     for (let i = 0; i < res.length; i++) {
                                         $.ajax({
                                             type: 'POST',
@@ -205,7 +208,7 @@ $(document).ready(function(){
             x += 1
         };
     }
-    //
+    */
     //render playground time section
     $.ajax({
         type: 'POST',
@@ -215,26 +218,28 @@ $(document).ready(function(){
             year: `${time.getFullYear()}`
         },
         success: function(res){
-            console.log(res);
             if (!res.length == 0) {
                 res = JSON.parse(res);
+                
                 let len = res.length;
-                let map = new Map();
-                map.set('firstId', parseInt(res[0][0]));
+                //let map = new Map();
+                //map.set('firstId', parseInt(res[0][0]));
                 for (let i = 0; i < len; i++){
+                    /*
                     if (res[i][4] == 'ended') {
                         res[i][2] = "1";
-                    }
-                    items_remaining_time.push(res[i][2]);
+                    } */
+                    //items_remaining_time.push(res[i][2]);
                     let txt = '';
-                    let rem;
+                    //let rem;
                     let itemName;
+                    /*
                     if (res[i][2] == 'No limit'){
                         rem = 0;
                     } else {
                         rem = parseInt(res[i][2]);
-                    }
-                    map.set(`id${res[i][0]}`, rem);
+                    } 
+                    map.set(`id${res[i][0]}`, rem);*/
                     if (res[i][1] == 'Half hour'){
                         res[i][1] = 'Half hour';
                         txt = '30 mins';
@@ -250,7 +255,7 @@ $(document).ready(function(){
                         itemName = "2hrs";
                     } else if (res[i][1] == 'KTV'){
                         res[i][1] = 'KTV';
-                        txt = '120 mins';
+                        txt = '60 mins';
                         itemName = "KTV";
                     }
                     else if (res[i][1] == 'Unlimited'){
@@ -262,14 +267,15 @@ $(document).ready(function(){
                     <tr>
                         <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;">#${res[i][3]}</td>
                         <td style="font-size:12px;border-bottom: 1px solid gray;text-align:center;border-left:1px solid gray;">${itemName}</td>
-                        <td id="time${res[i][0]}" style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${txt}</td>
+                        <td style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${res[i][2]}</td>
+                        <td style="font-size:12px;border-left:1px solid gray;text-align:center;border-bottom: 1px solid gray;">${res[i][5]}</td>
                     </tr>`)
                 }
-                start_time(map);
+                //start_time(map);
             } else {
                 time_table.insertAdjacentHTML("beforeend", `
                 <tr>
-                    <td colspan="3" style="text-align:center;padding:20px 0;font-size:12px;">No item</td>
+                    <td colspan="4" style="text-align:center;padding:20px 0;font-size:12px;">No item</td>
                 </tr>`);
             }
         }
@@ -281,7 +287,6 @@ $(document).ready(function(){
         url: 'fetchAvailableProducts.php',
         success: function(items){
             items = JSON.parse(items);
-            console.log(items);
             for (let i = 0; i < items.length; i++) {
                 if (items[i][3] == 'cafe'){
                     itemsContainer.insertAdjacentHTML("beforeend", `
@@ -401,7 +406,7 @@ $(document).ready(function(){
                         //add items
                         price.push(parseInt(itemPrice));
                         pickedItems.push(itemName);
-                        document.getElementById("modal-main-content").insertAdjacentHTML("beforeend", `
+                        document.getElementById("modal-main-content").insertAdjacentHTML("afterbegin", `
                         <div class="item-to-check-out">
                             <span>${itemName}</span>
                             <span>${itemDescription}</span>
@@ -409,7 +414,585 @@ $(document).ready(function(){
                         </div>`);
                         totalPrice += parseInt(itemPrice);
                         totalPriceElement.innerHTML = `₱${totalPrice}`;
+                        /*
+                        if (itemDescription == 'Combo') {
+                            $(".combo-deals-overlay").css("display", "block");
 
+                            $(".combo-deals-overlay").on("click", function(){
+                                $(this).css("display", "none");
+                                let primary_container = document.getElementById("primary-choices-container");
+                                let secondary_container = document.getElementById("secondary-choices-container");
+                                let third_container = document.getElementById("third-choices-container");
+                                let drinks_container = document.getElementById("drinks-choices-container");
+                                while (primary_container.lastElementChild) {
+                                    primary_container.removeChild(primary_container.lastElementChild);
+                                }
+                                while (secondary_container.lastElementChild) {
+                                    secondary_container.removeChild(secondary_container.lastElementChild);
+                                }
+                                while (third_container.lastElementChild) {
+                                    third_container.removeChild(third_container.lastElementChild);
+                                }
+                                while (drinks_container.lastElementChild) {
+                                    drinks_container.removeChild(drinks_container.lastElementChild);
+                                }
+                            })
+                            $(".combo-deals-overlay > div").on("click", function(event){
+                                event.stopPropagation();
+                            })
+                            let combo = itemName.slice(0, 2);
+                            //fetch pizza waffles
+                            $.ajax({
+                                type: 'POST',
+                                url: 'fetch_combo_choices.php',
+                                data: {
+                                    combo: combo,
+                                },
+                                success: function(res){
+                                    res = JSON.parse(res);
+                                    console.log(res);
+                                    let primary_container = document.getElementById("primary-choices-container");
+                                    let secondary_container = document.getElementById("secondary-choices-container");
+                                    let third_container = document.getElementById("third-choices-container");
+                                    let drinks_container = document.getElementById("drinks-choices-container");
+                                    let primary = 0;
+                                    let secondary = 0;
+                                    let third = 0;
+                                    let drinks = 0;
+                                    if (combo == 'B1') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        drinks = 2;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Fries') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][3] == 'Pizza Waffle') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            } else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                        
+                                    } 
+                                    else if (combo == 'B2') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        drinks = 2;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Fries') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][3] == 'Sushi Roll') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                        
+                                    }
+                                    else if (combo == 'C1') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        drinks = 4;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Fries') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][1] == 'Spaghetti') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                             else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                        
+                                    }
+                                    else if (combo == 'C2') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        third = 1;
+                                        drinks = 4;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Fries') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][1] == 'Spaghetti') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            else if (res[i][1] == 'Baked chicken with vege (half)' || res[i][3] == 'Chicken') {
+                                                third_container.insertAdjacentHTML("afterbegin", `
+                                                
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                             else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                        
+                                    }
+                                    else if (combo == 'D1') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        drinks = 1;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Original Waffle') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][1] == 'Ice cream with toppings') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+
+                                             else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                    }
+                                    else if (combo == 'D2') {
+                                        primary = 1;
+                                        secondary = 1;
+                                        drinks = 1;
+                                        for (let i = 0; i < res.length; i++) {
+                                            if (res[i][1] == 'Fries') {
+                                                primary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="primary-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#primary-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#primary-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                            
+                                            else if (res[i][1] == 'Ice cream with toppings') {
+                                                secondary_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="third-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#third-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#third-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+
+                                             else if (res[i][3] == 'Drinks') {
+                                                drinks_container.insertAdjacentHTML("afterbegin", `
+                                                <div id="secondy-choice${res[i][0]}" style="width:100px;height:100px;margin:5px;cursor:pointer;">
+                                                    <div><span style="font-size:13px;">${res[i][1]}</span></div>
+                                                </div>`);
+                                                $(`#secondy-choice${res[i][0]}`).css({
+                                                    "background-image": `url(${res[i][2]})`,
+                                                    "background-repeat" : "no-repeat",
+                                                    "background-position" : "center",
+                                                    "background-size" : "cover",
+                                                    "position" : "relative",
+                                                    "border-radius" : "4px",
+                                                    "box-shadow" : "0 0 3px #666"
+                                                });
+                                                $(`#secondy-choice${res[i][0]} > div`).css({
+                                                    "position" : "absolute",
+                                                    "bottom" : "0",
+                                                    "left " : "0",
+                                                    "text-align" : "center",
+                                                    "padding" : "5px",
+                                                    "width" : "100%",
+                                                    "background" : "#fff",
+                                                    "border-radius" : "0 0 4px 4px",
+                                                })
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                            })
+                        } */
                     }
                     let notifs = document.querySelectorAll(".check-out-notif");
                     setTimeout(function(){
@@ -421,7 +1004,7 @@ $(document).ready(function(){
             })
 
             //playground item pick function..
-            $(".items-container-playground .item").on("click", function(){
+            $(".items-container-playground > .item").on("click", function(){
                 if (!pageReloading){
                     if (isEmployee){
                         
@@ -435,16 +1018,38 @@ $(document).ready(function(){
                             section = 'play';
         
                         } else {
+                            playgroundItemsPicked = true;
+                            $(".check-out-modal").addClass("check-out-modal-animate");
+                            $(".check-out-modal").removeClass("check-out-modal-animate2");
+                            let itemId = $(this).attr("id");
+                            let item = document.getElementById(`${itemId}`);
+                            
+                            //get item price
+                            let itemPrice = item.children[0].children[0].dataset.price;
+                            let itemName = item.children[1].children[0].dataset.item;
+                            let itemDescription = item.children[1].children[1].dataset.description;
+
                             if ($(this).hasClass("ktv")) {
                                 $(".items-container-playground .time").css("opacity", ".5");
                                 $(".items-container-playground .item").css("opacity", ".5");
+                                play_items.push(itemName);
+                                play_quantity += 1;
                             }
                             else if ($(this).hasClass("time")) {
+                                if (!play_item_aded == true) {
+                                    play_item_aded = true;
+                                    play_items.push(itemName);
+                                }
                                 $(".items-container-playground .time").css("opacity", ".5");
+                                $(this).css("opacity", "1");
+                                play_quantity += 1;
+
+
                             } else if ($(this).hasClass("pass")) {
                                 $(".items-container-playground .ktv").css("opacity", ".5");
+                                play_items.push(itemName);
                             }
-
+                            console.log(pickedItems);
                             $("#employee").css("display", "none");
                             
                             //show tables
@@ -469,16 +1074,7 @@ $(document).ready(function(){
                                     }
                                 })
                             }
-                            playgroundItemsPicked = true;
-                            $(".check-out-modal").addClass("check-out-modal-animate");
-                            $(".check-out-modal").removeClass("check-out-modal-animate2");
-                            let itemId = $(this).attr("id");
-                            let item = document.getElementById(`${itemId}`);
                             
-                            //get item price
-                            let itemPrice = item.children[0].children[0].dataset.price;
-                            let itemName = item.children[1].children[0].dataset.item;
-                            let itemDescription = item.children[1].children[1].dataset.description;
     
                             //fetch discount
                             $.ajax({
@@ -488,6 +1084,7 @@ $(document).ready(function(){
                                     item: itemName
                                 },
                                 success: function(res){
+                                    console.log(res);
                                     let disc;
                                     disc = parseInt(itemPrice) * parseFloat(`0.${res}`);
                                     discount.push(Math.round(disc));
@@ -668,7 +1265,7 @@ $(document).ready(function(){
             }
 
             $(".items-container-playground .item").css("opacity", "1");
-            
+            play_quantity = 0;
             $(".check-out-modal").removeClass("check-out-modal-animate");
             $(".check-out-modal").addClass("check-out-modal-animate2");
             //clear elements
@@ -694,6 +1291,8 @@ $(document).ready(function(){
             playgroundItemsPicked = false;
 
             isEmployee = false;
+
+            location.reload();
         }
         
     })
@@ -887,15 +1486,17 @@ $(document).ready(function(){
                                     }
                                     $(".proceed-receipt").remove();
                                     $(".pop-up-wrapper").css("display", "none");
-            
-                                    
                                     
                                     let wrapper = document.getElementById("print-wrapper");
 
                                     let ticket = '';
                                     //generate ticket
                                     for (let i = 0; i < 4; i++){
-                                        ticket += Math.round(Math.random() * 9);
+                                        let num = Math.round(Math.random() * 9);
+                                        if (num == 0) {
+                                            num = Math.round(Math.random() * 9);
+                                        }
+                                        ticket += num;
                                     }
                                     
                                     cafeTicket = ticket;
@@ -915,7 +1516,7 @@ $(document).ready(function(){
                                                 <td style="width:50%;font-size: 12px;margin-top:10px;margin-bottom:4px;font-weight:bold;">Price:</td>
                                             </tr>
                                         </table>
-                                    </div>`)
+                                    </div>`);
 
                                     let table = document.getElementById("table");
                                     for (let i = 0; i < pickedItems.length; i++) {
@@ -932,7 +1533,7 @@ $(document).ready(function(){
                                             <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:10px;">(discounted)</span></span></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Amount paid:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${amount}</span></span></td>
+                                            <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;">Amount:<span style="font-weight:bold"><span style="font-size:10px;"> ₱${amount}</span></span></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:left;"><span style="font-weight:bold"><span style="font-size:11px;">₱${amount} - ₱${totalPrice - disc}</span></span></td>
@@ -945,7 +1546,7 @@ $(document).ready(function(){
                                         table.insertAdjacentHTML("beforeend", `
                                         <tr>
                                             <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;">Total: <span style="font-weight:bold">₱${totalPrice}</span></td>
-                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;">Amount paid:<span style="font-weight:bold"><span style="font-size:11px;"> ₱${amount}</span></span></td>
+                                            <td style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;">Amount:<span style="font-weight:bold"><span style="font-size:10px;"> ₱${amount}</span></span></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" style="margin-top:5px;margin-bottom:10px;padding: 1px 0 5px; font-size: 11px;text-align:right;"><span style="font-weight:bold"><span style="font-size:11px;">₱${amount} - ₱${totalPrice}</span></span></td>
@@ -959,7 +1560,6 @@ $(document).ready(function(){
         
                                     //print
                                     window.print();
-                                    
                                     
                                     
                                     //notif
@@ -1003,14 +1603,20 @@ $(document).ready(function(){
                                                 let txt = 'AM';
                                                 isMorning ? txt = txt : txt = 'PM';
                                                 //let currentTimeAndDate = `${hr}:${min} ${txt}, ${day} (${mon}, ${date})`;
+                                                let _items;
+                                                if (section == 'play') {
+                                                    _items = play_items;
+                                                } else {
+                                                    _items = pickedItems;
+                                                }
 
                                                 //inserting into database..
-                                                insertIntoDatabase(section, cafeTicket, pickedItems, price, `${hr}:${min} ${txt}`, `${mon} ${date}`);
+                                                insertIntoDatabase(section, cafeTicket, _items, price, `${hr}:${min} ${txt}`, `${mon} ${date}`, play_quantity);
 
-                                                let d_time = `${hr}:${min} ${txt}, ${day}`;
+                                                let d_time = `${hr}:${min} ${txt}`;
                                                 let d_mon_and_date = `${mon} ${date}`;
                                                 //insert into detailed report
-                                                detailedReportDatabase(section, cafeTicket, pickedItems, price, d_time, d_mon_and_date);
+                                                detailedReportDatabase(section, cafeTicket, _items, price, d_time, d_mon_and_date, play_quantity);
                 
                                                 let notifs = document.querySelectorAll(".check-out-notif");
                                                 setTimeout(function(){
@@ -1032,9 +1638,6 @@ $(document).ready(function(){
                                         }
                                     })
 
-                                    
-            
-            
                                 } else {
                                     $(".proceed-receipt").remove();
                                     proceedButtonClicked = false;
@@ -1055,28 +1658,65 @@ $(document).ready(function(){
                 let change = amount - amountToPay;
 
                 if (amount >= amountToPay) {
-                    //
+                    ///fetch end time
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fetch_end_time.php',
+                        data: {
+                            ticket: selectedTicket
+                        }, success: function(res){
+                            endtime = res;
+                        }
+                    })
                     document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                         <div class="check-out-notif" style="background:orange;font-size:20px;padding:15px 10px;">Change: <span style="padding-left:3px;">₱${change}</span></div>`);
 
+                    
                     $.ajax({
                         type: 'POST',
                         url: 'extend.php',
                         data: {
                             selectedticket: selectedTicket,
                             payment: amountToPay,
-                            itemName: itemName
+                            itemName: itemName,
+                            end: endtime,
+                            foopayment: foopayment
 
                         }, success: function(res){
-                            console.log(res);
+                            //update detailed report
                             $.ajax({
                                 type: 'POST',
-                                url: 'addExtendedPayment.php',
+                                url: 'addExtendPaymentOnDetailedReport.php',
+                                data: {
+                                    payment: amountToPay,
+                                    ticket: selectedTicket,
+                                    itemName: itemName,
+                                    foopayment: foopayment
+                                },
+                            });
+                            //update cashier balance
+                            $.ajax({
+                                type: 'POST',
+                                url: 'update_cashierbalance.php',
                                 data: {
                                     payment: amountToPay
                                 },
                                 success: function(res){
                                     console.log(res);
+                                }
+                            })
+
+                            //update playground report
+                            $.ajax({
+                                type: 'POST',
+                                url: 'addExtendPayment.php',
+                                data: {
+                                    payment: amountToPay,
+                                    ticket: selectedTicket,
+                                    itemName: itemName,
+                                    foopayment: foopayment
+                                },
+                                success: function(res){
                                     setTimeout(function(){
                                         document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                                         <div class="check-out-notif" style="background:orange;padding:10px;">${selectedTicket} time extended.</div>`);
@@ -1091,6 +1731,7 @@ $(document).ready(function(){
                                 }
                             })
                             
+                            
                         }
                     })
 
@@ -1101,11 +1742,9 @@ $(document).ready(function(){
             }
         }
     })
-
-    
 })
 
-function detailedReportDatabase(section, cafeticket, pickedItems, price, _time, date){
+function detailedReportDatabase(section, cafeticket, pickedItems, price, _time, date, qty){
     $.ajax({
         type: 'POST',
         url: 'detailed_report.php',
@@ -1117,16 +1756,14 @@ function detailedReportDatabase(section, cafeticket, pickedItems, price, _time, 
             mon: date,
             year: `${time.getFullYear()}`,
             discounted: discounted,
-            cafeticket: cafeticket
+            cafeticket: cafeticket,
+            quantity: qty
         },
-        success: function(res){
-            console.log(res);
-        }
     })
 
 }
 
-function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date){
+function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date, qty){
     //verify tickets
     /*
     for (let i = 0; i < tickets.length; i++) {
@@ -1143,7 +1780,6 @@ function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date){
     let url = '';
     section == 'play' ? url = 'playgroundReport.php' : url = 'cafeReport.php';
     
-    
     $.ajax({
         type: 'POST',
         url: url,
@@ -1154,113 +1790,118 @@ function insertIntoDatabase(section, ticketcafe, items, pricelist, _time, date){
             date: date,
             year: `${time.getFullYear()}`,
             tablenumber: chosenTable,
-            cafeticket: ticketcafe
+            cafeticket: ticketcafe,
+            quantity: qty
         },
+
         success: function(res){
-            res == 'success' ? success_notif() : error_notif();
-            //notif
-            function success_notif(){
+            setTimeout(function(){
+                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                <div class="check-out-notif" style="background:#32a852;padding:20px 10px;font-weight:bold;">Transaction success!</div>`);
+            }, 1000)
+            setTimeout(function(){
+                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
                 setTimeout(function(){
-                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:#32a852;padding:20px 10px;font-weight:bold;">Transaction success!</div>`);
-                }, 1000)
-                setTimeout(function(){
-                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:orange;padding:20px 10px;font-weight:bold;">Reloading the page..</div>`);
-                    setTimeout(function(){
-                        location.reload();
-                    }, 2000);
-                }, 3000)
+                    location.reload();
+                }, 2000);
+            }, 3000)
+            
+            //add row in playground_time table
+            if (section == 'play') {
+                let time = new Date();
+                let chosenItems = items;
+                let filtered_items;
                 
-                //add row in playground_time table
-                if (section == 'play') {
-                    let time = new Date();
-                    let chosenItems = items;
-                    let filtered_items;
-                    
-                    function list( value ) {
-                        return value.includes("hours") || value.includes("hour") || value.includes("Unlimited") || value.includes("KTV");
-                    }
-                     
-                    function filter() {
-                        var filtered = chosenItems.filter( list );
-
-                        filtered_items = filtered;
-                        console.log(filtered);
-                    }
-
-                    filter();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: 'playground_time.php',
-                        data: {
-                            items: filtered_items,
-                            cafeticket: ticketcafe,
-                            year: `${time.getFullYear()}`,
-                            date: `${months[time.getMonth()]} ${time.getDate()}`,
-                        },
-                    })
-                } /*else {
-                  
-                    $.ajax({
-                        type: 'POST',
-                        url: 'update_table_availability.php',
-                        data: {
-                            tablenumber: chosenTable
-                        }, success: function(res){
-                            console.log(res);
-                        }
-                    })
-                } */
-                //add balance
-                let disc = 0;
-                if (isEmployee){
-                    for (let i = 0; i < discount.length; i++){
-                        disc += discount[i];
-                    }
+                function list( value ) {
+                    return value.includes("hours") || value.includes("hour") || value.includes("Unlimited") || value.includes("KTV");
                 }
+                    
+                function filter() {
+                    var filtered = chosenItems.filter( list );
+
+                    filtered_items = filtered;
+                    console.log(filtered);
+                }
+
+                filter();
+
                 $.ajax({
                     type: 'POST',
-                    url: 'add_cashier_balance.php',
+                    url: 'playground_time.php',
                     data: {
-                        balance: totalPrice - disc
+                        quantity: qty,
+                        items: filtered_items,
+                        cafeticket: ticketcafe,
+                        year: `${time.getFullYear()}`,
+                        date: `${months[time.getMonth()]} ${time.getDate()}`,
+                    },
+                })
+            } /*else {
+                
+                $.ajax({
+                    type: 'POST',
+                    url: 'update_table_availability.php',
+                    data: {
+                        tablenumber: chosenTable
                     }, success: function(res){
-                        console.log(res)
+                        console.log(res);
                     }
                 })
+            } */
+            //add balance
+            let disc = 0;
+            if (isEmployee){
+                for (let i = 0; i < discount.length; i++){
+                    disc += discount[i];
+                }
             }
-            function error_notif(){
-                setTimeout(function(){
-                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:#ed3a2d;padding:20px 10px;">An error occured!</div>`);
-                }, 1000)
-            }
+            $.ajax({
+                type: 'POST',
+                url: 'add_cashier_balance.php',
+                data: {
+                    balance: totalPrice - disc
+                }
+            })
         }
     })
 }
 
 $("#remove").on("click", function(){
     if (!pageReloading){
-        clearInterval(interval);
         $.ajax({
             type: 'POST',
-            url: 'remove_ended_items.php',
+            url: 'fetch_ended_play_items_id.php',
+            data: {
+                date: `${months[time.getMonth()]} ${time.getDate()}`,
+                year: `${time.getFullYear()}`
+            },
             success: function(res){
-                console.log(res);
-                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                <div class="check-out-notif" style="background:orange;padding:20px 10px 20px 10px;">Removing ended..</div>`);
-                
-                setTimeout(function(){
-                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                    <div class="check-out-notif" style="background:orange;padding:20px 10px;">Reloading the page..</div>`);
-                    setTimeout(function(){
-                        location.reload();
-                    }, 2000);
-                }, 2000)
-                
+                res = JSON.parse(res);
+                $.ajax({
+                    type: 'POST',
+                    url: 'remove_ended_items.php',
+                    data: {
+                        id_list: res,
+                        date: `${months[time.getMonth()]} ${time.getDate()}`,
+                        year: `${time.getFullYear()}`
+                    },
+                    success: function(res){
+                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                        <div class="check-out-notif" style="background:orange;padding:20px 10px 20px 10px;">Removing ended..</div>`);
+                        
+                        setTimeout(function(){
+                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                            <div class="check-out-notif" style="background:orange;padding:20px 10px;">Reloading the page..</div>`);
+                            setTimeout(function(){
+                                location.reload();
+                            }, 2000);
+                        }, 2000)
+                    }
+                })
             }
         })
+        
     }
 })
 
@@ -1324,18 +1965,30 @@ $("#extend").on("click", function(){
                     selected: selectedTicket
                 },
                 success: function(res){
-                    itemName = res;
+                    res = JSON.parse(res);
+                    itemName = res[0];
+                    quantityforextension = res[1];
+                    //fetch end time
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fetch_end_time.php',
+                        data: {
+                            ticket: selectedTicket
+                        }, success: function(res){
+                            endtime = res;
+                        }
+                    })
                     if (selectedTicket != undefined) {
                         if (itemName == '2 hours'){
                             document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                             <div id="amount-to-pay">
                                 <div>
                                     <div class="amount-to-pay-wrapper">
-                                        <div id="fifty">50</div>
+                                        <div id="fifty">${50 * parseInt(quantityforextension)}</div>
                                         <div id="free" style="font-size:12px;">Free 1hr</div>
                                     </div>
                                     <div class="buttons-extension">
-                                        <button id="continue">Confirm</button>
+                                        <button class="continue">Confirm</button>
                                         <button id="cancel-extend" style="background:red;">Cancel</button>
                                     </div>
                                 </div>
@@ -1345,12 +1998,12 @@ $("#extend").on("click", function(){
                             <div id="amount-to-pay">
                                 <div>
                                     <div class="amount-to-pay-wrapper">
-                                        <div id="fifty">50</div>
-                                        <div id="1hun">100</div>
+                                        <div id="fifty">${50 * parseInt(quantityforextension)}</div>
+                                        <div id="1hun">${100 * parseInt(quantityforextension)}</div>
                                         <div id="free" style="font-size:12px;">Free 1hr</div>
                                     </div>
                                     <div class="buttons-extension">
-                                        <button id="continue">Confirm</button>
+                                        <button class="continue">Confirm</button>
                                         <button id="cancel-extend" style="background:red;">Cancel</button>
                                     </div>
                                 </div>
@@ -1360,14 +2013,12 @@ $("#extend").on("click", function(){
                             <div id="amount-to-pay">
                                 <div>
                                     <div class="amount-to-pay-wrapper">
-                                        <div id="fifty">60</div>
-                                        <div id="1hun">110</div>
-                                        <div id="1hun">160</div>
-                                        <div id="free" style="font-size:12px;">Free 1hr</div>
-                                        
+                                        <div id="sixty">${60 * parseInt(quantityforextension)}</div>
+                                        <div id="1hun-ten">${110 * parseInt(quantityforextension)}</div>
+                                        <div id="1hun-sixty">${160 * parseInt(quantityforextension)}</div>
                                     </div>
                                     <div class="buttons-extension">
-                                        <button id="continue">Confirm</button>
+                                        <button class="continue">Confirm</button>
                                         <button id="cancel-extend" style="background:red;">Cancel</button>
                                     </div>
                                 </div>
@@ -1378,9 +2029,20 @@ $("#extend").on("click", function(){
                             if (!pageReloading){
                                 $(".amount-to-pay-wrapper > div").css("background", "green");
                                 $(this).css("background", "orange");
-                                
+                                if ($(this).attr("id") == 'fifty') {
+                                    foopayment = 50;
+                                } else if ($(this).attr("id") == '1hun') {
+                                    foopayment = 100;
+                                } else if ($(this).attr("id") == 'sixty') {
+                                    foopayment = 60;
+                                } else if ($(this).attr("id") == '1hun-ten') {
+                                    foopayment = 110;
+                                } else if ($(this).attr("id") == '1hun-sixty') {
+                                    foopayment = 160;
+                                } 
                                 if ($(this).attr("id") == 'free'){
                                     amountToPay = 0;
+                                    foopayment = 0;
                                 } else {
                                     amountToPay = $(this).html();
                                     amountToPay = parseInt(amountToPay);
@@ -1390,31 +2052,59 @@ $("#extend").on("click", function(){
                         $(".buttons-extension #cancel-extend").on("click", function(){
                             location.reload();
                         })
-                        $(".buttons-extension #continue").on("click", function(){
+                        $(".buttons-extension .continue").on("click", function(){
                             clearInterval(interval);
                             if (!pageReloading){
                                 if (amountToPay != undefined) {
                                     $(".tickets-list-wrapper").remove();
                                     $("#amount-to-pay").remove();
                                     if (amountToPay == 0){
+                                        console.log(selectedTicket + " " + amountToPay + " " +itemName + " " +endtime + " " + foopayment);
                                         $.ajax({
                                             type: 'POST',
                                             url: 'extend.php',
                                             data: {
                                                 selectedticket: selectedTicket,
                                                 payment: amountToPay,
-                                                itemName: itemName
+                                                itemName: itemName,
+                                                end: endtime,
+                                                foopayment: foopayment
                     
                                             }, success: function(res){
-                                                console.log(res);
+                                                //update detailed report
                                                 $.ajax({
                                                     type: 'POST',
-                                                    url: 'addExtendedPayment.php',
+                                                    url: 'addExtendPaymentOnDetailedReport.php',
+                                                    data: {
+                                                        payment: amountToPay,
+                                                        ticket: selectedTicket,
+                                                        itemName: itemName,
+                                                        foopayment: foopayment
+                                                    },
+                                                });
+                                                //update cashier balance
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'update_cashierbalance.php',
                                                     data: {
                                                         payment: amountToPay
                                                     },
                                                     success: function(res){
                                                         console.log(res);
+                                                    }
+                                                })
+                                                //update playground report
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'addExtendPayment.php',
+                                                    data: {
+                                                        payment: amountToPay,
+                                                        ticket: selectedTicket,
+                                                        itemName: itemName,
+                                                        foopayment: foopayment
+                                                    },
+                                                    success: function(res){
+                                                        
                                                         setTimeout(function(){
                                                             document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
                                                             <div class="check-out-notif" style="background:orange;padding:10px;">${selectedTicket} time extended.</div>`);
@@ -1428,6 +2118,7 @@ $("#extend").on("click", function(){
                                                         }, 3500);
                                                     }
                                                 })
+                                                
                                             }
                                         })
                                         
@@ -1466,6 +2157,7 @@ $("#extend").on("click", function(){
     }
     
 })
+
 //check balance
 $("#check-balance").on("click", function(){
     if (!pageReloading){
@@ -1477,17 +2169,6 @@ $("#check-balance").on("click", function(){
                 year: `${time.getFullYear()}`
             },
             success: function(res){
-                $.ajax({
-                    type: 'POST',
-                    url: 'fetch_balance.php',
-                    data: {
-                        date: `${months[time.getMonth()]} ${time.getDate()}`,
-                        year: `${time.getFullYear()}`
-                    },
-                    success: function(res){
-                        $("#total-cashier").html(`₱${res}`);
-                    }
-                })
                 res = JSON.parse(res);
                 var table_container = document.getElementById("tbody2");
                 for (let i = 0; i < res.length; i++){
@@ -1503,8 +2184,8 @@ $("#check-balance").on("click", function(){
                     }
                     table_container.insertAdjacentHTML("afterbegin", `
                         ${txt}
+                        <td>${res[i][7]}</td>
                         <td>${temp}</td>
-                        <td>${res[i][4]}</td>
                         <td>${res[i][5]}</td>
                         <td>${res[i][6]}</td>
                     </tr>
@@ -1524,8 +2205,8 @@ $("#check-balance").on("click", function(){
                             success: function(res){
                                 res = JSON.parse(res);
                                 let total = 0;
-                                for (let i = 0; i < res.length; i++ ){
-                                    total += parseInt(res[i]);
+                                for (let i = 0; i < res[0].length; i++ ){
+                                    total += (parseInt(res[0][i]) * parseInt(res[1][i]));
                                 }
                                 $("#total-cashier").html(`₱${total}`);
                             }
@@ -1556,8 +2237,8 @@ $("#check-balance").on("click", function(){
                                     }
                                     table_container.insertAdjacentHTML("afterbegin", `
                                         ${txt}
+                                        <td>${res[i][7]}</td>
                                         <td>${temp}</td>
-                                        <td>${res[i][4]}</td>
                                         <td>${res[i][5]}</td>
                                         <td>${res[i][6]}</td>
                                     </tr>
@@ -1609,8 +2290,8 @@ $("#check-balance").on("click", function(){
                                     }
                                     table_container.insertAdjacentHTML("afterbegin", `
                                         ${txt}
+                                        <td>${res[i][7]}</td>
                                         <td>${temp}</td>
-                                        <td>${res[i][4]}</td>
                                         <td>${res[i][5]}</td>
                                         <td>${res[i][6]}</td>
                                     </tr>
@@ -1622,13 +2303,18 @@ $("#check-balance").on("click", function(){
                         $("#section-cashier").html("Cashier Total");
                         $.ajax({
                             type: 'POST',
-                            url: 'fetch_balance.php',
+                            url: 'daily_sales_check.php',
                             data: {
                                 date: `${months[time.getMonth()]} ${time.getDate()}`,
                                 year: `${time.getFullYear()}`
                             },
                             success: function(res){
-                                $("#total-cashier").html(`₱${res}`);
+                                res = JSON.parse(res);
+                                let daily = 0;
+                                for (let i = 0; i < res[0].length; i++) {
+                                    daily = daily + (parseInt(res[0][i]) * parseInt(res[1][i]));
+                                }
+                                $("#total-cashier").html(`₱${daily}`);
                             }
                         })
                         let container = document.getElementById("tbody2");
@@ -1648,8 +2334,8 @@ $("#check-balance").on("click", function(){
                             }
                             table_container.insertAdjacentHTML("afterbegin", `
                                 ${txt}
+                                <td>${res[i][7]}</td>
                                 <td>${temp}</td>
-                                <td>${res[i][4]}</td>
                                 <td>${res[i][5]}</td>
                                 <td>${res[i][6]}</td>
                             </tr>
@@ -1659,18 +2345,7 @@ $("#check-balance").on("click", function(){
                 }) 
             }
         })
-        //fetch current user balance
-        $.ajax({
-            type: 'POST',
-            url: 'fetch_balance.php',
-            data: {
-                date: `${months[time.getMonth()]} ${time.getDate()}`,
-                year: `${time.getFullYear()}`
-            },
-            success: function(res){
-                $("#cashier-balance").html(`₱${res}`);
-            }
-        })
+        
         $.ajax({
             type: 'POST',
             url: 'daily_sales_check.php',
@@ -1681,10 +2356,12 @@ $("#check-balance").on("click", function(){
             success: function(res){
                 res = JSON.parse(res);
                 let daily = 0;
-                for (let i = 0; i < res.length; i++) {
-                    daily += parseInt(res[i]);
+                console.log(res);
+                for (let i = 0; i < res[0].length; i++) {
+                    daily = daily + (parseInt(res[0][i]) * parseInt(res[1][i]));
                 }
                 $("#total-sales").html(`₱${daily}`);
+                $("#total-cashier").html(`₱${daily}`);
             }
         })
         $(".cashier-balance").css("display", "block");
@@ -1704,11 +2381,13 @@ $("#change-user").on("click", function(){
 })
 
 $("#exit-cashier-balance").on("click", function(){
+    location.reload();
+    /*
     $(".cashier-balance").css("display", "none");
     let container = document.getElementById("tbody2");
     while (container.lastElementChild) {
         container.removeChild(container.lastElementChild);
-    }
+    }*/
 })
 
 
@@ -1762,7 +2441,6 @@ $("#show-pending-orders").on("click", function(){
                     </tr>`;
                     container.insertAdjacentHTML("afterbegin", entry_html);
                 }
-                console.log(res);
                 $(".orders").css("display", "block");
 
                 //actions..
@@ -1800,6 +2478,8 @@ $("#show-pending-orders").on("click", function(){
 
                             //cancel all orders
                             $(".cancellation-option-overlay button:nth-child(1)").on("click", function(){
+                                alert('This feature is not available.');
+                                /*
                                 $(".cancellation-option-overlay").remove();
                                 document.getElementById("body-content").insertAdjacentHTML("afterbegin", `
                                 <div class="cancel-order-confirmation" id="cancel-order-confirmation" style="z-index:4000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
@@ -1833,17 +2513,47 @@ $("#show-pending-orders").on("click", function(){
                                                     data: {
                                                         ticket: ticket
                                                     },
+                                                })
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'fetch_amount_all_forCancellation.php',
+                                                    data: {
+                                                        ticket: ticket
+                                                    },
                                                     success: function(res){
-                                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                                        <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
-                                                        $(".cancel-order-confirmation").remove();
-                                                        setTimeout(function(){
-                                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
-                                                            setTimeout(function(){
-                                                                location.reload();
-                                                            }, 2000);
-                                                        }, 1000);
+                                                        res = JSON.parse(res);
+                                                        let totalAmount = 0;
+                                                        for (let i = 0; i < res.length; i++) {
+                                                            totalAmount += parseInt(res[i]);
+                                                        }
+                                                        alert(totalAmount);
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: 'subtract_balance_cashier.php',
+                                                            data: {
+                                                                amount: totalAmount
+                                                            },
+                                                            success: function(){
+                                                                document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                                <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
+                                                                $(".cancel-order-confirmation").remove();
+                                                                setTimeout(function(){
+                                                                    document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                                    <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
+                                                                    setTimeout(function(){
+                                                                        location.reload();
+                                                                    }, 2000);
+                                                                }, 1000);
+                                                            }
+                                                        })
+                                                        //update detailed report
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: 'update_detailed_report_allOrders_cancellation.php',
+                                                            data: {
+                                                                ticket: ticket
+                                                            }
+                                                        })
                                                     }
                                                 })
                                                 
@@ -1852,7 +2562,8 @@ $("#show-pending-orders").on("click", function(){
                                             }
                                         }
                                     })
-                                })
+                                }) */
+                                
                             })
 
                             //individual
@@ -1891,16 +2602,49 @@ $("#show-pending-orders").on("click", function(){
                                                         id: id
                                                     },
                                                     success: function(res){
-                                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                                        <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
-                                                        $(".cancel-order-confirmation").remove();
-                                                        setTimeout(function(){
-                                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
-                                                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
-                                                            setTimeout(function(){
-                                                                location.reload();
-                                                            }, 2000);
-                                                        }, 1000);
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: 'fetch_individual_forCancellation.php',
+                                                            data: {
+                                                                id: id
+                                                            },
+                                                            success: function(res){
+                                                                console.log(res);
+                                                                res = JSON.parse(res);
+                                                                $.ajax({
+                                                                    type: 'POST',
+                                                                    url: 'subtract_balance_cashier.php',
+                                                                    data: {
+                                                                        amount: parseInt(res[0])
+                                                                    },
+                                                                    success: function(){
+                                                                        document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                                        <div class="check-out-notif" style="background:rgb(36, 180, 36);padding:15px 10px;font-size:20px;">Order Cancelled.</div>`);
+                                                                        $(".cancel-order-confirmation").remove();
+                                                                        setTimeout(function(){
+                                                                            document.getElementById("notification-container").insertAdjacentHTML("afterbegin", `
+                                                                            <div class="check-out-notif" style="background:orange;padding:10px;">Reloading the page..</div>`);
+                                                                            setTimeout(function(){
+                                                                                location.reload();
+                                                                            }, 2000);
+                                                                        }, 1000);
+                                                                    }
+                                                                })
+
+                                                                //update detailed report
+                                                                $.ajax({
+                                                                    type: 'POST',
+                                                                    url: 'update_detailed_report_individual_cancellation.php',
+                                                                    data: {
+                                                                        year: time.getFullYear(),
+                                                                        time: res[1],
+                                                                        ticket: res[2],
+                                                                        item: res[3],
+                                                                    }
+                                                                })
+                                                            }
+                                                        })
+                                                        
                                                     }
                                                 })
                                                 

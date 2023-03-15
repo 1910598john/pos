@@ -21,9 +21,10 @@ if (!isset($_SESSION['cashier'])) {
             <div class="time-wrapper">
                 <table id="time-table">
                     <tr>
-                        <td style="font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">TICKET ID</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">TICKET_ID</td>
                         <td style="border-left:1px solid gray;font-size:12px;font-weight:bold;text-align:center;border-bottom:1px solid gray;">ITEM</td>
-                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;padding: 0 20px;">REMAINING</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;padding: 0 20px;">END_TIME</td>
+                        <td style="font-size:12px;font-weight:bold;text-align:center;border-left:1px solid gray;border-bottom: 1px solid gray;padding: 0 20px;">QTY</td>
                     </tr>
                 </table>
             </div>
@@ -122,6 +123,32 @@ if (!isset($_SESSION['cashier'])) {
         </div>
     </div>
 </div>
+<div class="combo-deals-overlay" style="z-index:5000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);">
+    <div class="combo-deals-wrapper">
+        <div class="header">
+            <span>COMBO DEALS</span>
+        </div>
+        <div class="content">
+            <div class="fries-choices primary-choices choices-wrapper">
+                <span>First choice: </span>
+                <div class="choices" id="primary-choices-container"></div>
+            </div>
+            <div class="food-choices secondary-choices choices-wrapper">
+                <span>Second choice: </span>
+                <div class="choices" id="secondary-choices-container"></div>
+            </div>
+            <div class="drinks-choices">
+                <span>Drinks: </span>
+                <div id="drinks-choices-container"></div>
+            </div>
+            <!--if there is third-choice-->
+            <div class="food-choices third-choices choices-wrapper">
+                <span>Third choice: </span>
+                <div id="third-choices-container"></div> 
+            </div>
+        </div>
+    </div>
+</div>
 <div class="cashier-balance" style="z-index:3000;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:none;">
     <div class="balance-wrapper">
         <button id="exit-cashier-balance">Exit</button>
@@ -146,8 +173,8 @@ if (!isset($_SESSION['cashier'])) {
                 <thead>
                     <th>ITEM</th>
                     <th>AMOUNT</th>
+                    <th>QUANTITY</th>
                     <th>isEmployee</th>
-                    <th>CURRENT USER</th>
                     <th>TIME</th>
                     <th>DATE</th>
                 </thead>

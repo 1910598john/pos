@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 $date = $_POST['date'];
 $year = $_POST['year'];
-$sql = "SELECT id, ticketID, item, remaining_time, status, end_time FROM playground_time WHERE NOT status='removed' AND date='$date' AND year='$year'";
+$sql = "SELECT id, ticketID, item, end_time, status, end_time, quantity FROM playground_time WHERE NOT status='removed' AND date='$date' AND year='$year'";
 $result = $conn->query($sql);
 $items = array();
 $end_items = array();
@@ -27,10 +27,11 @@ if ($result->num_rows > 0) {
         $entry = array();
         $entry[0] = $row["id"];
         $entry[1] = $row["item"];
-        $entry[2] = $row["remaining_time"];
+        $entry[2] = $row["end_time"];
         $entry[3] = $row["ticketID"];
         $entry[4] = $row['status'];
-        
+        $entry[5] = $row['quantity'];
+        /*
         if ($row['item'] != 'Unlimited') {
             if (new DateTime(date("h:i A m/d/y")) > new DateTime($row['end_time'])) {
                 $end_time = $row["end_time"];
@@ -38,14 +39,15 @@ if ($result->num_rows > 0) {
                 $y += 1;
             }
         }
-        
+        */
         $items[$x] = $entry;
         $x += 1;
     }
+    /*
     if ($end_items > 0) {
         $_SESSION['ended_items'] = $end_items;
     }
-    
+    */
     echo json_encode($items);
 }
 $conn->close();

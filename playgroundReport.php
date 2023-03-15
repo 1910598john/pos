@@ -21,11 +21,22 @@ $year = $_POST['year'];
 $items_length = count($items);
 $ticketNumber = $_POST['cafeticket'];
 $currentUser = $_SESSION['cashier'];
+$quantity = $_POST['quantity'];
 
 if ($items_length > 1) {
-    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber, '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year');";
+    if ($items[0] != 'Adult Pass' &&  $items[0] != 'Adult Socks' && $items[0] != 'Kid Socks') {
+        $qty = $quantity;
+    } else {
+        $qty = 1;
+    }
+    $sql .= "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year, quantity) VALUES($ticketNumber, '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year', '$qty');";
     for ($i = 1; $i < $items_length; $i++){
-        $sql .= "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber, '$items[$i]', $pricelist[$i], '$currentUser', '$time', '$date', '$year');";
+        if ($items[$i] != 'Adult Pass' && $items[$i] != 'Adult Socks' && $items[$i] != 'Kid Socks') {
+            $qty = $quantity;
+        } else {
+            $qty = 1;
+        }
+        $sql .= "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year, quantity) VALUES($ticketNumber, '$items[$i]', $pricelist[$i], '$currentUser', '$time', '$date', '$year', '$qty');";
     }
     if ($conn->multi_query($sql) === TRUE){
         echo 'success';
@@ -34,7 +45,12 @@ if ($items_length > 1) {
     }
     
 } elseif ($items_length == 1){
-    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year) VALUES($ticketNumber, '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year')";
+    if ($items[0] != 'Adult Pass' &&  $items[0] != 'Adult Socks' && $items[0] != 'Kid Socks') {
+        $qty = $quantity;
+    } else {
+        $qty = 1;
+    }
+    $sql = "INSERT INTO playground_report(ticketNumber, item, amount, user, time, date, year, quantity) VALUES($ticketNumber, '$items[0]', $pricelist[0], '$currentUser', '$time', '$date', '$year', '$qty');";
     if ($conn->query($sql) === TRUE){
         echo 'success';
     } else {
