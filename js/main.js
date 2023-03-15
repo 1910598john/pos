@@ -319,9 +319,7 @@ $(document).ready(function(){
                         </div>`);
                     }
 
-                    if (items[i][0] == 'KTV') {
-                        $(`#fetched-item${i + 1}`).addClass("ktv");
-                    } else if (items[i][0].includes("Pass") || items[i][0].includes("Socks")){
+                    if (items[i][0].includes("Pass") || items[i][0].includes("Socks")){
                         $(`#fetched-item${i + 1}`).addClass("pass");
                     }
                 
@@ -1029,13 +1027,7 @@ $(document).ready(function(){
                             let itemName = item.children[1].children[0].dataset.item;
                             let itemDescription = item.children[1].children[1].dataset.description;
 
-                            if ($(this).hasClass("ktv")) {
-                                $(".items-container-playground .time").css("opacity", ".5");
-                                $(".items-container-playground .item").css("opacity", ".5");
-                                play_items.push(itemName);
-                                play_quantity += 1;
-                            }
-                            else if ($(this).hasClass("time")) {
+                            if ($(this).hasClass("time")) {
                                 if (!play_item_aded == true) {
                                     play_item_aded = true;
                                     play_items.push(itemName);

@@ -39,7 +39,12 @@ if ($items_length == 1){
         $sql = "INSERT INTO playground_time(ticketID, item, status, date, year, extended, end_time, quantity) VALUES($tickets,'$items[0]', '$status', '$date','$year', '$extended', '$end_time', '$quantity')";
     }
       elseif ($items[0] == 'KTV') {
-        $end_time = date("h:i A", strtotime("+1 hour"));
+        if (intval($quantity) == 1) {
+            $str = "+1 hour";
+        } else {
+            $str = "+".$quantity." hours";
+        }
+        $end_time = date("h:i A", strtotime($str));
         //$remaining_time = 60 * 60;
         $extended = 'false';
         $sql = "INSERT INTO playground_time(ticketID, item, status, date, year, extended, end_time, quantity) VALUES($tickets,'$items[0]', '$status', '$date','$year', '$extended', '$end_time', '$quantity')";
